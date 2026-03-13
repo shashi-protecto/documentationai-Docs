@@ -1,178 +1,265 @@
 ---
-title: Getting Started with Protecto
-description: Set up your Protecto account, authenticate, and perform your first data scan or masking operation in minutes.
+title: Quickstart with Protecto masking API
+description: Create a Protecto account, get an auth token, and make your first masking and unmasking API calls using the trial environment.
 ---
+
+## Overview
+
+Make your first successful Protecto API call with minimal setup using the trial environment.
+
+By the end of this guide, you will:
+
+- Create a Protecto account
+- Obtain an authentication token
+- Mask sensitive data using auto-detection
+- Unmask previously tokenized data
+
+No prior Protecto experience is required.
 
 ## Prerequisites
 
 <Callout kind="info" title="Before you begin">
 Ensure you have:
-- A Protecto account (sign up at `https://app.protecto.ai`)
-- Python 3.8+ (for SDK examples)
-- `pip` or equivalent package manager
-- Access to a data source like Snowflake or S3
+
+- A Protecto account (free trial supported)
+- Internet access with outbound HTTPS enabled
+- Any HTTP client (for example, `curl`, Postman, or a language-specific HTTP library)
+
 </Callout>
 
-## Step 1: Create Your Protecto Account
+## Create an account and obtain an auth token
 
-Sign up for a free Protecto account to access the dashboard and API.
+Protecto uses Bearer token authentication for all API requests.
 
 <Steps>
-  <Step title="Sign Up" icon="user-plus">
-    Visit `https://app.protecto.ai/register` and create an account using your email.
+  <Step title="Sign up for Protecto" icon="user-plus">
+    Visit `https://portal.protecto.ai/` and sign up for a free Protecto account using your work email. Complete the email verification step to activate your account.
   </Step>
-  <Step title="Verify Email" icon="mail">
-    Check your inbox and click the verification link.
+
+  <Step title="Open the dashboard" icon="monitor">
+    Log in at `https://portal.protecto.ai/`. After login, Protecto redirects you to the dashboard where you manage your environment and tokens.
   </Step>
-  <Step title="Complete Onboarding" icon="check-circle">
-    Follow the dashboard prompts to set up your organization.
+
+  <Step title="Copy your auth token" icon="key">
+    Locate your **Auth Token** in the dashboard. Copy it and store it in a secure place such as a password manager or an encrypted secret store.
+
   </Step>
 </Steps>
 
-## Step 2: Generate API Credentials
+Use the auth token in the `Authorization` header for every API request:
 
-From the Protecto dashboard, create API keys for authentication.
-
-<Steps>
-  <Step title="Navigate to API Keys" icon="key">
-    Go to **Settings > API Keys** in the dashboard.
-  </Step>
-  <Step title="Create Key" icon="plus">
-    Click **Generate New Key** and select scopes for data discovery and masking.
-  </Step>
-  <Step title="Copy Credentials" icon="copy">
-    Save your `API_KEY` and `API_SECRET` securely—they won't be shown again.
-  </Step>
-</Steps>
-
-<Callout kind="tip">
-Store credentials as environment variables:
-```bash
-export PROTECTO_API_KEY="your-api-key-here"
-export PROTECTO_API_SECRET="your-api-secret-here"
+```text
+Authorization: Bearer <AUTH_TOKEN>
 ```
+
+<Callout kind="alert" title="Keep your auth token secure">
+Treat your auth token like a password:
+
+- Do not expose it in client-side code or public repositories
+- Do not hard-code it in source control
+- Use environment variables or a secrets manager in production
+
 </Callout>
 
-## Step 3: Install the Python SDK
+### Authentication header reference
 
-Install the official Protecto Python SDK to simplify API interactions.
-
-<CodeGroup tabs="pip,conda" show-lines={true}>
-  ```bash
-  pip install protecto-sdk
-  ```
-  ```bash
-  conda install -c protecto protecto-sdk
-  ```
-</CodeGroup>
-
-## Step 4: Make Your First API Call - Data Discovery
-
-Scan a data source for sensitive data using the discovery API.
-
-### Authenticate and Discover
-
-Use this Python example to initiate a data discovery scan:
-
-````python
-import os
-from protecto_sdk import ProtectoClient
-
-# Initialize client
-client = ProtectoClient(
-    api_key=os.getenv("PROTECTO_API_KEY"),
-    api_secret=os.getenv("PROTECTO_API_SECRET")
-)
-
-# Start data discovery scan
-scan = client.discovery.scan(
-    datasource_id="your-datasource-id",
-    tables=["users", "orders"]
-)
-
-print(f"Scan ID: {scan.id}")
-````
-
-### API Reference
-
-<ParamField path="datasource_id" param-type="string" required="true">
-  ID of your configured data source (e.g., Snowflake database).
+<ParamField header="Authorization" param-type="string" required="true">
+  Bearer token for authentication in the form `Bearer <AUTH_TOKEN>`. Obtain the token from the Protecto dashboard.
 </ParamField>
 
-<ParamField body="tables" param-type="array" required="false">
-  List of tables to scan.
+<ParamField header="Content-Type" param-type="string" required="true">
+  Set to `application/json` for all JSON requests.
 </ParamField>
 
-<Request tabs="Python,cURL">
-  ````python
-  scan = client.discovery.scan(
-      datasource_id="ds_123",
-      tables=["users"]
-  )
-  ````
+## Environments and base URLs
 
-  ````bash
-  curl -X POST https://api.example.com/v1/discovery/scan \
-    -H "Authorization: Bearer $PROTECTO_API_KEY" \
+Use the trial environment base URL for this quickstart:
+
+```text
+https://protecto-trial.protecto.ai
+```
+
+All examples in this guide target the trial environment. Replace the base URL with your production endpoint when you move beyond trial usage.
+
+<Callout kind="info" title="Trial environment">
+Trial accounts use the trial base URL for masking and unmasking operations. The API paths are the same as production; only the hostname changes.
+</Callout>
+
+## First mask request (auto-detect)
+
+This example masks sensitive data in free-form text. Entity detection and masking behavior are driven by the active policy, and you do not need to specify entity types or tokens in the request.
+
+Use the mask endpoint to tokenize sensitive data. Protecto auto-detects entities such as names, addresses, emails, and other policy-defined data types.
+
+### Endpoint
+
+```text
+PUT https://protecto-trial.protecto.ai/api/vault/mask
+```
+
+### Endpoint summary
+
+| Property         | Value                                                   |
+| --------------- | ------------------------------------------------------- |
+| Method          | PUT                                                     |
+| Endpoint        | `https://protecto-trial.protecto.ai/api/vault/mask`     |
+| Access          | User                                                    |
+| Trial available | Yes                                                     |
+
+### Request fields
+
+<ParamField header="Authorization" param-type="string" required="true">
+  Authentication header using your auth token: `Bearer <AUTH_TOKEN>`.
+</ParamField>
+
+<ParamField header="Content-Type" param-type="string" required="true">
+  `application/json`.
+</ParamField>
+
+<ParamField body="mask" param-type="array" required="true">
+  Array of objects describing values to mask. Each item includes a `value` field with the original text.
+</ParamField>
+
+<ParamField body="mask[].value" param-type="string" required="true" show-location="false">
+  The text value to analyze and mask. Protecto auto-detects sensitive entities within this text based on your masking policies.
+</ParamField>
+
+### Example request
+
+<Request tabs="cURL" show-lines="true">
+  ```bash
+  curl -X PUT "https://protecto-trial.protecto.ai/api/vault/mask" \
+    -H "Authorization: Bearer <AUTH_TOKEN>" \
     -H "Content-Type: application/json" \
     -d '{
-      "datasource_id": "ds_123",
-      "tables": ["users"]
+      "mask": [
+        {
+          "value": "John Doe lives at 123 Main Street. His email is john.doe@example.com"
+        }
+      ]
     }'
-  ````
+  ```
 </Request>
 
-<Response tabs="200">
+### Example response
+
+<Response tabs="200" show-lines="true">
 ```json
 {
-  "id": "scan_abc123",
-  "status": "running",
-  "datasource_id": "ds_123"
+  "data": [
+    {
+      "value": "John Doe lives at 123 Main Street. His email is john.doe@example.com",
+      "token_value": "<PER>005O 0BY</PER> lives at <ADDRESS>06N 00E1 00003b</ADDRESS>. His email is <EMAIL>3</EMAIL>"
+    }
+  ],
+  "success": true,
+  "error": {
+    "message": ""
+  }
 }
 ```
 </Response>
 
-## Step 5: Basic Tokenization Setup
+The exact `token_value` and masked representation depend on your masking policies, but the response structure is consistent:
 
-Apply tokenization masking to protect PII in real-time.
+- `data` is an array aligned with your input
+- Each item contains the original `value` and a `token_value` that you use later to unmask
 
-````python
-# Create masking policy
-policy = client.masking.create_policy(
-    name="tokenize-ssi",
-    rules=[
+#### What this does
+
+- Identifies supported sensitive data automatically
+- Masks detected values
+- Returns tokenized output using the standard mask response structure
+- This is the recommended starting point for new users
+
+<Callout kind="tip" title="Success check">
+You have successfully masked data when the response has `success: true`, a non-empty `data` array, and each item contains a `token_value`.
+</Callout>
+
+## First unmask request
+
+Use the unmask endpoint to retrieve original values from previously issued tokens.
+
+### Endpoint
+
+```text
+PUT https://protecto-trial.protecto.ai/api/vault/unmask
+```
+
+### Endpoint summary
+
+| Property         | Value                                                     |
+| --------------- | --------------------------------------------------------- |
+| Method          | PUT                                                       |
+| Endpoint        | `https://protecto-trial.protecto.ai/api/vault/unmask`     |
+| Access          | User                                                      |
+| Trial available | Yes                                                       |
+
+### Request fields
+
+<ParamField header="Authorization" param-type="string" required="true">
+  Authentication header using your auth token: `Bearer <AUTH_TOKEN>`.
+</ParamField>
+
+<ParamField header="Content-Type" param-type="string" required="true">
+  `application/json`.
+</ParamField>
+
+<ParamField body="unmask" param-type="array" required="true">
+  Array of objects describing tokens to unmask. Each item includes a `token_value` previously returned by the mask endpoint.
+</ParamField>
+
+<ParamField body="unmask[].token_value" param-type="string" required="true" show-location="false">
+  Token string returned from the mask API response `token_value` field.
+</ParamField>
+
+### Example request
+
+<Request tabs="cURL" show-lines="true">
+  ```bash
+  curl -X PUT "https://protecto-trial.protecto.ai/api/vault/unmask" \
+    -H "Authorization: Bearer <AUTH_TOKEN>" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "unmask": [
         {
-            "column": "email",
-            "mask_type": "tokenize",
-            "preserve_length": True
+          "token_value": "<PER>005O 0BY</PER> lives at <ADDRESS>06N 00E1 00003b</ADDRESS>. His email is <EMAIL>3</EMAIL>"
         }
-    ]
-)
+      ]
+    }'
+  ```
+</Request>
 
-# Apply to query
-masked_query = client.masking.mask_query(
-    datasource_id="ds_123",
-    query="SELECT email FROM users",
-    policy_id=policy.id
-)
+### Example response
 
-print(masked_query.result)
-````
+<Response tabs="200" show-lines="true">
+```json
+{
+  "data": [
+    {
+      "value": "John Doe lives at 123 Main Street. His email is john.doe@example.com",
+      "token_value": "<PER>005O 0BY</PER> lives at <ADDRESS>06N 00E1 00003b</ADDRESS>. His email is <EMAIL>3</EMAIL>"
+    }
+  ],
+  "success": true,
+  "error": {
+    "message": ""
+  }
+}
+```
+</Response>
 
-## Next Steps
+You have successfully unmasked when the response returns `success: true` and each `data` item contains the original `value` for the provided `token_value`.
 
-<Columns cols={3}>
-  <Card title="Connect Data Sources" icon="database" href="/data-sources">
-    Link Snowflake, BigQuery, or S3 to Protecto.
-  </Card>
-  <Card title="Data Classification" icon="search" href="/data-discovery">
-    Automatically detect PII, PHI, and more.
-  </Card>
-  <Card title="Masking Policies" icon="shield" href="/masking">
-    Build custom redaction and tokenization rules.
-  </Card>
-</Columns>
+## Notes and limits
 
-<Callout kind="success">
-Congratulations! You've completed your first Protecto setup. Check the dashboard for scan results.
+<Callout kind="info" title="Trial limits and behavior">
+During trial usage, keep these limits and behaviors in mind:
+
+- Trial accounts can mask up to **1,000 values**
+- Maximum length per `value` is **600 characters**
+- Input text must be **UTF-8** encoded
+- Auto-detection is **policy-driven**; Protecto masks entities defined in your masking policies
+- Toxicity analysis results return only when you enable toxicity analysis in your configuration
+
 </Callout>
