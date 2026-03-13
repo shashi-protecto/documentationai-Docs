@@ -1,0 +1,104 @@
+---
+title: Welcome to Protecto
+description: Discover how Protecto safeguards sensitive data in analytics, pipelines, and GenAI workflows with automated discovery, masking, and real-time protection.
+---
+
+<Callout kind="info" title="Starter Kit Template">
+  This documentation was generated as a starter kit template based on your brand. Please review and customize the content to accurately reflect your product's features, APIs, and capabilities.
+</Callout>
+
+## Overview
+
+Protecto helps you safeguard sensitive data across analytics, data pipelines, and GenAI workflows without slowing down development. You can discover and classify sensitive data like PII and PHI, apply masking and redaction policies at scale, and protect data in real time for dashboards, APIs, and GenAI models.
+
+Protecto integrates seamlessly with your existing systems such as Snowflake, BigQuery, S3, and Redshift, handling both structured and unstructured data sources.
+
+## Key Capabilities
+
+Protecto provides powerful features to automate data privacy and compliance.
+
+<Columns cols={3}>
+  <Card title="Data Discovery" icon="search" href="#data-discovery">
+    Automatically scan databases to identify and classify sensitive fields like emails, SSNs, and credit card numbers.
+  </Card>
+  <Card title="Data Masking" icon="shield" href="#data-masking">
+    Apply granular masking policies through a flexible API for consistent protection across your data flows.
+  </Card>
+  <Card title="Real-Time Protection" icon="zap" href="#real-time">
+    Mask sensitive data on-the-fly for live dashboards, APIs, and GenAI inputs/outputs.
+  </Card>
+</Columns>
+
+## Why Choose Protecto
+
+As privacy regulations like GDPR and CCPA intensify, you need tools that enforce protection without disrupting engineering workflows. Protecto is developer-friendly, offering simple APIs and zero-downtime integration.
+
+<Callout kind="tip">
+  Protecto reduces compliance risks while accelerating GenAI adoption by ensuring safe data handling from discovery to deployment.
+</Callout>
+
+## Common Use Cases
+
+Explore how teams use Protecto in real scenarios.
+
+<Tabs>
+  <Tab title="Data Pipelines" icon="git-branch">
+    Protect sensitive data in ETL pipelines connecting warehouses like Snowflake to BI tools.
+  </Tab>
+  <Tab title="Analytics Dashboards" icon="bar-chart-3">
+    Redact PII before data reaches Looker or Tableau for secure visualizations.
+  </Tab>
+  <Tab title="GenAI Workflows" icon="cpu">
+    Sanitize prompts and responses in LLM applications to prevent data leaks.
+  </Tab>
+</Tabs>
+
+## Quick Start
+
+Get up and running in minutes.
+
+<Steps>
+  <Step title="Sign Up" icon="user-plus">
+    Create an account at https://dashboard.protecto.ai and generate your API key.
+  </Step>
+  <Step title="Authenticate" icon="key">
+    Use your API key to make your first request.
+
+    <CodeGroup tabs="JavaScript,Python">
+      ```javascript
+      const response = await fetch('https://api.protecto.ai/v1/discover', {
+        headers: {
+          'Authorization': `Bearer ${YOUR_API_KEY}`
+        }
+      });
+      const data = await response.json();
+      console.log(data);
+      ```
+      ```python
+      import requests
+
+      headers = {'Authorization': f'Bearer {YOUR_API_KEY}'}
+      response = requests.get('https://api.protecto.ai/v1/discover', headers=headers)
+      print(response.json())
+      ```
+    </CodeGroup>
+  </Step>
+  <Step title="Scan Data" icon="search">
+    Connect your data source and run a discovery scan via the dashboard or API.
+  </Step>
+</Steps>
+
+## Next Steps
+
+<Columns cols={2}>
+  <Card title="Quickstart Guide" icon="book-open" href="/quickstart">
+    Dive into full setup with code examples.
+  </Card>
+  <Card title="Authentication" icon="key-round" href="/authentication">
+    Secure API access and manage tokens.
+  </Card>
+</Columns>
+
+<Callout kind="success">
+  Ready to protect your data? Start with the Quickstart guide and explore the API reference next.
+</Callout>

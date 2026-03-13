@@ -1,0 +1,178 @@
+---
+title: Getting Started with Protecto
+description: Set up your Protecto account, authenticate, and perform your first data scan or masking operation in minutes.
+---
+
+## Prerequisites
+
+<Callout kind="info" title="Before you begin">
+Ensure you have:
+- A Protecto account (sign up at `https://app.protecto.ai`)
+- Python 3.8+ (for SDK examples)
+- `pip` or equivalent package manager
+- Access to a data source like Snowflake or S3
+</Callout>
+
+## Step 1: Create Your Protecto Account
+
+Sign up for a free Protecto account to access the dashboard and API.
+
+<Steps>
+  <Step title="Sign Up" icon="user-plus">
+    Visit `https://app.protecto.ai/register` and create an account using your email.
+  </Step>
+  <Step title="Verify Email" icon="mail">
+    Check your inbox and click the verification link.
+  </Step>
+  <Step title="Complete Onboarding" icon="check-circle">
+    Follow the dashboard prompts to set up your organization.
+  </Step>
+</Steps>
+
+## Step 2: Generate API Credentials
+
+From the Protecto dashboard, create API keys for authentication.
+
+<Steps>
+  <Step title="Navigate to API Keys" icon="key">
+    Go to **Settings > API Keys** in the dashboard.
+  </Step>
+  <Step title="Create Key" icon="plus">
+    Click **Generate New Key** and select scopes for data discovery and masking.
+  </Step>
+  <Step title="Copy Credentials" icon="copy">
+    Save your `API_KEY` and `API_SECRET` securely—they won't be shown again.
+  </Step>
+</Steps>
+
+<Callout kind="tip">
+Store credentials as environment variables:
+```bash
+export PROTECTO_API_KEY="your-api-key-here"
+export PROTECTO_API_SECRET="your-api-secret-here"
+```
+</Callout>
+
+## Step 3: Install the Python SDK
+
+Install the official Protecto Python SDK to simplify API interactions.
+
+<CodeGroup tabs="pip,conda" show-lines={true}>
+  ```bash
+  pip install protecto-sdk
+  ```
+  ```bash
+  conda install -c protecto protecto-sdk
+  ```
+</CodeGroup>
+
+## Step 4: Make Your First API Call - Data Discovery
+
+Scan a data source for sensitive data using the discovery API.
+
+### Authenticate and Discover
+
+Use this Python example to initiate a data discovery scan:
+
+````python
+import os
+from protecto_sdk import ProtectoClient
+
+# Initialize client
+client = ProtectoClient(
+    api_key=os.getenv("PROTECTO_API_KEY"),
+    api_secret=os.getenv("PROTECTO_API_SECRET")
+)
+
+# Start data discovery scan
+scan = client.discovery.scan(
+    datasource_id="your-datasource-id",
+    tables=["users", "orders"]
+)
+
+print(f"Scan ID: {scan.id}")
+````
+
+### API Reference
+
+<ParamField path="datasource_id" param-type="string" required="true">
+  ID of your configured data source (e.g., Snowflake database).
+</ParamField>
+
+<ParamField body="tables" param-type="array" required="false">
+  List of tables to scan.
+</ParamField>
+
+<Request tabs="Python,cURL">
+  ````python
+  scan = client.discovery.scan(
+      datasource_id="ds_123",
+      tables=["users"]
+  )
+  ````
+
+  ````bash
+  curl -X POST https://api.example.com/v1/discovery/scan \
+    -H "Authorization: Bearer $PROTECTO_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "datasource_id": "ds_123",
+      "tables": ["users"]
+    }'
+  ````
+</Request>
+
+<Response tabs="200">
+```json
+{
+  "id": "scan_abc123",
+  "status": "running",
+  "datasource_id": "ds_123"
+}
+```
+</Response>
+
+## Step 5: Basic Tokenization Setup
+
+Apply tokenization masking to protect PII in real-time.
+
+````python
+# Create masking policy
+policy = client.masking.create_policy(
+    name="tokenize-ssi",
+    rules=[
+        {
+            "column": "email",
+            "mask_type": "tokenize",
+            "preserve_length": True
+        }
+    ]
+)
+
+# Apply to query
+masked_query = client.masking.mask_query(
+    datasource_id="ds_123",
+    query="SELECT email FROM users",
+    policy_id=policy.id
+)
+
+print(masked_query.result)
+````
+
+## Next Steps
+
+<Columns cols={3}>
+  <Card title="Connect Data Sources" icon="database" href="/data-sources">
+    Link Snowflake, BigQuery, or S3 to Protecto.
+  </Card>
+  <Card title="Data Classification" icon="search" href="/data-discovery">
+    Automatically detect PII, PHI, and more.
+  </Card>
+  <Card title="Masking Policies" icon="shield" href="/masking">
+    Build custom redaction and tokenization rules.
+  </Card>
+</Columns>
+
+<Callout kind="success">
+Congratulations! You've completed your first Protecto setup. Check the dashboard for scan results.
+</Callout>
