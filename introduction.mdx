@@ -1,9 +1,10 @@
 ---
 title: Welcome to Protecto
-description: Discover how Protecto safeguards sensitive data in analytics, pipelines, and GenAI workflows with automated discovery, masking, and real-time protection.
+description: >-
+  Discover how Protecto safeguards sensitive data in analytics, pipelines, and
+  GenAI workflows with automated discovery, masking, and real-time protection.
 ---
-
-<Callout kind="info" title="Starter Kit Template">
+<Callout kind="info" collapsed="false">
   This documentation was generated as a starter kit template based on your brand. Please review and customize the content to accurately reflect your product's features, APIs, and capabilities.
 </Callout>
 
@@ -17,14 +18,16 @@ Protecto integrates seamlessly with your existing systems such as Snowflake, Big
 
 Protecto provides powerful features to automate data privacy and compliance.
 
-<Columns cols={3}>
-  <Card title="Data Discovery" icon="search" href="#data-discovery">
+<Columns cols="3">
+  <Card title="Data Discovery" href="#data-discovery" icon="search" horizontal="false">
     Automatically scan databases to identify and classify sensitive fields like emails, SSNs, and credit card numbers.
   </Card>
-  <Card title="Data Masking" icon="shield" href="#data-masking">
+
+  <Card title="Data Masking" href="#data-masking" icon="shield" horizontal="false">
     Apply granular masking policies through a flexible API for consistent protection across your data flows.
   </Card>
-  <Card title="Real-Time Protection" icon="zap" href="#real-time">
+
+  <Card title="Real-Time Protection" href="#real-time" icon="zap" horizontal="false">
     Mask sensitive data on-the-fly for live dashboards, APIs, and GenAI inputs/outputs.
   </Card>
 </Columns>
@@ -33,7 +36,7 @@ Protecto provides powerful features to automate data privacy and compliance.
 
 As privacy regulations like GDPR and CCPA intensify, you need tools that enforce protection without disrupting engineering workflows. Protecto is developer-friendly, offering simple APIs and zero-downtime integration.
 
-<Callout kind="tip">
+<Callout kind="tip" collapsed="false">
   Protecto reduces compliance risks while accelerating GenAI adoption by ensuring safe data handling from discovery to deployment.
 </Callout>
 
@@ -45,9 +48,11 @@ Explore how teams use Protecto in real scenarios.
   <Tab title="Data Pipelines" icon="git-branch">
     Protect sensitive data in ETL pipelines connecting warehouses like Snowflake to BI tools.
   </Tab>
+
   <Tab title="Analytics Dashboards" icon="bar-chart-3">
     Redact PII before data reaches Looker or Tableau for secure visualizations.
   </Tab>
+
   <Tab title="GenAI Workflows" icon="cpu">
     Sanitize prompts and responses in LLM applications to prevent data leaks.
   </Tab>
@@ -58,13 +63,14 @@ Explore how teams use Protecto in real scenarios.
 Get up and running in minutes.
 
 <Steps>
-  <Step title="Sign Up" icon="user-plus">
-    Create an account at https://dashboard.protecto.ai and generate your API key.
+  <Step title="Sign Up" icon="user-plus" title-type="p">
+    Create an account at [https://dashboard.protecto.ai](https://dashboard.protecto.ai) and generate your API key.
   </Step>
-  <Step title="Authenticate" icon="key">
+
+  <Step title="Authenticate" icon="key" title-type="p">
     Use your API key to make your first request.
 
-    <CodeGroup tabs="JavaScript,Python">
+    <CodeGroup show-lines="true" tabs={[]}>
       ```javascript
       const response = await fetch('https://api.protecto.ai/v1/discover', {
         headers: {
@@ -74,6 +80,7 @@ Get up and running in minutes.
       const data = await response.json();
       console.log(data);
       ```
+
       ```python
       import requests
 
@@ -83,22 +90,35 @@ Get up and running in minutes.
       ```
     </CodeGroup>
   </Step>
-  <Step title="Scan Data" icon="search">
+
+  <Step title="Scan Data" icon="search" title-type="p">
     Connect your data source and run a discovery scan via the dashboard or API.
   </Step>
 </Steps>
 
 ## Next Steps
 
-<Columns cols={2}>
-  <Card title="Quickstart Guide" icon="book-open" href="/quickstart">
+```json
+{
+  "mask": [
+    { "value": "John", "token_name": "Text Token" },
+    { "value": "15/8/2010", "token_name": "Numeric Token" },
+    { "value": "john.doe@example.com", "token_name": "Text Token" }
+  ]
+}
+```
+
+<Columns cols="2">
+  <Card title="Quickstart Guide" href="/quickstart" icon="book-open" horizontal="false">
     Dive into full setup with code examples.
   </Card>
-  <Card title="Authentication" icon="key-round" href="/authentication">
+
+  <Card title="Authentication" href="/authentication" icon="key-round" horizontal="false">
     Secure API access and manage tokens.
   </Card>
 </Columns>
 
-<Callout kind="success">
+<Callout kind="success" collapsed="false">
   Ready to protect your data? Start with the Quickstart guide and explore the API reference next.
 </Callout>
+
