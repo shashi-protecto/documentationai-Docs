@@ -56,6 +56,10 @@
             "group": "Endpoints",
             "openapi": "api-reference/openapi.yaml",
             "pages": []
+          },
+          {
+            "group": "Masking",
+            "pages": []
           }
         ]
       },
