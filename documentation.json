@@ -1,48 +1,169 @@
 {
-  "name": "Protecto",
+  "name": "Protecto Docs",
+  "initialRoute": "introduction/overview",
   "colors": {
     "light": {
-      "brand": "#566E8B"
+      "brand": "#3143e3",
+      "heading": "#1a1a1a",
+      "text": "#374151"
     },
     "dark": {
-      "brand": "#82A2C9"
+      "brand": "#85a1ff",
+      "heading": "#f2f2f2",
+      "text": "#c1c1c1"
     }
   },
   "navigation": {
     "tabs": [
       {
         "tab": "Documentation",
-        "icon": "book",
+        "icon": "book-open",
         "groups": [
           {
-            "group": "Getting Started",
-            "icon": "rocket",
+            "group": "Introduction",
+            "icon": "star",
+            "expandable": false,
             "pages": [
               {
-                "title": "Introduction",
-                "path": "introduction",
+                "title": "Overview",
+                "path": "introduction/overview",
                 "icon": "home"
               },
               {
+                "title": "Why Protecto",
+                "path": "introduction/why-protecto",
+                "icon": "shield"
+              },
+              {
+                "title": "Key Capabilities",
+                "path": "introduction/key-capabilities",
+                "icon": "zap"
+              },
+              {
+                "title": "Trial vs Paid Features",
+                "path": "introduction/trial-vs-paid",
+                "icon": "badge-check"
+              }
+            ]
+          },
+          {
+            "group": "Getting Started",
+            "icon": "rocket",
+            "expandable": false,
+            "pages": [
+              {
                 "title": "Quickstart",
-                "path": "quickstart",
+                "path": "getting-started/quickstart",
                 "icon": "play"
               }
             ]
           },
           {
-            "group": "Guides",
-            "icon": "compass",
+            "group": "Use Cases",
+            "icon": "layers",
+            "expandable": false,
             "pages": [
               {
-                "title": "Authentication",
-                "path": "authentication",
-                "icon": "lock"
+                "title": "Overview",
+                "path": "use-cases/overview",
+                "icon": "grid"
               },
               {
-                "title": "Integrations",
-                "path": "integrations",
-                "icon": "plug"
+                "title": "Protect PII in GenAI / LLM Prompts",
+                "path": "use-cases/genai-llm-prompts",
+                "icon": "bot"
+              },
+              {
+                "title": "Redact Sensitive Data in Logs",
+                "path": "use-cases/redact-logs",
+                "icon": "file-text"
+              },
+              {
+                "title": "Mask PII in Analytics & BI Pipelines",
+                "path": "use-cases/analytics-bi-pipelines",
+                "icon": "bar-chart-2"
+              },
+              {
+                "title": "AI Agent for CRM Support",
+                "path": "use-cases/crm-support",
+                "icon": "headphones"
+              },
+              {
+                "title": "Custom PII Detection",
+                "path": "use-cases/custom-pii-detection",
+                "icon": "tag"
+              }
+            ]
+          },
+          {
+            "group": "Core Concepts",
+            "icon": "book",
+            "expandable": false,
+            "pages": [
+              {
+                "title": "Overview",
+                "path": "core-concepts/overview",
+                "icon": "grid"
+              },
+              {
+                "title": "Tokenization Basics",
+                "path": "core-concepts/tokenization-basics",
+                "icon": "key"
+              },
+              {
+                "title": "Detection vs Masking",
+                "path": "core-concepts/detection-vs-masking",
+                "icon": "eye"
+              },
+              {
+                "title": "Auto-Detect and Mask",
+                "path": "core-concepts/auto-detect-mask",
+                "icon": "scan"
+              },
+              {
+                "title": "Tokens vs Formats",
+                "path": "core-concepts/tokens-vs-formats",
+                "icon": "shuffle"
+              },
+              {
+                "title": "Entity Tags",
+                "path": "core-concepts/entity-tags",
+                "icon": "tag"
+              },
+              {
+                "title": "Unmasking",
+                "path": "core-concepts/unmasking",
+                "icon": "unlock"
+              },
+              {
+                "title": "Policies",
+                "path": "core-concepts/policies",
+                "icon": "scroll"
+              },
+              {
+                "title": "Anonymization vs Pseudonymization",
+                "path": "core-concepts/anonymization-vs-pseudonymization",
+                "icon": "user-x"
+              },
+              {
+                "title": "Namespaces & Permissions",
+                "path": "core-concepts/namespaces-permissions",
+                "icon": "shield-check"
+              },
+              {
+                "title": "Custom PII",
+                "path": "core-concepts/custom-pii",
+                "icon": "fingerprint"
+              },
+              {
+                "title": "Toxicity Detection",
+                "path": "core-concepts/toxicity-detection",
+                "icon": "alert-triangle"
+              },
+              {
+                "title": "Sync vs Async Processing",
+                "path": "core-concepts/sync-vs-async",
+                "icon": "clock"
               }
             ]
           }
@@ -53,83 +174,534 @@
         "icon": "code",
         "groups": [
           {
-            "group": "Endpoints",
-            "openapi": "api-reference/openapi.yaml",
-            "pages": []
-          },
-          {
-            "group": "Masking",
-            "pages": []
-          }
-        ]
-      },
-      {
-        "tab": "Help Center",
-        "icon": "help-circle",
-        "pages": [
-          {
-            "title": "Help Center",
-            "path": "help-center",
-            "icon": "home"
-          },
-          {
-            "group": "FAQs",
-            "icon": "help-circle",
+            "group": "Authentication",
+            "icon": "lock",
             "expandable": false,
             "pages": [
               {
-                "title": "How to Get Started",
-                "path": "help-center/faq/how-to-get-started"
+                "title": "Overview",
+                "path": "authentication/overview",
+                "icon": "info"
+              },
+              {
+                "title": "API Tokens & Headers",
+                "path": "authentication/api-tokens",
+                "icon": "key"
+              },
+              {
+                "title": "Permissions & Scopes",
+                "path": "authentication/permissions-scopes",
+                "icon": "shield"
+              },
+              {
+                "title": "Token Expiry & Rotation",
+                "path": "authentication/token-expiry-rotation",
+                "icon": "refresh-cw"
+              },
+              {
+                "title": "Authentication Errors",
+                "path": "authentication/auth-errors",
+                "icon": "x-circle"
               }
             ]
           },
           {
-            "group": "Troubleshooting",
+            "group": "Masking APIs",
+            "icon": "eye-off",
+            "expandable": false,
+            "pages": [
+              {
+                "title": "Overview",
+                "path": "masking-apis/overview",
+                "icon": "info"
+              },
+              {
+                "title": "Mask with Token",
+                "path": "masking-apis/mask-with-token",
+                "icon": "hash"
+              },
+              {
+                "title": "Mask with Format",
+                "path": "masking-apis/mask-with-format",
+                "icon": "type"
+              },
+              {
+                "title": "Identify and Mask (Auto-Detect)",
+                "path": "masking-apis/identify-and-mask",
+                "icon": "scan"
+              },
+              {
+                "title": "Mask with Policy",
+                "path": "masking-apis/mask-with-policy",
+                "icon": "scroll"
+              },
+              {
+                "title": "Mask with Attributes",
+                "path": "masking-apis/mask-with-attributes",
+                "icon": "sliders"
+              },
+              {
+                "title": "Prefix & Suffix Behavior",
+                "path": "masking-apis/prefix-suffix-behavior",
+                "icon": "code"
+              },
+              {
+                "title": "Errors & Limits",
+                "path": "masking-apis/errors-limits",
+                "icon": "alert-circle"
+              }
+            ]
+          },
+          {
+            "group": "Unmasking APIs",
+            "icon": "eye",
+            "expandable": false,
+            "pages": [
+              {
+                "title": "Overview",
+                "path": "unmasking-apis/overview",
+                "icon": "info"
+              },
+              {
+                "title": "Unmask with Token",
+                "path": "unmasking-apis/unmask-with-token",
+                "icon": "unlock"
+              },
+              {
+                "title": "Unmask with Policy",
+                "path": "unmasking-apis/unmask-with-policy",
+                "icon": "scroll"
+              },
+              {
+                "title": "Toxicity in Unmask API",
+                "path": "unmasking-apis/toxicity-in-unmask",
+                "icon": "alert-triangle"
+              },
+              {
+                "title": "Errors",
+                "path": "unmasking-apis/errors",
+                "icon": "alert-circle"
+              }
+            ]
+          },
+          {
+            "group": "Async APIs",
+            "icon": "loader",
+            "expandable": false,
+            "pages": [
+              {
+                "title": "Overview",
+                "path": "async-apis/overview",
+                "icon": "info"
+              },
+              {
+                "title": "Mask Async",
+                "path": "async-apis/mask-async",
+                "icon": "eye-off"
+              },
+              {
+                "title": "Unmask Async",
+                "path": "async-apis/unmask-async",
+                "icon": "eye"
+              },
+              {
+                "title": "Async Status Tracking",
+                "path": "async-apis/async-status",
+                "icon": "activity"
+              },
+              {
+                "title": "Status Lifecycle",
+                "path": "async-apis/status-lifecycle",
+                "icon": "git-branch"
+              }
+            ]
+          },
+          {
+            "group": "Supported Data Types",
+            "icon": "database",
+            "expandable": false,
+            "pages": [
+              {
+                "title": "Overview",
+                "path": "supported-data-types/overview",
+                "icon": "info"
+              },
+              {
+                "title": "PII / PHI / PCI Entities",
+                "path": "supported-data-types/pii-phi-pci-entities",
+                "icon": "user"
+              },
+              {
+                "title": "Token Types",
+                "path": "supported-data-types/token-types",
+                "icon": "hash"
+              },
+              {
+                "title": "Supported Formats",
+                "path": "supported-data-types/formats",
+                "icon": "type"
+              },
+              {
+                "title": "Character Encoding",
+                "path": "supported-data-types/character-encoding",
+                "icon": "terminal"
+              }
+            ]
+          },
+          {
+            "group": "Toxicity Detection",
+            "icon": "alert-triangle",
+            "expandable": false,
+            "pages": [
+              {
+                "title": "Overview",
+                "path": "toxicity-detection/overview",
+                "icon": "info"
+              },
+              {
+                "title": "Scoring System",
+                "path": "toxicity-detection/scoring-system",
+                "icon": "bar-chart"
+              },
+              {
+                "title": "Categories",
+                "path": "toxicity-detection/categories",
+                "icon": "list"
+              },
+              {
+                "title": "Examples",
+                "path": "toxicity-detection/examples",
+                "icon": "file-code"
+              },
+              {
+                "title": "Toxicity in Mask API",
+                "path": "toxicity-detection/in-mask-api",
+                "icon": "eye-off"
+              },
+              {
+                "title": "Toxicity in Unmask API",
+                "path": "toxicity-detection/in-unmask-api",
+                "icon": "eye"
+              }
+            ]
+          },
+          {
+            "group": "Data Scanning",
+            "icon": "search",
+            "expandable": false,
+            "pages": [
+              {
+                "title": "Overview",
+                "path": "data-scanning/overview",
+                "icon": "info"
+              },
+              {
+                "title": "Submit Data Scan",
+                "path": "data-scanning/submit-scan",
+                "icon": "upload"
+              },
+              {
+                "title": "Scan Status",
+                "path": "data-scanning/scan-status",
+                "icon": "activity"
+              },
+              {
+                "title": "List Scan Objects",
+                "path": "data-scanning/list-scan-objects",
+                "icon": "list"
+              },
+              {
+                "title": "Scan Details",
+                "path": "data-scanning/scan-details",
+                "icon": "file-search"
+              },
+              {
+                "title": "Update Scan Conclusions",
+                "path": "data-scanning/update-conclusions",
+                "icon": "check-square"
+              },
+              {
+                "title": "Update or Delete Detected Entities",
+                "path": "data-scanning/update-delete-entities",
+                "icon": "edit"
+              }
+            ]
+          },
+          {
+            "group": "Custom PII",
+            "icon": "fingerprint",
+            "expandable": false,
+            "pages": [
+              {
+                "title": "Overview",
+                "path": "custom-pii/overview",
+                "icon": "info"
+              },
+              {
+                "title": "Identify Custom PII",
+                "path": "custom-pii/identify-custom-pii",
+                "icon": "search"
+              },
+              {
+                "title": "Create or Update Custom Tags",
+                "path": "custom-pii/create-update-tags",
+                "icon": "plus-circle"
+              },
+              {
+                "title": "Configure Identification Endpoints",
+                "path": "custom-pii/configure-identification-endpoints",
+                "icon": "settings"
+              },
+              {
+                "title": "Configure Whitelist Endpoints",
+                "path": "custom-pii/configure-whitelist-endpoints",
+                "icon": "check-circle"
+              },
+              {
+                "title": "Retrieve Tag Details",
+                "path": "custom-pii/retrieve-tag-details",
+                "icon": "info"
+              },
+              {
+                "title": "Delete Custom Tags",
+                "path": "custom-pii/delete-tags",
+                "icon": "trash-2"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Admin",
+        "icon": "settings",
+        "groups": [
+          {
+            "group": "Policy Management",
+            "icon": "scroll",
+            "expandable": false,
+            "pages": [
+              {
+                "title": "Overview",
+                "path": "policy-management/overview",
+                "icon": "info"
+              },
+              {
+                "title": "Create Policy",
+                "path": "policy-management/create-policy",
+                "icon": "plus-circle"
+              },
+              {
+                "title": "List Policies",
+                "path": "policy-management/list-policies",
+                "icon": "list"
+              },
+              {
+                "title": "View Policy Metadata",
+                "path": "policy-management/view-policy-metadata",
+                "icon": "eye"
+              },
+              {
+                "title": "Update Entity Categories",
+                "path": "policy-management/update-entity-categories",
+                "icon": "edit"
+              },
+              {
+                "title": "Update Prefixes & Suffixes",
+                "path": "policy-management/update-prefixes-suffixes",
+                "icon": "code"
+              },
+              {
+                "title": "Delete Policy",
+                "path": "policy-management/delete-policy",
+                "icon": "trash-2"
+              }
+            ]
+          },
+          {
+            "group": "Reporting & Auditing",
+            "icon": "bar-chart-2",
+            "expandable": false,
+            "pages": [
+              {
+                "title": "Overview",
+                "path": "reporting/overview",
+                "icon": "info"
+              },
+              {
+                "title": "User-Level Namespace Summary",
+                "path": "reporting/user-namespace-summary",
+                "icon": "user"
+              },
+              {
+                "title": "Namespace Summary",
+                "path": "reporting/namespace-summary",
+                "icon": "layers"
+              },
+              {
+                "title": "All Namespace Summary",
+                "path": "reporting/all-namespace-summary",
+                "icon": "globe"
+              },
+              {
+                "title": "Audit Logs",
+                "path": "reporting/audit-logs",
+                "icon": "clipboard-list"
+              }
+            ]
+          },
+          {
+            "group": "Data Deletion & Retention",
+            "icon": "trash-2",
+            "expandable": false,
+            "pages": [
+              {
+                "title": "Overview",
+                "path": "data-deletion/overview",
+                "icon": "info"
+              },
+              {
+                "title": "Delete Personal Data Mappings",
+                "path": "data-deletion/delete-personal-data",
+                "icon": "user-x"
+              },
+              {
+                "title": "Delete Audit Records",
+                "path": "data-deletion/delete-audit-records",
+                "icon": "file-minus"
+              },
+              {
+                "title": "Track Deletion Jobs",
+                "path": "data-deletion/track-deletion-jobs",
+                "icon": "activity"
+              }
+            ]
+          },
+          {
+            "group": "Super Admin",
+            "icon": "crown",
+            "expandable": false,
+            "pages": [
+              {
+                "title": "Overview",
+                "path": "super-admin/overview",
+                "icon": "info"
+              },
+              {
+                "title": "Create Namespace User Token",
+                "path": "super-admin/create-namespace-token",
+                "icon": "plus-circle"
+              },
+              {
+                "title": "Fetch Auth Token Details",
+                "path": "super-admin/fetch-token-details",
+                "icon": "search"
+              },
+              {
+                "title": "List Auth Tokens",
+                "path": "super-admin/list-auth-tokens",
+                "icon": "list"
+              },
+              {
+                "title": "Deactivate Auth Token",
+                "path": "super-admin/deactivate-token",
+                "icon": "slash"
+              },
+              {
+                "title": "Delete Namespace",
+                "path": "super-admin/delete-namespace",
+                "icon": "trash-2"
+              },
+              {
+                "title": "Track Namespace Jobs",
+                "path": "super-admin/track-namespace-jobs",
+                "icon": "activity"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "More",
+        "icon": "more-horizontal",
+        "groups": [
+          {
+            "group": "Errors, Limits & Reliability",
             "icon": "alert-circle",
             "expandable": false,
             "pages": [
               {
-                "title": "Cannot Access Dashboard",
-                "path": "help-center/troubleshooting/cannot-access-dashboard"
+                "title": "Error Response Format",
+                "path": "errors-limits/error-format",
+                "icon": "file-text"
+              },
+              {
+                "title": "HTTP Status Codes",
+                "path": "errors-limits/http-status-codes",
+                "icon": "hash"
+              },
+              {
+                "title": "Masking Errors",
+                "path": "errors-limits/masking-errors",
+                "icon": "eye-off"
+              },
+              {
+                "title": "Unmasking Errors",
+                "path": "errors-limits/unmasking-errors",
+                "icon": "eye"
+              },
+              {
+                "title": "Rate Limits",
+                "path": "errors-limits/rate-limits",
+                "icon": "gauge"
+              },
+              {
+                "title": "Payload Limits",
+                "path": "errors-limits/payload-limits",
+                "icon": "package"
+              },
+              {
+                "title": "Retry Behavior",
+                "path": "errors-limits/retry-behavior",
+                "icon": "refresh-cw"
               }
             ]
           },
           {
-            "group": "Guides",
-            "icon": "book-open",
+            "group": "Deployment Options",
+            "icon": "server",
             "expandable": false,
             "pages": [
               {
-                "title": "Add Your First Project",
-                "path": "help-center/guides/add-your-first-project"
+                "title": "Overview",
+                "path": "deployment/overview",
+                "icon": "info"
+              },
+              {
+                "title": "SaaS Deployment",
+                "path": "deployment/saas",
+                "icon": "cloud"
+              },
+              {
+                "title": "On-Premises / Private Cloud",
+                "path": "deployment/on-premises",
+                "icon": "server"
+              }
+            ]
+          },
+          {
+            "group": "Release Notes",
+            "icon": "git-commit",
+            "expandable": false,
+            "pages": [
+              {
+                "title": "Version History",
+                "path": "release-notes/version-history",
+                "icon": "clock"
               }
             ]
           }
         ]
-      },
-      {
-        "tab": "Changelog",
-        "icon": "clock",
-        "pages": [
-          {
-            "title": "Release History",
-            "path": "changelog",
-            "icon": "history"
-          }
-        ]
       }
     ]
-  },
-  "logo-dark": "https://blob-cdn.documentation.ai/org-7f073ce5-7e81-4e49-96e9-dbba0540fab1/doc-052c9762-21e3-4735-bf48-8e3bdd0cb69c/1773385463241-jue0q1zk0ho-Protecto-LOGO-horizontal_white.png?q=85&fm=auto&auto=compress%2Cformat",
-  "logo-light": "https://blob-cdn.documentation.ai/org-7f073ce5-7e81-4e49-96e9-dbba0540fab1/doc-052c9762-21e3-4735-bf48-8e3bdd0cb69c/1773385478597-fdyun5z3khp-Protecto-LOGO-horizontal--1-.webp?q=85&fm=auto&auto=compress%2Cformat",
-  "favicon": "https://blob-cdn.documentation.ai/org-7f073ce5-7e81-4e49-96e9-dbba0540fab1/doc-052c9762-21e3-4735-bf48-8e3bdd0cb69c/1773385490933-hux6ylnbzf7-Protecto-Symbol.png?q=85&fm=auto&auto=compress%2Cformat",
-  "seo": {
-    "robots:index": false,
-    "robots:follow": false,
-    "sitemap:enabled": false,
-    "llms-txt:enabled": false
-  },
-  "ai": {
-    "ai-assistant:enabled": false
   }
 }
