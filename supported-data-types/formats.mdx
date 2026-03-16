@@ -27,36 +27,38 @@ Provide the `format` field in your masking request to specify which format to ap
 
 ## Complete format list
 
-| Format Name |
-|-------------|
-| `Person Name` |
-| `Email Address` |
-| `Phone Number` |
-| `Address` |
-| `Username` |
-| `URL` |
-| `IP Address` |
-| `Mac Address` |
-| `Fax Number` |
-| `Social Identification Numbers` |
-| `Passport Number` |
-| `Driving License Number` |
-| `Licence Number` |
-| `Credit Card` |
-| `Credit Card Expiration Date` |
-| `CVV` |
-| `Bank Account Number` |
-| `Routing Number` |
-| `Swift` |
-| `TAN` |
-| `Policy No` |
-| `PAN` |
-| `Medical Record Number` |
-| `Insurance Number` |
-| `Date` |
-| `Vehicle Identification Number` |
-| `Registration Number` |
-| `Nationality` |
+| Format Name | Allowed Delimiters | Example | Masked |
+|-------------|-------------------|---------|--------|
+| `Person Name` | `" "` `,` `.` `-` `'` | John D. Smith | wewe m. Sdfd |
+| `Email Address` | `" "` `@` | test.user@example.com | tqwq.ere@eer.vdf |
+| `Phone Number` | `" "` `.` `-` `(` `)` `+` `x` `extension` `ext` `,` | +1 (234) 567-8900 | -9588 |
+| `Address` | `" "` `,` `.` `-` `/` `(` `)` `#` | 123, Main St. Apt#4 | \*\*\*, M\*\*\* S\*. A\*\*#4 |
+| `Organization` | `" "` `,` `.` `-` | Protect_Inc. | wew_ewe |
+| `URL` | `/` `:` `//` `?` `&` `#` `,` `=` `+` `.` | https://example.com/path?id=1 | https://MMDSD/ddw?we=\* |
+| `IP Address` | `" "` `.` | 192.168.1.1 | 345.232.3.1 |
+| `Mac Address` | `-` `:` | 00:1A:2B:3C:4D:5E | 43:56:67 |
+| `Fax Number` | `-` `(` `)` `.` `" "` `+` `/` `,` | +1 (555) 123-4567 | +4 (334) 534-6789 |
+| `Social Identification Numbers` | `-` `" "` | 123-45-6789 | 434-45-6789 |
+| `Passport Number` | `" "` `-` `,` `:` `;` `.` | M123-4567 | f233-rwt |
+| `Driving License Number` | `" "` `-` | TN 45 20230012345 | RE 43 34343 |
+| `Licence Number` | `-` `/` `.` `_` | DL-0420110149646 | 34-43434343 |
+| `Nationality` | _(none)_ | Indian | uhrwt |
+| `Vehicle Identification Number` | `-` `:` | 1H_GCM82633A123456 | 45_dadae |
+| `Registration Number` | `" "` `-` `,` `:` | MH-12-AB-1234 | 32-WE-56-1234 |
+| `Username` | `" "` `,` `.` `-` `_` `@` `'` | john_doe@example.com | jfd@emp.dwe |
+| `Credit Card` | _(none)_ | 4111111111111111 | 435452345 |
+| `Credit Card Expiration Date` | `/` `-` `,` `:` `" "` | 27-Dec | 83-hbr |
+| `CVV` | _(none)_ | 123 | \*\*\* |
+| `Bank Account Number` | `-` `" "` `/` `.` | 123456/89012 | 32323/9012 |
+| `Routing Number` | `" "` `-` | 1100_00 | 425_00 |
+| `Swift` | `" "` _(none)_ | HD,FCINBB | \*\*\*\*INBB |
+| `TAN` | `" "` `-` _(none)_ | ABC-D12345E | 343-ERE |
+| `Policy No` | `" "` `-` `,` `:` | POL-123-456 | ret-656-456 |
+| `Pan` | _(none)_ | ABCDE1234F | ere1234F |
+| `Insurance Number` | `" "` `-` `,` `:` | 123-45-6789 | 3456-54-6789 |
+| `Pin` | _(none)_ | 7865 | yhtj |
+| `Medical Record Number` | `" "` `-` | MRN-123456 | TYE-ER456 |
+| `Date` | `/` `-` `,` `:` `" "` | 6/24/2021 | 6/24/2021 |
 
 ## When to use formats
 
