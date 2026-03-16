@@ -1,48 +1,40 @@
 ---
-title: "Trial vs Paid Features"
-description: "What's available on the Protecto trial and what requires a paid subscription."
+title: "Why Protecto"
+description: "The common data protection problems that Protecto solves, and what makes its approach different from alternatives."
 ---
 
-The trial is intentionally limited but sufficient to validate the API and your integration flow.
+## Common problems without Protecto
 
-## Feature availability
+Most teams run into the same issues when handling sensitive data:
 
-| Feature | Trial | Paid |
-|---------|:-----:|:----:|
-| Mask with token | ❌ | ✅ |
-| Mask with format | ❌ | ✅ |
-| Identify & mask (auto-detect) | ✅ | ✅ |
-| Unmask | ✅ | ✅ |
-| Async mask / unmask | ❌ | ✅ |
-| Toxicity detection | ✅ | ✅ |
-| Data scan APIs | ❌ | ✅ |
-| Policy & metadata APIs | ❌ | ✅ |
-| Custom PII tags | ❌ | ✅ |
-| Audit & usage reports | ❌ | ✅ |
-| Data deletion APIs | ❌ | ✅ |
-| On-prem / private cloud | ❌ | ✅ |
+| Problem | What typically goes wrong |
+|---------|--------------------------|
+| Manual masking | Hard-coded regexes break and miss edge cases |
+| Inconsistent tokens | Same value masked differently across systems |
+| GenAI leakage | Prompts and responses accidentally expose PII |
+| Compliance pressure | No clear audit trail or retention controls |
+| Performance | Heavy privacy tooling slows down core services |
 
-## Trial limits
+## What Protecto does differently
 
-| Limit | Value |
-|-------|-------|
-| Trial duration | 14 days |
-| Max masked entries | 1,000 values |
-| Rate limits | Enforced |
-| Subscription APIs | Disabled |
+Protecto provides **centralized, deterministic tokenization** with APIs fast enough for real-time use and flexible enough for batch processing.
 
-<Callout kind="info">
-  If you hit a hard limit during evaluation, the API returns explicit error messages so you know exactly why a request failed.
-</Callout>
+- **Auto-detect unknown PII** in free-form text — no pre-labeling required
+- **Consistent tokens** — the same value always produces the same token when using the same token type, enabling joins, analytics, and comparisons
+- **Controlled unmasking** — you decide who can unmask, and under which policy
+- **Async APIs** — handle large payloads without timeouts
+- **Built-in toxicity scoring** — protect GenAI workflows from harmful content
 
-## What you can validate on the trial
+## Where Protecto fits
 
-The trial gives you enough access to confirm:
+Protecto is designed to sit at **data boundaries** — wherever sensitive data enters or leaves your system:
 
-- Auto-detect PII detection works on your data
-- Token consistency (same input → same token)
-- Unmask flow with permissions
-- Toxicity scoring for GenAI use cases
-- Your integration pattern with real API calls
+```mermaid
+graph LR
+    A[User Input] --> B[Protecto Mask API]
+    B --> C[Your Application / LLM / Analytics]
+    C --> D[Protecto Unmask API]
+    D --> E[Authorized Output]
+```
 
-To access token-based masking, format masking, async APIs, and governance features, [contact Protecto](mailto:help@protecto.ai) to upgrade.
+You call the Mask API on input, work with tokens internally, and call the Unmask API only when the original value is genuinely needed by an authorized workflow.
