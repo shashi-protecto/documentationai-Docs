@@ -3,12 +3,12 @@
   "initialRoute": "introduction/overview",
   "colors": {
     "light": {
-      "brand": "#3143e3",
+      "brand": "#4e5bdc",
       "heading": "#1a1a1a",
       "text": "#374151"
     },
     "dark": {
-      "brand": "#85a1ff",
+      "brand": "#4e5bdc",
       "heading": "#f2f2f2",
       "text": "#c1c1c1"
     }
