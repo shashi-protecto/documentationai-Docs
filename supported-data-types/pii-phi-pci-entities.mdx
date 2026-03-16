@@ -1,87 +1,99 @@
 ---
-title: "PII, PHI & PCI Entities"
-description: "Complete mapping of built-in entity names to format names across identity, government, financial, and healthcare data categories."
+title: "PII, PHI & Financial Entities"
+description: "Complete reference of all supported PII, PHI, and financial entities with descriptions, examples, and masked output."
 ---
 
-Protecto detects sensitive data across four built-in categories. Each entity has a canonical **entity name** (used by the detection engine) and a corresponding **format name** (used when you need to override detection or preserve structure).
+Protecto detects sensitive data across two built-in categories. All entities below are enabled by default.
 
-## Identity and contact data
+## PII entities
 
-| Entity Name | Format Name |
-|-------------|-------------|
-| `PERSON` | `Person Name` |
-| `EMAIL_ADDRESS` | `Email Address` |
-| `PHONE_NUMBER` | `Phone Number` |
-| `ADDRESS` | `Address` |
-| `USERNAME` | `Username` |
-| `URL` | `URL` |
-| `IP_ADDRESS` | `IP Address` |
-| `MAC_NUMBER` | `Mac Address` |
-| `FAX_NUMBER` | `Fax Number` |
+| Entity Name | Description | Example | Masked |
+|-------------|-------------|---------|--------|
+| `PERSON` | Name of a person | George Williams | `<PER>yefNTf jm3Jf</PER>` |
+| `EMAIL_ADDRESS` | Email address | George@example.com | `<EMAIL>yefNTf@VxLPAG1Dvm</EMAIL>` |
+| `PHONE_NUMBER` | All country phone, mobile, and landline numbers | +44 7943 582088, (555) 123-4567 | `<PHN>+736785 58609 305</PHN>` |
+| `ADDRESS` | Geographical entities including cities, famous locations, and buildings | Paris, Eiffel Tower, Amazon Rainforest | `<ADDRESS>g5Ua2Fm843</ADDRESS>` |
+| `ORGANIZATION` | Names of organizations | Lakeview Hospital | `<ORG>fL89cEDrh6 uii8cQSrwT</ORG>` |
+| `DATE_OF_BIRTH` | Birthdate of a person | March 10, 2023 | `<DOB>sz7jDZyonfgY3y</DOB>` |
+| `US_SSN` | Social Security Number (USA) | 756-45-6689 | `<SSN>0402795019673173694705</SSN>` |
+| `IP_ADDRESS` | Unique label for devices in a network | 192.168.0.1 | `<IPA>368.531.3681.004</IPA>` |
+| `MAC_NUMBER` | Unique identifier for network interfaces | 00:1A:2B:3C:4D:5E | `<DEVICE_ID>o5gCeI67k6xDC4ST3</DEVICE_ID>` |
+| `URL` | Web address | www.cityhospital.net | `<URL>02FZUWHoADyGJE08SCqPfxb</URL>` |
+| `FAX_NUMBER` | Fax number | 4256324532 | `<FAX_NO>511694045434</FAX_NO>` |
+| `DRIVING_LICENSE_NUMBER` | Driver's license identifier | DL35235 | `<DL_NO>3hm6dQehstF8cSjDTpDDUbJiCm6zkk</DL_NO>` |
+| `VEHICLE_REGISTRATION_NUMBER` | Vehicle registration and vehicle numbers | MA2334 | `<VEHICLE_REG_NO>FIwaeRko6x7GaegIyZXL</VEHICLE_REG_NO>` |
+| `VEHICLE_IDENTIFICATION_NUMBER` | Unique code for motor vehicles | 232679GE24 | `<VIN>5t7uzVOu5ZZS06j</VIN>` |
+| `LICENCE_NO` | Healthcare provider, pharmaceutical, and doctor licence numbers | HP839232 | `<LICENCE_NO>Y37kcPZWFX6TBb13UQ</LICENCE_NO>` |
+| `ACC_NO` | Bank account and general account numbers | 876543210 | `<ACC_NO>934295135373</ACC_NO>` |
+| `CREDIT_CARD` | Numeric code for financial transactions | 5000236879543210 | `<CRD>4D67AFZLFh3OBk03cNo0</CRD>` |
 
-## Government and legal identifiers
+## PHI entities
 
-| Entity Name | Format Name |
-|-------------|-------------|
-| `US_SSN` | `Social Identification Numbers` |
-| `PASSPORT_NUMBER` | `Passport Number` |
-| `DRIVING_LICENSE_NUMBER` | `Driving License Number` |
-| `LICENCE_NUMBER` | `Licence Number` |
-| `NATIONALITY` | `Nationality` |
-| `VEHICLE_IDENTIFICATION_NUMBER` | `Vehicle Identification Number` |
-| `VEHICLE_REGISTRATION_NUMBER` | `Registration Number` |
+| Entity Name | Description | Example | Masked |
+|-------------|-------------|---------|--------|
+| `MRN` | Patient identification and medical record identifiers | P4353 | `<MRN>1020663481</MRN>` |
+| `MEDICAL_BENEFICIARY_NUMBER` | Health insurance, general insurance, and national health insurance numbers | HNFG4343 | `<HEALTH_BENEFICIARY_NO>12vpxhkHTq</HEALTH_BENEFICIARY_NO>` |
+| `START_DATE_OF_HOSPITALIZATION` | Admission date to a hospital | April 10, 2023 | `<ADMIT_DATE>yupFq6xVI9Xkx3I6Odzqo6PO1hFK58</ADMIT_DATE>` |
+| `DISCHARGE_DATE` | Release date from a hospital | Sep 5, 2023 | `<DISCHARGE_DATE>08l7xKbswvTev05RD3w7kEwS17Z</DISCHARGE_DATE>` |
+| `DEATH_DATE` | Date of death | February 5, 2024 | `<DEATH_DATE>JOIm57O7rG4co9UuC2d</DEATH_DATE>` |
 
-## Financial and PCI data
+## Financial entities
 
-| Entity Name | Format Name |
-|-------------|-------------|
-| `CREDIT_CARD` | `Credit Card` |
-| `CARD_EXPIRY_DATE` | `Credit Card Expiration Date` |
-| `CVV` | `CVV` |
-| `BANK_ACCOUNT_NUMBER` | `Bank Account Number` |
-| `ROUTING_NUMBER` | `Routing Number` |
-| `SWIFT` | `Swift` |
-| `TAN` | `TAN` |
-| `POLICY_NUMBER` | `Policy No` |
-| `PAN` | `PAN` |
-
-## Healthcare (PHI)
-
-| Entity Name | Format Name |
-|-------------|-------------|
-| `MRN` | `Medical Record Number` |
-| `HEALTH_BENEFICIARY_NUMBER` | `Insurance Number` |
-| `DISCHARGE_DATE` | `Date` |
-| `DEATH_DATE` | `Date` |
-| `START_DATE_OF_HOSPITALIZATION` | `Date` |
+| Entity Name | Description | Example | Masked |
+|-------------|-------------|---------|--------|
+| `BANK_ACC_NO` | A unique number assigned to a bank account | 123456789012 | `<ACC_NO>3984572426</ACC_NO>` |
+| `NATIONALITY` | The country of a person's citizenship | Indian, American | `<NATIONALITY>kB3Qc2Jp</NATIONALITY>` |
+| `PASSPORT_NUMBER` | A unique identifier for a passport | A1234567 | `<PASSPORT_NO>0mq9wQ7G</PASSPORT_NO>` |
+| `ROUTING_NUMBER` | A bank code used to identify a financial institution | 21000021 | `<ROUTING_NO>0ngE2YBX</ROUTING_NO>` |
+| `PAN` | Permanent Account Number — a 10-character alphanumeric identifier issued by India's Income Tax Department | CDLKQ1447Z | `<PAN>xJio2</PAN>` |
+| `CVV` | A three- or four-digit security code on payment cards | 123, 4567 | `<CVV>19819</CVV>` |
+| `POLICY_NO` | A unique number for an insurance policy | PL-987654321 | `<POLICY_NO>02iUPhbo-013JC0qy</POLICY_NO>` |
+| `TAN` | Tax Deduction and Collection Account Number | ABCD12345E | `<TAN>13ZBH1Ap</TAN>` |
+| `SWIFT` | A bank identifier code used for international transactions | BOFAUS3NXXX | `<SWIFT>0qJNDZ4a1</SWIFT>` |
+| `PIN_NUMBER` | A secret numeric code used for authentication | 1234 | `<CRD_PIN>20776</CRD_PIN>` |
+| `INSURANCE_NUMBER` | A unique number for an insurance policy | INS-12324 | `<INSURANCE_NO>50voyk9u7b</INSURANCE_NO>` |
+| `CARD_EXPIRY_DATE` | The expiration date of a payment card | 26-Dec | `<CRD_EXP_DATE>06014573 83596</CRD_EXP_DATE>` |
 
 <Callout kind="tip">
-  Entity names are used by the detection engine and in `individual_tokens` responses. Format names are used in request `format` fields when you want to override auto-detection or preserve structure.
+  Entity names are used by the detection engine and in `individual_tokens` responses. Use them in policy configurations, custom PII rules, and the [Update Entity Category](/custom-pii/update-entity-category) API to control how each entity is handled.
 </Callout>
 
 ## Usage examples
 
-**Email with explicit format:**
+**Mask a person's name and email:**
 
 ```json
 {
   "mask": [
     {
-      "value": "jane.doe@company.com",
-      "format": "Email Address",
+      "value": "George Williams sent a note to George@example.com",
       "token_name": "Text Token"
     }
   ]
 }
 ```
 
-**Phone number with numeric token:**
+**Mask a credit card with explicit format:**
 
 ```json
 {
   "mask": [
     {
-      "value": "(408) 426-9989",
+      "value": "5000236879543210",
+      "format": "Credit Card",
+      "token_name": "Numeric Token"
+    }
+  ]
+}
+```
+
+**Mask a phone number:**
+
+```json
+{
+  "mask": [
+    {
+      "value": "+44 7943 582088",
       "format": "Phone Number",
       "token_name": "Numeric Token"
     }
@@ -89,14 +101,15 @@ Protecto detects sensitive data across four built-in categories. Each entity has
 }
 ```
 
-**Credit card using auto-detection:**
+**Mask a medical record number:**
 
 ```json
 {
   "mask": [
     {
-      "value": "4111 1111 1111 1111",
-      "token_name": "Numeric Token"
+      "value": "P4353",
+      "format": "Medical Record Number",
+      "token_name": "Text Token"
     }
   ]
 }
@@ -108,7 +121,7 @@ Protecto detects sensitive data across four built-in categories. Each entity has
 {
   "mask": [
     {
-      "value": "A98372XZ19",
+      "value": "A1234567",
       "format": "Passport Number",
       "token_name": "Special Token"
     }
