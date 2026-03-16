@@ -1,0 +1,69 @@
+---
+title: "Create or Update Custom Tags"
+description: "Register a new custom PII tag and configure the identification endpoint Protecto will call to detect it."
+---
+
+Creates or updates a custom PII tag and configures how Protecto should identify it in text.
+
+## Endpoint
+
+| Method | Endpoint |
+|--------|----------|
+| `PUT` | `https://<domain>/api/vault/metadata/add-or-update/custom-tag/identification-endpoint` |
+
+## Request body
+
+<ParamField body="tag_type" param-type="string" required="true">
+  Unique name for the custom tag (e.g., `"CUSTOMER_ID"`). This becomes the entity tag used in masked output.
+</ParamField>
+
+<ParamField body="identification_endpoint_details.url" param-type="string" required="true">
+  URL of your external identification service.
+</ParamField>
+
+<ParamField body="identification_endpoint_details.method" param-type="string" required="true">
+  HTTP method for the identification endpoint (typically `"PUT"` or `"POST"`).
+</ParamField>
+
+<ParamField body="identification_endpoint_details.headers" param-type="object" required="false">
+  Authentication headers for your identification endpoint.
+</ParamField>
+
+<Request tabs="cURL">
+```bash
+curl -X PUT https://<domain>/api/vault/metadata/add-or-update/custom-tag/identification-endpoint \
+  -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>" \
+  -H "Content-Type: application/json; charset=utf-8" \
+  -d '{
+    "data": {
+      "tag_type": "CUSTOMER_ID",
+      "identification_endpoint_details": {
+        "url": "https://example.com/custom-pii/identify",
+        "method": "PUT",
+        "headers": {
+          "Authorization": "Bearer <access_token>"
+        }
+      }
+    }
+  }'
+```
+</Request>
+
+<Response tabs="200">
+```json
+{
+  "data": {
+    "message": "CUSTOMER_ID created successfully."
+  },
+  "success": true,
+  "error": { "message": "" }
+}
+```
+</Response>
+
+## Notes
+
+- Using the same `tag_type` as an existing tag will update its configuration
+- After creation, the tag is immediately available for use in masking
+- The identification endpoint must be accessible from Protecto infrastructure
+- See [Configure Identification Endpoints](/custom-pii/configure-identification-endpoints) for the required endpoint contract

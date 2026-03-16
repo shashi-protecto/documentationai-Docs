@@ -1,0 +1,49 @@
+---
+title: "Update Scan Conclusions"
+description: "Adjust the confidence threshold used to classify columns as PII — globally or for a specific data source object."
+---
+
+Controls the confidence threshold used to decide whether a column is considered PII. You can set this globally or override it for a specific object.
+
+## Endpoint
+
+| Method | Endpoint |
+|--------|----------|
+| `PUT` | `https://<domain>/api/vault/data-scan/pi-conclusion-percentage/update` |
+
+## Global threshold update
+
+Sets the confidence threshold for all scanned objects in the namespace.
+
+<Request tabs="Global">
+```json
+{
+  "pi_conclusion_percentage": 40
+}
+```
+</Request>
+
+## Object-specific threshold update
+
+Overrides the global threshold for a specific data source object.
+
+<Request tabs="Object-specific">
+```json
+{
+  "data_source_name": "snowflake",
+  "object_name": ["CustomerDB", "MarketingSchema", "CustomersTable"],
+  "pi_conclusion_percentage": 10
+}
+```
+</Request>
+
+## Behavior summary
+
+| Scope | Effect |
+|-------|--------|
+| Global | Applies to all scanned objects |
+| Object-specific | Overrides the global threshold for the specified object |
+
+<Callout kind="tip">
+  Setting a lower threshold (e.g., `10`) means more columns will be classified as PII — useful for high-sensitivity environments. A higher threshold (e.g., `70`) means only high-confidence detections are classified — useful when reducing false positives.
+</Callout>

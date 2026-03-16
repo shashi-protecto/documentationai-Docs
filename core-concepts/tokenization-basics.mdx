@@ -1,0 +1,74 @@
+---
+title: "Tokenization Basics"
+description: "How Protecto replaces sensitive values with secure, deterministic tokens — and why this is different from encryption."
+---
+
+Tokenization is the foundational capability of Protecto. It replaces sensitive values with deterministic, non-sensitive tokens that can be safely stored, logged, shared, and processed without exposing the original data.
+
+## What tokenization does
+
+At a high level, tokenization:
+
+1. Identifies a sensitive value
+2. Replaces it with a token
+3. Allows controlled reversal when permitted
+
+| Input | Tokenized output |
+|-------|-----------------|
+| `john.doe@example.com` | `<EMAIL>0gN3SkjL@0ffM3CDS</EMAIL>` |
+
+The token does not contain the original value, can be used anywhere the original was used, and can only be reversed if policy allows.
+
+## Key properties of tokens
+
+**Deterministic** — The same input value always produces the same token (when using the same token type). This means you can join, group, and compare tokenized values. Analytics and BI workflows still function. Logs remain consistent across time and systems.
+
+**Reversible (policy-controlled)** — Tokens can be converted back to original values only when an explicit unmask request is made, the active policy allows unmasking, and the caller has sufficient permissions. If unmasking is not allowed by the policy, the token cannot be reversed.
+
+**Safe by default** — Tokens do not expose sensitive data, can be stored long-term, can be sent to third-party systems, and can be used in AI and analytics workflows.
+
+## Tokenization vs encryption
+
+Tokenization solves a different problem from encryption.
+
+| Aspect | Tokenization | Encryption |
+|--------|-------------|------------|
+| Primary goal | Data governance | Data secrecy |
+| Deterministic | Yes | Usually no |
+| Queryable | Yes | No |
+| Reversible | Policy-controlled | Key-controlled |
+| Safe to share | Yes | No |
+
+Tokenization is designed for **controlled data use**, not just protection.
+
+## Token lifecycle
+
+1. **Creation** — A sensitive value is detected or explicitly provided
+2. **Replacement** — The value is replaced with a token
+3. **Usage** — The token flows through systems safely
+4. **Resolution (optional)** — The token is unmasked only if explicitly requested and allowed
+
+At no point is unmasking automatic.
+
+## Where tokenization is applied
+
+Tokenization is used whenever sensitive data must cross system boundaries:
+
+- LLM prompts and AI pipelines
+- Application logs
+- Analytics and BI systems
+- CRM and support tools
+- API payloads between services
+
+<ExpandableGroup>
+  <Expandable title="Common misunderstandings" default-open="false">
+    **"Tokens are random."**
+    No. Tokens are deterministic — the same input always produces the same token.
+
+    **"Anyone can unmask a token."**
+    No. Unmasking is permission- and policy-controlled.
+
+    **"Tokenization is just masking."**
+    Masking is the act. Tokenization is the mechanism behind it.
+  </Expandable>
+</ExpandableGroup>

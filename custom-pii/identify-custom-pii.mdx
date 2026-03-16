@@ -1,0 +1,92 @@
+---
+title: "Identify Custom PII"
+description: "Detect occurrences of a configured custom PII tag within input texts and return their positions."
+---
+
+This endpoint identifies occurrences of a **custom PII tag** inside one or more input texts and returns their positions. The actual identification logic is driven by the configured identification endpoint for the tag.
+
+## Endpoint
+
+| Method | Endpoint |
+|--------|----------|
+| `PUT` | `https://<domain>/api/vault/pii-identification/custom` |
+
+## Request body
+
+<ParamField body="input_texts" param-type="array[string]" required="true">
+  Array of text strings to scan for the custom PII tag.
+</ParamField>
+
+<ParamField body="tag_type" param-type="string" required="true">
+  Name of the custom tag to detect (e.g., `"CUSTOMER_ID"`).
+</ParamField>
+
+<Request tabs="cURL">
+```bash
+curl -X PUT https://<domain>/api/vault/pii-identification/custom \
+  -H "Authorization: Bearer <AUTH_TOKEN>" \
+  -H "Content-Type: application/json; charset=utf-8" \
+  -d '{
+    "input_texts": [
+      "Customer ID 56789 placed an order",
+      "Customer ID 98765 updated profile"
+    ],
+    "tag_type": "CUSTOMER_ID"
+  }'
+```
+</Request>
+
+<Response tabs="200">
+```json
+{
+  "data": [
+    {
+      "input_text": "Customer ID 56789 placed an order",
+      "detected": [
+        {
+          "type": "CUSTOMER_ID",
+          "text": "56789",
+          "start": 12,
+          "end": 17
+        }
+      ]
+    },
+    {
+      "input_text": "Customer ID 98765 updated profile",
+      "detected": [
+        {
+          "type": "CUSTOMER_ID",
+          "text": "98765",
+          "start": 12,
+          "end": 17
+        }
+      ]
+    }
+  ],
+  "success": true,
+  "error": { "message": "" }
+}
+```
+</Response>
+
+## Response fields
+
+<ResponseField name="type" field-type="string" required="true">
+  Custom tag name.
+</ResponseField>
+
+<ResponseField name="text" field-type="string" required="true">
+  The extracted value.
+</ResponseField>
+
+<ResponseField name="start" field-type="integer" required="true">
+  Start character position in the input text.
+</ResponseField>
+
+<ResponseField name="end" field-type="integer" required="true">
+  End character position in the input text.
+</ResponseField>
+
+<ResponseField name="input_text" field-type="string" required="true">
+  The original input text that was analyzed.
+</ResponseField>

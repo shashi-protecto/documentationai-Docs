@@ -1,0 +1,66 @@
+---
+title: "Unmasking"
+description: "Unmasking restores original values from tokens. It is always explicit, always permission-controlled, and never automatic."
+---
+
+Unmasking is the process of restoring original values from tokens. It is a **deliberate, controlled operation** — not a default behavior.
+
+## What unmasking does
+
+Unmasking takes tokenized values as input, resolves them back to original values, and returns the result for the duration of the request. The underlying stored data is never changed.
+
+| Masked | Unmasked |
+|--------|---------|
+| `<EMAIL>0gN3SkjL@0ffM3CDS</EMAIL>` | `john.doe@example.com` |
+
+## When unmasking happens
+
+Unmasking happens **only when explicitly requested**. It does not occur:
+
+- Automatically
+- As a side effect of masking
+- During normal data flow
+
+This is a core safety property of the system.
+
+## What controls unmasking
+
+Unmasking is governed by multiple independent layers — all must allow the operation:
+
+1. **Policy configuration** — determines whether unmasking is allowed at all
+2. **Permissions** — determines who is allowed to unmask
+3. **Request context** — determines when unmasking is appropriate
+
+If any layer disallows unmasking, the operation is blocked.
+
+## Masking and unmasking are independent
+
+Masking can occur without ever allowing unmasking. For example:
+
+- Analytics datasets
+- Long-term log storage
+- AI prompts
+- Third-party data sharing
+
+In these cases, tokenization provides safety without reversibility.
+
+## Unmasking and metadata
+
+When enabled by policy, unmasking may return additional metadata alongside the restored value — such as toxicity detection scores. This metadata is informational and does not modify the data.
+
+<ExpandableGroup>
+  <Expandable title="Common misunderstandings" default-open="false">
+    **"If I can mask data, I can unmask it."**
+    Not necessarily. Masking and unmasking permissions are separate. Having mask access does not grant unmask access.
+
+    **"Unmasking happens automatically for trusted users."**
+    No. It must always be explicitly requested, regardless of trust level.
+
+    **"Unmasking weakens security."**
+    No. It enables controlled workflows while maintaining governance. Security comes from restricting who can unmask and under what conditions.
+  </Expandable>
+</ExpandableGroup>
+
+<Callout kind="tip">
+  **Mental model:** Think of unmasking as "temporarily resolving a token under strict rules." It is closer to a secure lookup than a data transformation.
+</Callout>

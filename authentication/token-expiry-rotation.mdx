@@ -1,0 +1,48 @@
+---
+title: "Token Expiry & Rotation"
+description: "How Protecto API token lifetimes work and best practices for rotating tokens safely."
+---
+
+## Token lifetime
+
+API tokens have a defined lifetime. When a token expires:
+
+- Requests fail immediately with authentication errors
+- No partial processing occurs
+- The token must be replaced with a new one
+
+Protecto does not automatically refresh tokens.
+
+## Token rotation best practices
+
+<Steps>
+  <Step title="Use separate tokens per environment" icon="layers" titleType="p">
+    Never share a token between development, staging, and production. Separate tokens limit blast radius if one is compromised.
+  </Step>
+
+  <Step title="Store tokens in a secrets manager" icon="lock" titleType="p">
+    Store tokens in a secure secrets manager (e.g., AWS Secrets Manager, HashiCorp Vault, or GCP Secret Manager) rather than in environment files or source code.
+  </Step>
+
+  <Step title="Rotate tokens on a schedule" icon="refresh-cw" titleType="p">
+    Establish a regular rotation cadence. Token rotation does **not** require any changes to your API requests beyond updating the header value.
+  </Step>
+
+  <Step title="Use separate tokens per service" icon="git-branch" titleType="p">
+    Avoid sharing tokens across multiple services. Separate tokens allow you to revoke access for one service without affecting others.
+  </Step>
+</Steps>
+
+## Revoking a compromised token
+
+If you suspect a token has been exposed:
+
+1. Revoke the token immediately via the Protecto portal or Super Admin API
+2. Issue a new token
+3. Update all affected services with the new token
+
+Revoked tokens fail authentication immediately — no grace period applies.
+
+<Callout kind="danger">
+  If a token is exposed in a public repository or logs, treat it as compromised and rotate it immediately.
+</Callout>

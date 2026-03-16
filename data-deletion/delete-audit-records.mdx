@@ -1,0 +1,55 @@
+---
+title: "Delete Audit Records"
+description: "Delete audit log records older than a specific date or duration to enforce log retention policies."
+---
+
+Deletes **audit log records** from a namespace that are older than a given date or duration.
+
+Audit records include requested API, user identity, input payload, response payload, and status/timestamps.
+
+## Endpoint
+
+| Method | Endpoint |
+|--------|----------|
+| `PUT` | `https://<domain>/api/vault/namespace/delete/audit-records` |
+
+## Request body
+
+<ParamField body="date" param-type="string" required="false">
+  Delete audit records created before this date. Format: `YYYY-MM-DD`.
+</ParamField>
+
+<ParamField body="duration" param-type="integer" required="false">
+  Delete audit records older than this many days.
+</ParamField>
+
+<Request tabs="Delete Older than 180 Days">
+```bash
+curl -X PUT https://<domain>/api/vault/namespace/delete/audit-records \
+  -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>" \
+  -H "Content-Type: application/json; charset=utf-8" \
+  -d '{
+    "data": {
+      "duration": 180
+    }
+  }'
+```
+</Request>
+
+<Response tabs="200">
+```json
+{
+  "data": {
+    "tracking_id": "e1a45f62-92b4-4dd8-8c12-3f98c9cbd912",
+    "status": "PENDING",
+    "job_type": "data-deletion"
+  },
+  "success": true,
+  "error": { "message": "" }
+}
+```
+</Response>
+
+<Callout kind="tip">
+  Before deleting audit records, consider exporting them for compliance archiving if your policy requires long-term retention evidence. Use the [Audit Logs API](/reporting/audit-logs) to export before deletion.
+</Callout>

@@ -1,0 +1,73 @@
+---
+title: "Delete Personal Data Mappings"
+description: "Delete stored text-to-token mappings older than a specific date or duration to enforce GDPR right-to-erasure and retention policies."
+---
+
+Deletes stored **text-to-token mappings** from a namespace that are older than a given date or duration. Commonly used to meet GDPR, SOC 2, or internal retention policies where reversible data must not be kept indefinitely.
+
+## Endpoint
+
+| Method | Endpoint |
+|--------|----------|
+| `PUT` | `https://<domain>/api/vault/namespace/delete/personal-data-mapping` |
+
+## Request body
+
+You must provide **either** `date` **or** `duration` — not both.
+
+<ParamField body="date" param-type="string" required="false">
+  Delete mappings created before this date. Format: `YYYY-MM-DD`.
+</ParamField>
+
+<ParamField body="duration" param-type="integer" required="false">
+  Delete mappings older than this many days.
+</ParamField>
+
+<Request tabs="Delete by Date,Delete by Duration">
+```bash
+curl -X PUT https://<domain>/api/vault/namespace/delete/personal-data-mapping \
+  -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>" \
+  -H "Content-Type: application/json; charset=utf-8" \
+  -d '{
+    "data": {
+      "date": "2023-01-01"
+    }
+  }'
+```
+
+```bash
+curl -X PUT https://<domain>/api/vault/namespace/delete/personal-data-mapping \
+  -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>" \
+  -H "Content-Type: application/json; charset=utf-8" \
+  -d '{
+    "data": {
+      "duration": 90
+    }
+  }'
+```
+</Request>
+
+<Response tabs="200">
+```json
+{
+  "data": {
+    "tracking_id": "9f799cb6-5315-4199-8d47-3a7ced21dd1d",
+    "status": "PENDING",
+    "job_type": "data-deletion"
+  },
+  "success": true,
+  "error": { "message": "" }
+}
+```
+</Response>
+
+## Notes
+
+- Deleting personal data mappings does **not** affect anonymized entities — anonymized data is irreversible and not stored as mappings
+- For large namespaces, deletion jobs may take several minutes
+- Use the [Track Deletion Jobs](/data-deletion/track-deletion-jobs) API to monitor progress
+- Poll every 30–60 seconds; avoid aggressive polling
+
+<Callout kind="danger">
+  This operation is irreversible. Once mappings are deleted, the corresponding tokens can no longer be unmasked.
+</Callout>

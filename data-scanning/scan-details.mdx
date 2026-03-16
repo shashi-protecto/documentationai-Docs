@@ -1,0 +1,97 @@
+---
+title: "Scan Details"
+description: "Fetch column-level PII detection results with ML confidence scores for a scanned data source object."
+---
+
+Fetches detailed PII detection results at the column level for a scanned object.
+
+## Endpoint
+
+| Method | Endpoint |
+|--------|----------|
+| `PUT` | `https://<domain>/api/vault/data-scan/objects/details` |
+
+<Request tabs="cURL">
+```bash
+curl -X PUT https://<domain>/api/vault/data-scan/objects/details \
+  -H "Authorization: Bearer <AUTH_TOKEN>" \
+  -H "Content-Type: application/json; charset=utf-8" \
+  -d '{
+    "data": {
+      "data_source_name": "salesforce",
+      "object_name": ["CustomerDB", "MarketingSchema", "CustomersTable"]
+    },
+    "next_page_token": null
+  }'
+```
+</Request>
+
+<Response tabs="200">
+```json
+{
+  "data": [
+    {
+      "column_name": "CustomerID",
+      "values_scanned": 250,
+      "ml_identified_pi_details": [
+        {
+          "pi_type": "PERSON",
+          "identified_percentage": 20
+        }
+      ]
+    },
+    {
+      "column_name": "email",
+      "values_scanned": 250,
+      "ml_identified_pi_details": [
+        {
+          "pi_type": "EMAIL_ADDRESS",
+          "identified_percentage": 98
+        }
+      ]
+    }
+  ],
+  "next_page_token": null,
+  "success": true,
+  "error": { "message": "" }
+}
+```
+</Response>
+
+## Response fields
+
+<ResponseField name="column_name" field-type="string" required="true">
+  Name of the scanned column.
+</ResponseField>
+
+<ResponseField name="values_scanned" field-type="integer" required="true">
+  Number of values analyzed from this column.
+</ResponseField>
+
+<ResponseField name="ml_identified_pi_details" field-type="array" required="true">
+  ML detection results for this column.
+
+  <Expandable title="ml_identified_pi_details properties" default-open="false">
+    <ResponseField name="pi_type" field-type="string" required="true">
+      Detected entity type (e.g., `PERSON`, `EMAIL_ADDRESS`, `PHONE_NUMBER`).
+    </ResponseField>
+    <ResponseField name="identified_percentage" field-type="number" required="true">
+      Confidence percentage (0–100). Percentage of sampled values that matched this entity type.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="next_page_token" field-type="string" required="false">
+  Token for paginating large result sets. `null` when no more results.
+</ResponseField>
+
+## Interpreting confidence scores
+
+| Confidence range | Interpretation |
+|-----------------|---------------|
+| 90–100% | High confidence — column almost certainly contains this PII type |
+| 60–89% | Moderate confidence — likely contains this PII type |
+| 30–59% | Low confidence — may contain this PII type, manual review recommended |
+| Below 30% | Very low — likely a false positive |
+
+Use the [Update Scan Conclusions](/data-scanning/update-conclusions) API to set the threshold at which a column is officially classified as PII.

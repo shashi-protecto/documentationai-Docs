@@ -1,0 +1,86 @@
+---
+title: "Policies"
+description: "A policy defines how tokenization behaves — what gets detected, how it is masked, whether it can be unmasked, and what additional signals are returned."
+---
+
+A **policy** defines how tokenization behaves. Every meaningful Protecto operation runs in the context of a policy.
+
+If tokenization is the engine of Protecto, **policies are the rulebook**.
+
+## What a policy controls
+
+A policy governs four core dimensions:
+
+1. **Detection scope** — which entities are considered sensitive (PII, PHI, financial, custom)
+2. **Masking behavior** — how each entity is masked (token vs format, prefix/suffix, deterministic behavior)
+3. **Reversibility** — whether masked data can be unmasked
+4. **Additional analysis** — whether features like toxicity detection are enabled
+
+You never encode these decisions in application logic. They live entirely in the policy.
+
+## Policy-scoped behavior in practice
+
+The same API call can produce different guarantees depending on the policy applied:
+
+| | Policy A | Policy B |
+|-|---------|---------|
+| EMAIL masking | Pseudonymized | Anonymized |
+| Unmasking | Allowed | Disabled |
+
+Calling the Mask API with the same input but different `policy_name` values produces different guarantees — without changing the request structure.
+
+## How to apply a policy
+
+Include `policy_name` in any request to use a specific policy:
+
+```json
+{
+  "policy_name": "customer-support-policy",
+  "mask": [
+    { "value": "Contact john.doe@example.com for follow-up" }
+  ]
+}
+```
+
+If `policy_name` is omitted, Protecto uses the **default policy** for the namespace.
+
+## Policies vs code
+
+Policies exist so you **don't hardcode privacy rules**:
+
+- No code deployment to change masking behavior
+- No service restart to tighten access controls
+- No logic forks for different environments
+
+Changing a policy immediately affects masking, unmasking, detection, and returned metadata — for all requests using that policy.
+
+## Policy evaluation is server-side
+
+Policies are:
+- Evaluated on every request
+- Enforced centrally
+- Immutable from the client perspective
+
+A client cannot override, bypass, or request behavior outside policy constraints. This is a core security guarantee.
+
+## Common policy patterns
+
+Policies are typically used to separate:
+
+- Production vs non-production environments
+- Analytics vs operational workflows
+- Support teams vs engineering teams
+- AI pipelines vs data storage
+
+<ExpandableGroup>
+  <Expandable title="Common misunderstandings" default-open="false">
+    **"Policies are optional."**
+    No. A policy is always in effect, even if it's the implicit default.
+
+    **"Policies are just permissions."**
+    No. Permissions control *who*. Policies control *what and how*.
+
+    **"I need a separate policy per API endpoint."**
+    No. Policies span APIs and workflows.
+  </Expandable>
+</ExpandableGroup>

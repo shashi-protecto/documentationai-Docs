@@ -1,0 +1,84 @@
+---
+title: "API Tokens & Headers"
+description: "How to obtain your Protecto bearer token and include it correctly in every API request."
+---
+
+## What an API token is
+
+An API token is a bearer token that identifies:
+
+- Your account
+- Your namespace
+- Your permission set
+
+Treat tokens like credentials — keep them secret and never expose them in client-side code or commit them to source control.
+
+## How to send the token
+
+Include the token in the `Authorization` header of every request.
+
+| Header | Value | Required |
+|--------|-------|----------|
+| `Authorization` | `Bearer <AUTH_TOKEN>` | Yes |
+| `Content-Type` | `application/json` | Yes |
+
+<CodeGroup tabs="cURL,Python,JavaScript">
+  ```bash
+  curl -X PUT https://protecto-trial.protecto.ai/api/vault/mask \
+    -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d '{ "mask": [{ "value": "John Doe" }] }'
+  ```
+
+  ```python
+  import requests
+
+  headers = {
+      "Authorization": "Bearer YOUR_AUTH_TOKEN",
+      "Content-Type": "application/json"
+  }
+  response = requests.put(
+      "https://protecto-trial.protecto.ai/api/vault/mask",
+      headers=headers,
+      json={"mask": [{"value": "John Doe"}]}
+  )
+  ```
+
+  ```javascript
+  const response = await fetch(
+    "https://protecto-trial.protecto.ai/api/vault/mask",
+    {
+      method: "PUT",
+      headers: {
+        Authorization: "Bearer YOUR_AUTH_TOKEN",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ mask: [{ value: "John Doe" }] }),
+    }
+  );
+  ```
+</CodeGroup>
+
+<Callout kind="alert">
+  Never expose your auth token in client-side JavaScript, public repositories, or logs. Store it in a secrets manager or environment variable.
+</Callout>
+
+## Where tokens are used
+
+API tokens are required for every Protecto endpoint:
+
+- Mask API
+- Unmask API
+- Metadata APIs
+- Custom PII configuration
+- Data Scan APIs (subscription only)
+
+There are no anonymous or unauthenticated endpoints.
+
+## How to get your token
+
+1. Visit [https://portal.protecto.ai/](https://portal.protecto.ai/) and sign in
+2. Navigate to the **Dashboard**
+3. Locate and copy the **Auth Token**
+
+Store the token securely before closing the portal.

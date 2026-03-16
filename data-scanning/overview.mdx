@@ -1,0 +1,69 @@
+---
+title: "Data Scanning"
+description: "Discover, classify, and validate personal data across structured data sources — without masking. Data Scanning runs asynchronously and requires a paid subscription."
+---
+
+Data Scanning APIs are used to **discover, classify, and validate personal data** across structured data sources such as databases and warehouses.
+
+<Callout kind="alert">
+  Data Scanning is **not available on trial accounts**. A paid subscription is required.
+</Callout>
+
+## What data scanning does
+
+Data Scanning APIs do **not** mask data. They help you answer:
+
+- Which tables contain PII
+- What type of PII exists per column
+- How confident the system is about detection
+- Where ML detection needs manual correction
+
+## Execution model
+
+Data scanning runs **asynchronously**. You submit a scan job, it runs in the background, and you retrieve results when complete.
+
+## Typical workflow
+
+<Steps>
+  <Step title="Submit scan" icon="upload" titleType="p">
+    Use the Data Scan Async API to submit one or more objects for scanning. You receive a `tracking_id`.
+  </Step>
+  <Step title="Track progress" icon="clock" titleType="p">
+    Poll the Scan Status API using the `tracking_id` until status is `SUCCESS`.
+  </Step>
+  <Step title="Explore objects" icon="search" titleType="p">
+    Use List Scan Objects to browse the scanned data source hierarchy.
+  </Step>
+  <Step title="Inspect results" icon="eye" titleType="p">
+    Use Scan Details to view column-level PII detection results with confidence percentages.
+  </Step>
+  <Step title="Tune detection" icon="sliders" titleType="p">
+    Use Update Scan Conclusions to adjust the confidence threshold used to classify columns as PII.
+  </Step>
+  <Step title="Correct ML output" icon="edit" titleType="p">
+    Use Update or Delete Detected Entities to manually override incorrect ML results.
+  </Step>
+</Steps>
+
+## API reference
+
+<Columns cols="2">
+  <Card title="Submit Data Scan" href="/data-scanning/submit-scan" icon="upload" horizontal={false}>
+    Submit a scan job for one or more data source objects.
+  </Card>
+  <Card title="Scan Status" href="/data-scanning/scan-status" icon="activity" horizontal={false}>
+    Check the execution status of submitted scans.
+  </Card>
+  <Card title="List Scan Objects" href="/data-scanning/list-scan-objects" icon="list" horizontal={false}>
+    Browse objects available for scanning under a data source.
+  </Card>
+  <Card title="Scan Details" href="/data-scanning/scan-details" icon="bar-chart-2" horizontal={false}>
+    Fetch column-level PII detection results with confidence scores.
+  </Card>
+  <Card title="Update Conclusions" href="/data-scanning/update-conclusions" icon="settings" horizontal={false}>
+    Adjust the confidence threshold for PII classification.
+  </Card>
+  <Card title="Update & Delete Entities" href="/data-scanning/update-delete-entities" icon="edit" horizontal={false}>
+    Manually correct or remove ML-detected PII results.
+  </Card>
+</Columns>

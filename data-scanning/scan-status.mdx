@@ -1,0 +1,61 @@
+---
+title: "Scan Status"
+description: "Check the execution status of one or more submitted data scan jobs using their tracking IDs."
+---
+
+Checks the execution status of one or more submitted scans.
+
+## Endpoint
+
+| Method | Endpoint |
+|--------|----------|
+| `PUT` | `https://<domain>/api/vault/data-scan/status` |
+
+## Request body
+
+An array of tracking IDs returned from the [Submit Data Scan](/data-scanning/submit-scan) endpoint.
+
+<Request tabs="cURL">
+```bash
+curl -X PUT https://<domain>/api/vault/data-scan/status \
+  -H "Authorization: Bearer <AUTH_TOKEN>" \
+  -H "Content-Type: application/json; charset=utf-8" \
+  -d '["354d2d30-178a-4220-9ce5-97908aa5713015052025072328"]'
+```
+</Request>
+
+<Response tabs="200">
+```json
+{
+  "data": [
+    {
+      "tracking_id": "354d2d30-178a-4220-9ce5-97908aa5713015052025072328",
+      "request_status": "SUCCESS",
+      "submitted_at": "2025-05-15 07:23:28",
+      "process_started_at": "2025-05-15 07:23:29",
+      "process_ended_at": "2025-05-15 07:23:33",
+      "error_msg": ""
+    }
+  ],
+  "success": true,
+  "error": { "message": "" }
+}
+```
+</Response>
+
+## Status values
+
+| Status | Meaning |
+|--------|---------|
+| `PENDING` | Accepted but not yet started |
+| `IN-PROGRESS` | Scan is currently running |
+| `SUCCESS` | Scan completed successfully |
+| `FAILED` | Scan failed — check `error_msg` |
+
+## Polling guidance
+
+Poll this endpoint periodically until `request_status` is `SUCCESS` or `FAILED`. Recommended polling interval: every 5–10 seconds for small scans, every 30–60 seconds for large ones.
+
+<Callout kind="tip">
+  Once `request_status` is `SUCCESS`, use the [Scan Details API](/data-scanning/scan-details) to retrieve column-level PII detection results.
+</Callout>

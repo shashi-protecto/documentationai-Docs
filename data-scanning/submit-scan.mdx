@@ -1,0 +1,80 @@
+---
+title: "Submit Data Scan"
+description: "Submit an asynchronous data scan job for one or more objects. Returns a tracking ID to check scan progress."
+---
+
+Submits a data scan request for one or more objects. The scan runs asynchronously and returns a tracking ID.
+
+## Endpoint
+
+| Method | Endpoint |
+|--------|----------|
+| `PUT` | `https://<domain>/api/vault/data-scan/data-scan-async` |
+
+## Authentication
+
+<ParamField header="Authorization" param-type="string" required="true">
+  Bearer token. Format: `Bearer <AUTH_TOKEN>`
+</ParamField>
+
+## Request body
+
+<ParamField body="data_source_name" param-type="string" required="true">
+  Logical name of the data source (e.g., `"salesforce"`, `"snowflake"`).
+</ParamField>
+
+<ParamField body="object_name" param-type="array[string]" required="true">
+  Fully qualified path as `[database, schema, table]`. For example: `["CustomerDB", "MarketingSchema", "CustomersTable"]`.
+</ParamField>
+
+<ParamField body="data_samples" param-type="array" required="false">
+  Sample values to improve ML detection accuracy. Each element requires `column_name` and `samples`.
+</ParamField>
+
+<Request tabs="cURL">
+```bash
+curl -X PUT https://<domain>/api/vault/data-scan/data-scan-async \
+  -H "Authorization: Bearer <AUTH_TOKEN>" \
+  -H "Content-Type: application/json; charset=utf-8" \
+  -d '[
+    {
+      "data_source_name": "salesforce",
+      "object_name": ["CustomerDB", "MarketingSchema", "CustomersTable"],
+      "data_samples": [
+        {
+          "column_name": "CustomerID",
+          "samples": ["CID32", "CID34", "CID56", "CID58"]
+        },
+        {
+          "column_name": "email",
+          "samples": ["John@gmail.com", "Williams.hary@yahoo.com"]
+        }
+      ]
+    }
+  ]'
+```
+</Request>
+
+<Response tabs="200">
+```json
+{
+  "data": {
+    "tracking_id": "47882682-9f38-4f45-afec-daadaa1b230b"
+  },
+  "success": true,
+  "error": { "message": "" }
+}
+```
+</Response>
+
+## Response fields
+
+<ResponseField name="tracking_id" field-type="string" required="true">
+  Unique identifier for tracking scan progress. Use this with the [Scan Status API](/data-scanning/scan-status).
+</ResponseField>
+
+## Notes
+
+- `data_samples` is optional but recommended — providing representative samples improves ML detection confidence
+- A scan job can include multiple objects in a single request
+- The scan runs in the background. Use the tracking ID to poll for status

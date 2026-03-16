@@ -1,0 +1,44 @@
+---
+title: "Permissions & Scopes"
+description: "How Protecto evaluates what operations your token is authorized to perform after authentication succeeds."
+---
+
+## Authentication vs authorization
+
+Authentication verifies **who you are**. Permissions determine **what you are allowed to do**.
+
+After authentication, Protecto evaluates:
+
+- The caller's permissions
+- The namespace
+- The active policy
+- The requested operation
+
+All must allow the operation for it to succeed.
+
+## Common permission patterns
+
+| Permission level | Typical use |
+|-----------------|-------------|
+| **Mask-only** | Applications, services, and pipelines that write data |
+| **Mask + Unmask** | Restricted operational workflows requiring data retrieval |
+| **Admin / Metadata** | Policy management and custom PII configuration |
+
+Permissions are enforced server-side and cannot be bypassed by the caller.
+
+## Permissions and unmasking
+
+Unmasking is intentionally restricted. Even if:
+
+- A policy allows pseudonymization
+- Tokens are valid
+
+Unmasking will fail unless the caller has **explicit unmask permission**. This enforces least-privilege access — the ability to mask data does not automatically grant the ability to unmask it.
+
+<Callout kind="info">
+  Masking and unmasking permissions are separate. Design your token access model so that most services only have mask access, and unmask access is granted only to authorized workflows.
+</Callout>
+
+## How permissions are assigned
+
+Permissions are set at token creation time. For namespace-scoped tokens, the Super Admin API controls which permissions are included. See [Create Namespace User Token](/super-admin/create-namespace-token) for the full list of allowed permission values.

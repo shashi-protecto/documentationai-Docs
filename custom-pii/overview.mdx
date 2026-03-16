@@ -1,0 +1,51 @@
+---
+title: "Custom PII & Tag Management"
+description: "Define, configure, and manage custom PII tags for business-specific identifiers — customer IDs, order references, and other internal sensitive data."
+---
+
+Protecto allows you to define **custom PII tags** for identifiers specific to your business that are not covered by built-in PII entities.
+
+<Callout kind="alert">
+  Custom PII management is **not available on trial accounts** and requires the `metadata_change` permission.
+</Callout>
+
+## Common examples
+
+| Custom tag | What it identifies |
+|------------|-------------------|
+| `CUSTOMER_ID` | Internal customer identifier |
+| `EMPLOYEE_CODE` | HR or payroll identifier |
+| `ORDER_ID` | E-commerce order reference |
+| `ACCOUNT_REFERENCE` | Internal account number |
+
+## What custom tags can do
+
+Once defined, custom tags can be:
+
+- Identified inside free-form text via your identification endpoint
+- Masked and unmasked like built-in PII
+- Backed by external identification logic
+- Whitelisted via external data sources to reduce false positives
+
+## API reference
+
+<Columns cols="2">
+  <Card title="Identify Custom PII" href="/custom-pii/identify-custom-pii" icon="search" horizontal={false}>
+    Detect occurrences of a custom tag in input texts.
+  </Card>
+  <Card title="Create or Update Tags" href="/custom-pii/create-update-tags" icon="plus" horizontal={false}>
+    Register a custom tag and configure its identification endpoint.
+  </Card>
+  <Card title="Configure Identification Endpoint" href="/custom-pii/configure-identification-endpoints" icon="link" horizontal={false}>
+    Requirements for the endpoint Protecto calls to detect your custom PII.
+  </Card>
+  <Card title="Configure Whitelist Endpoint" href="/custom-pii/configure-whitelist-endpoints" icon="check-square" horizontal={false}>
+    Reduce false positives with a known-valid values endpoint.
+  </Card>
+  <Card title="Retrieve Tag Details" href="/custom-pii/retrieve-tag-details" icon="info" horizontal={false}>
+    Fetch the full configuration of a custom PII tag.
+  </Card>
+  <Card title="Delete Custom Tags" href="/custom-pii/delete-tags" icon="trash" horizontal={false}>
+    Remove a custom tag and its associated configuration.
+  </Card>
+</Columns>

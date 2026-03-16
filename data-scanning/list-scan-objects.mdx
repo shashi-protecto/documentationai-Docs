@@ -1,0 +1,58 @@
+---
+title: "List Scan Objects"
+description: "List objects available for scanning under a data source — filter by database, schema, or list all objects."
+---
+
+Lists objects available for scanning under a data source. Use this to explore the data source hierarchy before or after scanning.
+
+## Endpoint
+
+| Method | Endpoint |
+|--------|----------|
+| `PUT` | `https://<domain>/api/vault/data-scan/objects/list` |
+
+## Filtering options
+
+| Use case | `object_name` value |
+|----------|---------------------|
+| List all objects | Not provided |
+| Filter by database | `["CustomerDB"]` |
+| Filter by schema | `["CustomerDB", "MarketingSchema"]` |
+
+<Request tabs="cURL">
+```bash
+curl -X PUT https://<domain>/api/vault/data-scan/objects/list \
+  -H "Authorization: Bearer <AUTH_TOKEN>" \
+  -H "Content-Type: application/json; charset=utf-8" \
+  -d '{
+    "data": {
+      "data_source_name": "salesforce",
+      "object_name": ["CustomerDB"]
+    }
+  }'
+```
+</Request>
+
+<Response tabs="200">
+```json
+{
+  "data": [
+    {
+      "data_source_name": "salesforce",
+      "objects": [
+        ["CustomerDB", "MarketingSchema", "CustomersTable"],
+        ["CustomerDB", "AnalyticsSchema", "CustomerAnalyticsTable"]
+      ]
+    }
+  ],
+  "success": true,
+  "error": { "message": "" }
+}
+```
+</Response>
+
+## Notes
+
+- Each element in `objects` is a fully qualified path array: `[database, schema, table]`
+- Use these paths directly as the `object_name` in scan requests
+- Omit `object_name` entirely to list all available objects across the data source

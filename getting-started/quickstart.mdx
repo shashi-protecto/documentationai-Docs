@@ -1,0 +1,232 @@
+---
+title: "Quickstart"
+description: "Make your first Protecto API call in under 5 minutes — create an account, get a token, mask sensitive data, and unmask it."
+---
+
+By the end of this guide, you will:
+
+- Create a Protecto account
+- Obtain an authentication token
+- Mask sensitive data using auto-detection
+- Unmask tokenized data
+
+## Prerequisites
+
+| Requirement | Notes |
+|-------------|-------|
+| Protecto account | Free trial available |
+| Internet access | HTTPS outbound required |
+| HTTP client | cURL, Postman, or any language SDK |
+
+## Step 1: Create an account and get your token
+
+<Steps>
+  <Step title="Sign up" icon="user-plus" titleType="p">
+    Visit [https://portal.protecto.ai/](https://portal.protecto.ai/) and create a free account. Activate your account using the email verification link.
+  </Step>
+
+  <Step title="Log in to the dashboard" icon="layout-dashboard" titleType="p">
+    After activating your account, log in to the Protecto portal. You will be redirected to the **Dashboard**.
+  </Step>
+
+  <Step title="Copy your auth token" icon="key" titleType="p">
+    Locate the **Auth Token** on the dashboard and copy it. You will need this token for every API request.
+
+    <Callout kind="alert">
+      Treat this token like a password. Do not expose it in client-side code or commit it to source control.
+    </Callout>
+  </Step>
+</Steps>
+
+### Authentication header
+
+Every request requires this header:
+
+| Header | Value | Required |
+|--------|-------|----------|
+| `Authorization` | `Bearer <AUTH_TOKEN>` | Yes |
+| `Content-Type` | `application/json` | Yes |
+
+## Step 2: Make your first mask request
+
+The **Identify and Mask (Auto-Detect)** mode is the recommended starting point. You send free-form text, and Protecto automatically detects and masks sensitive entities based on the active policy. No entity types or token names are required.
+
+**Trial base URL:** `https://protecto-trial.protecto.ai`
+
+<Request tabs="cURL,Python,JavaScript">
+  ```bash
+  curl -X PUT https://protecto-trial.protecto.ai/api/vault/mask \
+    -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "mask": [
+        {
+          "value": "John Doe lives at 123 Main Street. His email is john.doe@example.com"
+        }
+      ]
+    }'
+  ```
+
+  ```python
+  import requests
+
+  response = requests.put(
+      "https://protecto-trial.protecto.ai/api/vault/mask",
+      headers={
+          "Authorization": "Bearer YOUR_AUTH_TOKEN",
+          "Content-Type": "application/json"
+      },
+      json={
+          "mask": [
+              {"value": "John Doe lives at 123 Main Street. His email is john.doe@example.com"}
+          ]
+      }
+  )
+  print(response.json())
+  ```
+
+  ```javascript
+  const response = await fetch(
+    "https://protecto-trial.protecto.ai/api/vault/mask",
+    {
+      method: "PUT",
+      headers: {
+        Authorization: "Bearer YOUR_AUTH_TOKEN",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        mask: [
+          { value: "John Doe lives at 123 Main Street. His email is john.doe@example.com" },
+        ],
+      }),
+    }
+  );
+  const data = await response.json();
+  console.log(data);
+  ```
+</Request>
+
+<Response tabs="200">
+  ```json
+  {
+    "data": [
+      {
+        "value": "John Doe lives at 123 Main Street. His email is john.doe@example.com",
+        "token_value": "<PER>005O 0BY</PER> lives at <ADDRESS>06N 00E1 00003b</ADDRESS>. His email is <EMAIL>3</EMAIL>"
+      }
+    ],
+    "success": true,
+    "error": {
+      "message": ""
+    }
+  }
+  ```
+</Response>
+
+<Callout kind="success">
+  The `token_value` field contains your masked text. Copy it — you'll use it in the next step.
+</Callout>
+
+The exact tokenized output depends on your active policy. The response structure is always consistent.
+
+## Step 3: Unmask the tokenized text
+
+To retrieve the original value from a token, send the `token_value` to the Unmask API.
+
+<Request tabs="cURL,Python,JavaScript">
+  ```bash
+  curl -X PUT https://protecto-trial.protecto.ai/api/vault/unmask \
+    -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "unmask": [
+        {
+          "token_value": "<PER>005O 0BY</PER> lives at <ADDRESS>06N 00E1 00003b</ADDRESS>. His email is <EMAIL>3</EMAIL>"
+        }
+      ]
+    }'
+  ```
+
+  ```python
+  response = requests.put(
+      "https://protecto-trial.protecto.ai/api/vault/unmask",
+      headers={
+          "Authorization": "Bearer YOUR_AUTH_TOKEN",
+          "Content-Type": "application/json"
+      },
+      json={
+          "unmask": [
+              {"token_value": "<PER>005O 0BY</PER> lives at <ADDRESS>06N 00E1 00003b</ADDRESS>. His email is <EMAIL>3</EMAIL>"}
+          ]
+      }
+  )
+  print(response.json())
+  ```
+
+  ```javascript
+  const response = await fetch(
+    "https://protecto-trial.protecto.ai/api/vault/unmask",
+    {
+      method: "PUT",
+      headers: {
+        Authorization: "Bearer YOUR_AUTH_TOKEN",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        unmask: [
+          {
+            token_value:
+              "<PER>005O 0BY</PER> lives at <ADDRESS>06N 00E1 00003b</ADDRESS>. His email is <EMAIL>3</EMAIL>",
+          },
+        ],
+      }),
+    }
+  );
+  ```
+</Request>
+
+<Response tabs="200">
+  ```json
+  {
+    "data": [
+      {
+        "value": "John Doe lives at 123 Main Street. His email is john.doe@example.com",
+        "token_value": "<PER>005O 0BY</PER> lives at <ADDRESS>06N 00E1 00003b</ADDRESS>. His email is <EMAIL>3</EMAIL>"
+      }
+    ],
+    "success": true,
+    "error": {
+      "message": ""
+    }
+  }
+  ```
+</Response>
+
+## Trial limits
+
+| Item | Value |
+|------|-------|
+| Trial duration | 14 days |
+| Max masked entries | 1,000 values |
+| Max value length | 600 characters |
+| Encoding | UTF-8 |
+
+## What's next
+
+<Columns cols="2">
+  <Card title="Mask with Token" href="/masking-apis/mask-with-token" icon="hash" horizontal={false}>
+    Explicitly control the token type when you know the data type.
+  </Card>
+
+  <Card title="Identify and Mask" href="/masking-apis/identify-and-mask" icon="scan" horizontal={false}>
+    Deep dive into auto-detect masking and response fields.
+  </Card>
+
+  <Card title="Use Cases" href="/use-cases/overview" icon="layers" horizontal={false}>
+    See real-world integration patterns for LLMs, logs, analytics, and CRM.
+  </Card>
+
+  <Card title="Core Concepts" href="/core-concepts/overview" icon="book" horizontal={false}>
+    Understand tokenization, policies, and entity tags in depth.
+  </Card>
+</Columns>

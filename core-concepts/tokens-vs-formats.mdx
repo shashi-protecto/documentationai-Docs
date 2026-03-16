@@ -1,0 +1,72 @@
+---
+title: "Tokens vs Formats"
+description: "Two masking strategies — tokens replace values entirely, formats preserve the structure while masking the content. Both are deterministic and reversible."
+---
+
+When Protecto masks sensitive data, it can replace the original value in two ways: **tokens** or **formats**. Both are deterministic and reversible, but they serve different purposes.
+
+## Tokens
+
+A **token** replaces the original value with a new, non-sensitive string.
+
+| Original | Tokenized |
+|----------|-----------|
+| `john.doe@example.com` | `<EMAIL>0gN3SkjL@0ffM3CDS</EMAIL>` |
+
+The token does not resemble the original value. It is safe to store and transmit, and can be reversed only if policy allows.
+
+Use tokens when:
+- Masking free-form text
+- Storing values for analytics
+- Structure is not required
+- Simplicity is preferred
+
+## Formats
+
+A **format** preserves the structure of the original value while masking the actual data.
+
+| Original | Format-masked |
+|----------|--------------|
+| `9876543210` | `<PHONE>8349201756</PHONE>` |
+
+The output looks like a valid phone number, has the same length and character set, but does not reveal the original value.
+
+Use formats when:
+- Masked data must pass downstream validation
+- IDs or numbers have a fixed length requirement
+- Downstream systems enforce patterns
+
+## Key differences
+
+| Property | Token | Format |
+|----------|-------|--------|
+| Goal | Replace value | Preserve structure |
+| Deterministic | Yes | Yes |
+| Reversible | Yes | Yes |
+| Preserves length/pattern | No | Yes |
+| Looks like original type | No | Often yes |
+
+Both approaches are governed by policy and permissions.
+
+## Using both in the same system
+
+It's common to use both strategies together. For example:
+
+- Emails masked with tokens (structure not important)
+- Phone numbers masked with formats (downstream validation requires it)
+- Internal IDs masked with custom tokens
+
+Protecto allows mixing approaches without changing APIs.
+
+<ExpandableGroup>
+  <Expandable title="Common misunderstandings" default-open="false">
+    **"Formats are less secure than tokens."**
+    Not true. Both are equally governed and reversible only by policy.
+
+    **"Formats expose the original value."**
+    No. They preserve structure, not content.
+
+    **"I need formats for all numeric data."**
+    Only when downstream systems require a specific format or length.
+  </Expandable>
+</ExpandableGroup>

@@ -1,0 +1,63 @@
+---
+title: "Update & Delete Detected Entities"
+description: "Manually correct ML-detected PII results — override incorrect detections or remove false positives at the column level."
+---
+
+Used to correct or remove ML-detected PII results when the automatic detection is inaccurate.
+
+## Update detected entities
+
+Manually overrides detected PII for a specific column.
+
+### Endpoint
+
+| Method | Endpoint |
+|--------|----------|
+| `PUT` | `https://<domain>/api/vault/data-scan/pi-elements/update` |
+
+<Request tabs="cURL">
+```bash
+curl -X PUT https://<domain>/api/vault/data-scan/pi-elements/update \
+  -H "Authorization: Bearer <AUTH_TOKEN>" \
+  -H "Content-Type: application/json; charset=utf-8" \
+  -d '{
+    "data_source_name": "salesforce",
+    "object_name": ["CustomerData", "PublicSchema", "CustomerInfoTable"],
+    "column_name": "Address",
+    "pi_details": ["PHONE_NUMBER", "EMAIL_ADDRESS"]
+  }'
+```
+</Request>
+
+## Delete detected entities
+
+Removes previously defined manual overrides for a column, reverting it to ML-only detection.
+
+### Endpoint
+
+| Method | Endpoint |
+|--------|----------|
+| `PUT` | `https://<domain>/api/vault/data-scan/pi-elements/delete` |
+
+<Request tabs="cURL">
+```bash
+curl -X PUT https://<domain>/api/vault/data-scan/pi-elements/delete \
+  -H "Authorization: Bearer <AUTH_TOKEN>" \
+  -H "Content-Type: application/json; charset=utf-8" \
+  -d '{
+    "data_source_name": "salesforce",
+    "object_name": ["CustomerDB", "MarketingSchema", "CustomersTable"],
+    "column_name": "CustomerID"
+  }'
+```
+</Request>
+
+## Where this fits in the scan workflow
+
+| Stage | API |
+|-------|-----|
+| Discovery | Submit Data Scan |
+| Review | Scan Details |
+| Tuning | Update Conclusions |
+| Correction | Update / Delete Entities |
+| Protection | Mask API |

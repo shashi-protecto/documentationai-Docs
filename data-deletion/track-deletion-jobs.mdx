@@ -1,0 +1,79 @@
+---
+title: "Track Deletion Jobs"
+description: "Monitor the status and outcome of asynchronous data deletion jobs using their tracking IDs."
+---
+
+All deletion requests run asynchronously. Use this API to track job progress and final outcome.
+
+Only the **admin who initiated the deletion** can query the job status.
+
+## Endpoint
+
+| Method | Endpoint |
+|--------|----------|
+| `GET` | `https://<domain>/api/vault/namespace/job-status` |
+
+## Query parameters
+
+<ParamField query="tracking_id" param-type="string" required="true">
+  Tracking ID returned by the deletion API.
+</ParamField>
+
+<Request tabs="cURL">
+```bash
+curl -X GET "https://<domain>/api/vault/namespace/job-status?tracking_id=9f799cb6-5315-4199-8d47-3a7ced21dd1d" \
+  -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>"
+```
+</Request>
+
+<Response tabs="SUCCESS,IN-PROGRESS">
+```json
+{
+  "data": {
+    "tracking_id": "9f799cb6-5315-4199-8d47-3a7ced21dd1d",
+    "requested_user": "admin@example.com",
+    "requested_timestamp": "2024-05-28 18:23:42",
+    "process_end_time": "2024-05-28 18:23:51",
+    "job_type": "data-deletion",
+    "status": "SUCCESS",
+    "response": {
+      "cleared_records": 150,
+      "message": "Records older than the specified date have been cleared successfully."
+    },
+    "error_message": ""
+  },
+  "success": true,
+  "error": { "message": "" }
+}
+```
+
+```json
+{
+  "data": {
+    "tracking_id": "9f799cb6-5315-4199-8d47-3a7ced21dd1d",
+    "requested_user": "admin@example.com",
+    "requested_timestamp": "2024-05-28 18:23:42",
+    "process_end_time": null,
+    "job_type": "data-deletion",
+    "status": "IN-PROGRESS",
+    "response": null,
+    "error_message": ""
+  },
+  "success": true,
+  "error": { "message": "" }
+}
+```
+</Response>
+
+## Status values
+
+| Status | Meaning |
+|--------|---------|
+| `PENDING` | Job accepted but not yet started |
+| `IN-PROGRESS` | Deletion is currently running |
+| `SUCCESS` | Deletion completed successfully |
+| `FAILED` | Deletion failed — check `error_message` |
+
+## Polling guidance
+
+Poll every 30–60 seconds for large deletion jobs. The `cleared_records` field in a `SUCCESS` response indicates how many records were deleted.

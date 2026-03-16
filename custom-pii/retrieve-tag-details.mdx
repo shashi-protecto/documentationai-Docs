@@ -1,0 +1,79 @@
+---
+title: "Retrieve Tag Details"
+description: "Fetch the full configuration of a custom PII tag including masking behavior and endpoint settings."
+---
+
+Fetches the full configuration of a custom PII tag.
+
+## Endpoint
+
+| Method | Endpoint |
+|--------|----------|
+| `PUT` | `https://<domain>/api/vault/metadata/custom-tag/details` |
+
+<Request tabs="cURL">
+```bash
+curl -X PUT https://<domain>/api/vault/metadata/custom-tag/details \
+  -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>" \
+  -H "Content-Type: application/json; charset=utf-8" \
+  -d '{
+    "data": {
+      "tag_type": "CUSTOMER_ID"
+    }
+  }'
+```
+</Request>
+
+<Response tabs="200">
+```json
+{
+  "data": {
+    "tag_type": "CUSTOMER_ID",
+    "token_name": "Default Token",
+    "format_name": null,
+    "prefix": "<CUSTOMER_ID>",
+    "suffix": "</CUSTOMER_ID>",
+    "identification_endpoint_details": {
+      "url": "https://example.com/custom-pii/identify",
+      "method": "PUT"
+    },
+    "pi_elements_list_endpoint_details": {
+      "url": "https://example.com/custom-pii/list",
+      "method": "GET"
+    }
+  },
+  "success": true,
+  "error": { "message": "" }
+}
+```
+</Response>
+
+## Response fields
+
+<ResponseField name="tag_type" field-type="string" required="true">
+  Custom tag name.
+</ResponseField>
+
+<ResponseField name="token_name" field-type="string" required="true">
+  Token type used for masking.
+</ResponseField>
+
+<ResponseField name="format_name" field-type="string" required="false">
+  Format applied during masking, if any.
+</ResponseField>
+
+<ResponseField name="prefix" field-type="string" required="true">
+  Prefix used to wrap masked values in output.
+</ResponseField>
+
+<ResponseField name="suffix" field-type="string" required="true">
+  Suffix used to wrap masked values in output.
+</ResponseField>
+
+<ResponseField name="identification_endpoint_details" field-type="object" required="true">
+  Configuration of the identification endpoint.
+</ResponseField>
+
+<ResponseField name="pi_elements_list_endpoint_details" field-type="object" required="false">
+  Configuration of the whitelist endpoint, if configured.
+</ResponseField>

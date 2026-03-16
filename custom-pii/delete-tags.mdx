@@ -1,0 +1,49 @@
+---
+title: "Delete Custom Tags"
+description: "Remove a custom PII tag and all its associated configuration from the namespace."
+---
+
+Deletes a user-defined custom PII tag and all associated configuration.
+
+## Endpoint
+
+| Method | Endpoint |
+|--------|----------|
+| `PUT` | `https://<domain>/api/vault/metadata/delete/custom-tag` |
+
+<Request tabs="cURL">
+```bash
+curl -X PUT https://<domain>/api/vault/metadata/delete/custom-tag \
+  -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>" \
+  -H "Content-Type: application/json; charset=utf-8" \
+  -d '{
+    "data": {
+      "tag_type": "CUSTOMER_ID"
+    }
+  }'
+```
+</Request>
+
+<Response tabs="200">
+```json
+{
+  "data": {
+    "message": "CUSTOMER_ID deleted successfully."
+  },
+  "success": true,
+  "error": { "message": "" }
+}
+```
+</Response>
+
+## Behavior after deletion
+
+| Item | Behavior |
+|------|----------|
+| Previously masked data | Not retroactively changed — existing tokens remain valid |
+| New masking requests | Tag is no longer detected or masked |
+| Re-creation | Allowed — you can recreate a tag with the same name |
+
+<Callout kind="alert">
+  After deleting a tag, any Mask API calls that relied on auto-detecting this tag type will no longer mask those values. Ensure downstream systems are updated before deletion.
+</Callout>

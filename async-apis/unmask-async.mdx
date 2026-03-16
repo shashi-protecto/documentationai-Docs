@@ -1,0 +1,72 @@
+---
+title: "Unmask Async"
+description: "Submit an unmask job for background processing and receive a tracking ID to poll for results."
+---
+
+Submits an unmask request for background processing. Returns a `tracking_id` immediately — results are retrieved by polling the [Async Status](/async-apis/async-status) endpoint.
+
+## Endpoint
+
+| Method | URL |
+|--------|-----|
+| PUT | `https://protecto-trial.protecto.ai/api/vault/unmask/async` |
+
+## Request body
+
+<ParamField body="unmask" param-type="array" required="true">
+  List of tokenized values to unmask asynchronously.
+</ParamField>
+
+<ParamField body="unmask[].token_value" param-type="string" required="true">
+  The tokenized text to unmask.
+</ParamField>
+
+## Example
+
+<Request tabs="cURL,Python">
+  ```bash
+  curl -X PUT https://protecto-trial.protecto.ai/api/vault/unmask/async \
+    -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "unmask": [
+        { "token_value": "8oGEcGVEkj 700ZSgo1pA" }
+      ]
+    }'
+  ```
+
+  ```python
+  import requests
+
+  response = requests.put(
+      "https://protecto-trial.protecto.ai/api/vault/unmask/async",
+      headers={
+          "Authorization": "Bearer YOUR_AUTH_TOKEN",
+          "Content-Type": "application/json"
+      },
+      json={
+          "unmask": [{"token_value": "8oGEcGVEkj 700ZSgo1pA"}]
+      }
+  )
+  tracking_id = response.json()["data"][0]["tracking_id"]
+  ```
+</Request>
+
+<Response tabs="202">
+  ```json
+  {
+    "data": [
+      {
+        "tracking_id": "4f0f6df0-b063-409a-ace0-88398d7bf3d821122023081515",
+        "status": "PENDING"
+      }
+    ],
+    "success": true,
+    "error": { "message": "" }
+  }
+  ```
+</Response>
+
+## After submission
+
+Use the `tracking_id` to poll the [Async Status](/async-apis/async-status) endpoint. The unmasked values are returned in the `result` field when the job status is `SUCCESS`.

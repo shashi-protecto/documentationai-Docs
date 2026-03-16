@@ -1,0 +1,118 @@
+---
+title: "Custom PII (Custom Tags)"
+description: "How to extend Protecto's detection to cover internal identifiers — customer IDs, account numbers, and other organization-specific sensitive data."
+---
+
+Not all sensitive data looks like standard PII.
+
+Internal identifiers such as customer IDs, account numbers, or ticket IDs may not match built-in detection rules, but they are often just as sensitive. **Custom PII** allows you to treat these identifiers as first-class sensitive data in Protecto.
+
+## What custom PII is
+
+Custom PII lets you define your own sensitive entity types, called **custom tags**.
+
+Examples:
+
+| Custom tag | What it represents |
+|------------|-------------------|
+| `CUSTOMER_ID` | Internal customer identifier |
+| `ACCOUNT_ID` | Financial or system account number |
+| `ORDER_REFERENCE` | Order tracking identifier |
+| `EMPLOYEE_CODE` | Internal HR identifier |
+
+Once defined, custom PII behaves exactly like built-in entities — same masking, same tags, same governance.
+
+## How custom PII works
+
+Custom PII is built on three components:
+
+1. **A tag type** — A unique name that identifies the entity (for example, `CUSTOMER_ID`)
+2. **Identification logic** — A customer-hosted endpoint that tells Protecto where the custom PII appears in text
+3. **Policy association** — The custom tag is scoped to a policy and inherits that policy's masking and unmasking rules
+
+## Identification via customer-hosted endpoint
+
+Protecto does not guess how to detect your internal identifiers.
+
+Instead:
+
+- You provide an identification endpoint
+- Protecto sends text to this endpoint
+- The endpoint returns positions of detected values
+
+This approach ensures high accuracy, no false assumptions, and full control over what is considered sensitive.
+
+## Detection flow example
+
+**Input text:**
+```
+Customer ID 78901 placed an order
+```
+
+**Your identification endpoint returns:**
+- Detected value: `78901`
+- Tag type: `CUSTOMER_ID`
+
+**Protecto then:**
+- Applies masking rules from the policy
+- Replaces the value with a token
+- Wraps it in `<CUSTOMER_ID>...</CUSTOMER_ID>`
+
+**Result:**
+```
+Customer ID <CUSTOMER_ID>xK9mR2pL</CUSTOMER_ID> placed an order
+```
+
+## Custom PII and masking
+
+Once detected, custom PII:
+
+- Is masked using tokens or formats
+- Appears with its own entity tags
+- Is governed by the same unmasking rules as built-in entities
+
+No special handling is required downstream.
+
+## Optional whitelist (PI elements list)
+
+For some use cases, you can also provide a **PI elements list endpoint**.
+
+This endpoint:
+
+- Returns a list of known valid values
+- Helps reduce false positives
+- Is optional and policy-scoped
+
+Protecto uses this as an additional signal during detection.
+
+<Callout kind="info">
+  The identification endpoint and whitelist endpoint are both customer-hosted and called by Protecto during detection. You own the detection logic — Protecto enforces the masking.
+</Callout>
+
+## What custom PII does not do
+
+Custom PII does **not**:
+
+- Automatically detect identifiers without configuration
+- Bypass policies or permissions
+- Require changes to masking or unmasking APIs
+- Affect built-in detection behavior
+
+It extends detection, not replaces it.
+
+<Callout kind="tip">
+  **Mental model:** Think of custom PII as "teaching Protecto what *you* consider sensitive." Once taught, Protecto enforces it everywhere — using the same governance as built-in entities.
+</Callout>
+
+<ExpandableGroup>
+  <Expandable title="Common misunderstandings" default-open="false">
+    **"Custom PII is just regex."**
+    No. It is an explicit detection contract with full context — your endpoint receives the text and returns positions, not just pattern matches.
+
+    **"Custom PII is less secure."**
+    No. It is governed by the same policies and permissions as built-in entities.
+
+    **"I need to change my API calls to support custom PII."**
+    No. Once configured, detection is transparent. Your masking API calls stay the same.
+  </Expandable>
+</ExpandableGroup>

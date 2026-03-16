@@ -1,0 +1,85 @@
+---
+title: "Toxicity Detection"
+description: "How Protecto analyzes text for harmful content and returns structured safety scores — without modifying or blocking data."
+---
+
+Toxicity detection analyzes text for harmful, abusive, or unsafe content. It is designed to support **AI safety, moderation, and compliance workflows** without altering the underlying data.
+
+Toxicity detection is **additive metadata** — it adds context without changing behavior.
+
+## When toxicity detection runs
+
+Toxicity detection can run during:
+
+- **Masking** — when text is analyzed and sensitive data is tokenized
+- **Unmasking** — when original values are resolved from tokens
+
+Whether toxicity detection runs is entirely **policy-controlled**. If the policy does not enable toxicity detection, no toxicity data is returned.
+
+## Toxicity categories
+
+Toxicity detection evaluates content across six categories. Each is returned as a **score between 0 and 1**, where higher values indicate a higher likelihood.
+
+| Category | Description |
+|----------|-------------|
+| `toxicity` | Overall likelihood that the content is toxic |
+| `severe_toxicity` | Likelihood of extreme or highly harmful content |
+| `obscene` | Presence of obscene or explicit language |
+| `threat` | Likelihood of violent or threatening language |
+| `insult` | Likelihood of insulting or abusive language |
+| `identity_attack` | Attacks targeting a protected group |
+
+These scores are probabilistic signals, not binary judgments.
+
+## How toxicity data is returned
+
+When enabled, toxicity detection results are returned as part of the API response, alongside masked or unmasked data.
+
+Key characteristics:
+
+- Scores do not affect masking or unmasking behavior
+- No content is modified or blocked by Protecto
+- Scores are returned per request
+- Nothing is stored automatically
+
+Your application decides how to use the scores.
+
+## Common use cases
+
+Toxicity detection is typically used for:
+
+- Moderating AI-generated responses
+- Flagging unsafe user input before it enters a workflow
+- Auditing LLM interactions for safety compliance
+- Applying escalation or human review workflows
+- Logging content safety signals alongside masked data
+
+It is especially useful when working with **GenAI systems** where sensitive data and unsafe language may coexist in the same payload.
+
+## What toxicity detection does not do
+
+Toxicity detection does **not**:
+
+- Mask or redact content
+- Prevent unmasking
+- Enforce moderation decisions
+- Replace application logic
+
+It provides signals. You control outcomes.
+
+<Callout kind="tip">
+  **Mental model:** Think of toxicity detection as "a safety signal that travels alongside your data." It adds context without changing behavior — Protecto reports, your system decides.
+</Callout>
+
+<ExpandableGroup>
+  <Expandable title="Common misunderstandings" default-open="false">
+    **"Toxicity detection blocks unsafe content."**
+    No. It only reports scores. Blocking, flagging, or routing decisions belong to your application logic.
+
+    **"Toxicity detection runs automatically."**
+    No. It must be enabled in the policy. If the policy does not enable it, no toxicity data is returned.
+
+    **"Toxicity detection is only for AI outputs."**
+    No. It applies to any text processed by masking or unmasking — user inputs, logs, stored records, or AI outputs alike.
+  </Expandable>
+</ExpandableGroup>

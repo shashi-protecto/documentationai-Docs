@@ -1,0 +1,62 @@
+---
+title: "Configure Whitelist Endpoints"
+description: "Reduce false positives for custom PII detection by providing a known-valid values endpoint."
+---
+
+Whitelist endpoints return a **list of valid values** for a custom tag. Protecto uses this list as an additional signal during detection to reduce false positives.
+
+## When to use a whitelist endpoint
+
+A whitelist endpoint is useful when:
+
+- Your custom identifier has a known, bounded set of valid values (e.g., a customer ID database)
+- Detection generates false positives on values that look like your identifier but aren't
+- You want detection to confirm a value is real before masking it
+
+## Endpoint
+
+| Method | Endpoint |
+|--------|----------|
+| `PUT` | `https://<domain>/api/vault/metadata/add-or-update/custom-tag/pi-list-endpoint` |
+
+## Request body
+
+<ParamField body="tag_type" param-type="string" required="true">
+  Custom tag to configure the whitelist for.
+</ParamField>
+
+<ParamField body="pi_elements_list_endpoint_details.url" param-type="string" required="true">
+  URL of your whitelist service.
+</ParamField>
+
+<ParamField body="pi_elements_list_endpoint_details.method" param-type="string" required="true">
+  HTTP method (typically `"GET"`).
+</ParamField>
+
+<ParamField body="pi_elements_list_endpoint_details.headers" param-type="object" required="false">
+  Authentication headers for your whitelist endpoint.
+</ParamField>
+
+<Request tabs="cURL">
+```bash
+curl -X PUT https://<domain>/api/vault/metadata/add-or-update/custom-tag/pi-list-endpoint \
+  -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>" \
+  -H "Content-Type: application/json; charset=utf-8" \
+  -d '{
+    "data": {
+      "tag_type": "CUSTOMER_ID",
+      "pi_elements_list_endpoint_details": {
+        "url": "https://example.com/custom-pii/list",
+        "method": "GET",
+        "headers": {
+          "Authorization": "Bearer <access_token>"
+        }
+      }
+    }
+  }'
+```
+</Request>
+
+<Callout kind="info">
+  The whitelist endpoint is **optional**. If not configured, Protecto relies entirely on the identification endpoint for detection. The whitelist is an additional signal, not a replacement.
+</Callout>

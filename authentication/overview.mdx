@@ -1,0 +1,44 @@
+---
+title: "Authentication & Authorization"
+description: "Protecto uses token-based authentication for all API access. Every request is authenticated and authorized server-side before any masking or unmasking occurs."
+---
+
+Protecto uses **token-based authentication** to secure all API access. Every request is authenticated, authorized, and evaluated server-side before any masking or unmasking occurs.
+
+<Columns cols="2">
+  <Card title="API Tokens & Headers" href="/authentication/api-tokens" icon="key" horizontal={false}>
+    How to obtain and send your bearer token with every request.
+  </Card>
+
+  <Card title="Permissions & Scopes" href="/authentication/permissions-scopes" icon="shield" horizontal={false}>
+    How permissions control which operations your token can perform.
+  </Card>
+
+  <Card title="Token Expiry & Rotation" href="/authentication/token-expiry-rotation" icon="refresh-cw" horizontal={false}>
+    Best practices for managing token lifetime and rotation.
+  </Card>
+
+  <Card title="Authentication Errors" href="/authentication/auth-errors" icon="x-circle" horizontal={false}>
+    How to debug and resolve authentication failures.
+  </Card>
+</Columns>
+
+## How authentication works
+
+All Protecto APIs require an **authentication token**. Requests without a valid token are rejected before any processing occurs.
+
+Authentication determines:
+
+- Who is making the request
+- Which namespace the request belongs to
+- What permissions apply
+
+Authorization is evaluated **after authentication**, based on permissions and policies.
+
+## Key takeaways
+
+- All Protecto APIs require authentication
+- API tokens are sent via the `Authorization` header as a bearer token
+- Permissions are evaluated after authentication
+- Unmasking requires explicit permission — masking permission alone is not sufficient
+- Tokens must be rotated and protected like passwords

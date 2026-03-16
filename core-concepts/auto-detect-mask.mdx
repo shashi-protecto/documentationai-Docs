@@ -1,0 +1,82 @@
+---
+title: "Auto-Detect and Mask"
+description: "The default masking mode for free-form text — Protecto scans input, detects sensitive entities by policy, and returns a masked version with entity tags."
+---
+
+Auto-Detect and Mask is the most commonly used mode in Protecto. It is designed for situations where sensitive data appears in **free-form text** and you don't want to pre-classify fields.
+
+This mode combines **detection and masking** into a single operation.
+
+## What it does
+
+Auto-Detect and Mask performs four steps automatically:
+
+1. Scans the input text
+2. Detects sensitive values based on policy rules
+3. Classifies each detected value by entity type
+4. Replaces detected values with tokens wrapped in entity tags
+
+You do not need to specify entity types, token names, or formats. All behavior is policy-driven.
+
+## Example
+
+**Input:**
+```
+User John Doe (john.doe@example.com) requested a refund on 15/8/2010
+```
+
+**Masked output:**
+```
+User <PERSON>VJYe 03W</PERSON> (<EMAIL>0gN3SkjL@0ffM3CDS</EMAIL>) requested a refund on <DATE>5Fd890</DATE>
+```
+
+Names, emails, and dates were detected automatically. Each value was tokenized and entity tags preserved readability.
+
+## When to use it
+
+Auto-Detect and Mask is the right choice when:
+
+- Input is unstructured or semi-structured
+- Sensitive data appears inline with normal text
+- You don't control the schema
+- You want the fastest path to safe data handling
+
+Typical use cases: LLM prompts, application logs, chat messages, user-generated content, support notes.
+
+## What controls detection behavior
+
+Auto-Detect and Mask is controlled entirely by **policy configuration**. Policies define:
+
+- Which entity types are detected
+- Which custom PII types are included
+- How each entity is tokenized
+- Whether toxicity analysis runs
+
+Changing a policy updates behavior without changing client code.
+
+## Auto-Detect vs explicit masking
+
+| Scenario | Recommended approach |
+|----------|---------------------|
+| Free-form text | Auto-Detect and Mask |
+| Known sensitive fields | Explicit masking with token |
+| Structured records | Explicit masking with format |
+| Internal identifiers | Custom PII detection |
+
+Auto-Detect optimizes for speed and simplicity, not precision control.
+
+<ExpandableGroup>
+  <Expandable title="Common misunderstandings" default-open="false">
+    **"Auto-detect replaces everything."**
+    No. Only values classified as sensitive by policy are masked.
+
+    **"I can fine-tune detection in the request."**
+    No. Detection behavior is not request-scoped — it's policy-scoped.
+
+    **"Auto-detect is less secure than explicit masking."**
+    No. Both are governed by the same policies.
+
+    **"Auto-detect guarantees perfect detection."**
+    No. For internal identifiers or domain-specific data, use Custom PII detection instead.
+  </Expandable>
+</ExpandableGroup>

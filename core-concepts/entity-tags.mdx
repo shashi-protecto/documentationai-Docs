@@ -1,0 +1,76 @@
+---
+title: "Entity Tags"
+description: "How Protecto wraps masked values in typed entity tags — preserving semantic meaning, enabling downstream parsing, and supporting both built-in and custom PII."
+---
+
+When Protecto masks sensitive data, it wraps the masked value in **entity tags** that indicate what kind of sensitive data the value represents.
+
+## What entity tags look like
+
+```
+<ENTITY_TYPE>masked_value</ENTITY_TYPE>
+```
+
+Example:
+```
+<EMAIL>0gN3SkjL@0ffM3CDS</EMAIL>
+```
+
+The tag name corresponds to the detected or configured entity type.
+
+## Why entity tags exist
+
+Entity tags serve multiple purposes beyond readability:
+
+- **Preserve semantic meaning** — even without original values, masked text remains understandable
+- **Enable downstream parsing** — systems can programmatically identify and handle each entity type
+- **Support selective unmasking** — policies can reference entity types in their rules
+- **Enable routing** — data can be handled differently based on entity type
+
+**Example — Original:**
+```
+Contact John Doe at john.doe@example.com
+```
+
+**Masked:**
+```
+Contact <PERSON>VJYe 03W</PERSON> at <EMAIL>0gN3SkjL@0ffM3CDS</EMAIL>
+```
+
+Even without the original values, the sentence still makes sense to both humans and machines.
+
+## Built-in vs custom entity tags
+
+| Type | Examples |
+|------|---------|
+| Built-in | `EMAIL`, `PERSON`, `DATE`, `PHONE`, `ADDRESS`, `URL` |
+| Custom | `CUSTOMER_ID`, `ACCOUNT_ID`, `ORDER_REFERENCE` |
+
+Once defined, custom tags behave exactly like built-in ones — same masking, same tags, same governance.
+
+## Entity tags apply to all masking modes
+
+Entity tags are applied regardless of how masking is performed:
+
+- Auto-Detect and Mask
+- Explicit token-based masking
+- Format-based masking
+- Custom PII detection
+
+The masking strategy determines **how** the value is replaced. The entity tag indicates **what the value represents**.
+
+<ExpandableGroup>
+  <Expandable title="Common misunderstandings" default-open="false">
+    **"Entity tags are optional."**
+    No. Tags are part of Protecto's output model and are always included.
+
+    **"Tags expose sensitive data."**
+    No. Tags only describe the type, not the original value.
+
+    **"Tags are only for humans."**
+    No. They are designed for machine processing as well — downstream systems can parse and route based on tag type.
+
+    **"Tags control permissions."**
+    No. Tags are descriptive only. Policies enforce behavior.
+  </Expandable>
+</ExpandableGroup>

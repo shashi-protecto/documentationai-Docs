@@ -1,0 +1,63 @@
+---
+title: "Detection vs Masking"
+description: "Detection and masking are two logically separate steps in Protecto. Understanding the difference helps you choose the right API mode and predict behavior."
+---
+
+Detection and masking are two separate steps in Protecto. They often happen together, but they solve different problems.
+
+## What detection does
+
+**Detection answers one question:** Is this value sensitive, and what type of sensitive data is it?
+
+Detection determines:
+- Whether a value should be treated as sensitive
+- Which entity type it belongs to (e.g., `EMAIL`, `PERSON`, `DATE`, or a custom tag)
+
+Detection can be driven by built-in rules, policy configuration, or custom identification logic.
+
+**Example:** Given the text `Contact John Doe at john.doe@example.com`, detection identifies:
+- `John Doe` → `PERSON`
+- `john.doe@example.com` → `EMAIL`
+
+Detection does **not** decide how these values are replaced. It only classifies them.
+
+## What masking does
+
+**Masking answers a different question:** How should this sensitive value be replaced?
+
+Masking determines:
+- What token or format is used
+- Whether structure is preserved
+- How the replacement looks in the output
+
+Masking happens **after** detection, or independently if detection is skipped.
+
+**Example:** Using the detected values above, masking produces:
+
+`Contact <PERSON>VJYe 03W</PERSON> at <EMAIL>0gN3SkjL@0ffM3CDS</EMAIL>`
+
+## When they run together vs separately
+
+| Mode | Detection | Masking |
+|------|-----------|---------|
+| Auto-Detect and Mask | Automatic, policy-driven | Policy-driven |
+| Mask with Token | Skipped (you specify the value) | Explicit token type |
+| Mask with Format | Skipped (you specify the value) | Explicit format |
+| Custom PII | Customer-hosted endpoint | Policy-driven |
+
+In **Auto-Detect and Mask**, detection and masking happen in a single request — you provide free-form text and Protecto handles everything.
+
+In **explicit masking** (Mask with Token, Mask with Format), detection is unnecessary because you already know what the data is. Masking happens directly using the provided token or format.
+
+## Why the separation matters
+
+This separation allows Protecto to support very different workflows using the same APIs:
+
+- Free-form text uses automatic detection
+- Structured data uses explicit masking
+- Custom PII uses customer-hosted detection
+- Policies can evolve without changing client code
+
+<Callout kind="tip">
+  **Mental model:** Detection decides **what** is sensitive. Masking decides **what replaces it**. Policies control both steps.
+</Callout>

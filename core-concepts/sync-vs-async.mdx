@@ -1,0 +1,88 @@
+---
+title: "Synchronous vs Asynchronous Processing"
+description: "The two execution models in Protecto — when to use real-time synchronous APIs versus background asynchronous APIs, and how to choose between them."
+---
+
+Protecto APIs use two execution models: **synchronous** and **asynchronous**. The difference determines **when you get results** and **how you design your workflows**.
+
+## Synchronous processing
+
+Synchronous APIs return a response **immediately**.
+
+You send a request. You receive the result in the same call.
+
+**Synchronous APIs include:**
+
+- Mask API
+- Unmask API
+
+These APIs are designed for:
+
+- Real-time application flows
+- User-facing requests
+- Request-time data protection
+- AI and LLM pipelines
+
+Synchronous APIs execute quickly, are deterministic, and block until processing is complete. They are safe to call inline during HTTP requests, event processing, or prompt construction.
+
+## Asynchronous processing
+
+Asynchronous APIs run **in the background**.
+
+You submit a request. Processing happens independently. You retrieve results later.
+
+**Asynchronous APIs include:**
+
+- Data Scan API
+- Some metadata operations
+
+These APIs are designed for:
+
+- Large datasets
+- Long-running analysis
+- Background governance tasks
+
+Asynchronous APIs return a tracking identifier immediately. They do not block the caller, require polling to check status, and may take minutes or longer to complete. They are not suitable for request-time flows.
+
+## Choosing the right model
+
+| Use case | Recommended model |
+|----------|------------------|
+| Masking API payloads | Synchronous |
+| Protecting LLM prompts | Synchronous |
+| Masking application logs | Synchronous |
+| Scanning large datasets | Asynchronous |
+| Auditing data sources | Asynchronous |
+| Background governance tasks | Asynchronous |
+
+Choosing the wrong model typically results in latency issues (using async where sync is needed) or scalability issues (using sync for bulk operations).
+
+## What the processing model does not change
+
+The execution model does **not** affect:
+
+- Token determinism
+- Policy enforcement
+- Permission checks
+- Security guarantees
+
+Only *when* you get results changes — not *what* the results are.
+
+<Callout kind="tip">
+  **Mental model:**
+  - **Synchronous**: "I need the result now — this is on the critical path."
+  - **Asynchronous**: "This can run in the background — I'll check back for results."
+</Callout>
+
+<ExpandableGroup>
+  <Expandable title="Common misunderstandings" default-open="false">
+    **"Asynchronous APIs are less secure."**
+    No. They follow the same policies and permissions as synchronous APIs.
+
+    **"Synchronous APIs are always faster."**
+    Not always. They are optimized for low-latency use cases. For large datasets, async is the appropriate choice.
+
+    **"I can turn any API into async."**
+    No. The execution model is defined by the API. You cannot submit a Mask API call as an async job.
+  </Expandable>
+</ExpandableGroup>

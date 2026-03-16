@@ -1,0 +1,112 @@
+---
+title: "Namespaces and Permissions"
+description: "How Protecto uses namespaces as isolation boundaries and permissions to enforce least-privilege access for sensitive operations."
+---
+
+Namespaces and permissions determine **who is allowed to perform sensitive operations**, especially unmasking. They exist to enforce **least-privilege access** and ensure that sensitive data is never exposed more broadly than intended.
+
+## What a namespace represents
+
+A **namespace** is a logical boundary for data and policies.
+
+Namespaces are commonly used to separate:
+
+- Environments (production, staging, development)
+- Teams or business units
+- Applications or services
+- Data sensitivity levels
+
+Each namespace has its own policies, permissions, and access controls. Operations in one namespace do not affect another.
+
+## Why namespaces matter
+
+Namespaces allow you to:
+
+- Apply different policies to different workloads
+- Restrict access to sensitive operations
+- Prevent accidental data exposure across environments
+
+For example:
+
+- Production data can be masked with strict unmasking controls
+- Non-production data can allow broader access for testing
+
+The API shape stays the same. The guarantees change.
+
+## Permissions and sensitive operations
+
+Not all API operations are equal.
+
+Protecto treats some operations as **high-risk**, particularly:
+
+- Unmasking
+- Policy-scoped configuration
+- Custom PII management
+
+Permissions determine whether a caller is allowed to perform these operations within a namespace.
+
+## Masking vs unmasking permissions
+
+| Operation | Access level |
+|-----------|-------------|
+| Masking | Broadly allowed — safe by design |
+| Unmasking | Restricted — explicitly granted |
+
+This ensures that most systems can safely handle tokenized data while only trusted workflows can access original values.
+
+## Permissions are evaluated server-side
+
+Permissions are:
+
+- Evaluated on every request
+- Enforced centrally
+- Not overridable by client code
+
+If a caller lacks permission:
+
+- The request is denied
+- No partial data is returned
+- Tokens remain unresolved
+
+This applies even if the policy allows unmasking.
+
+## Permissions and policies together
+
+Policies define **what is allowed in principle**.
+Permissions define **who is allowed to do it**.
+
+Both must allow an action for it to succeed.
+
+| Scenario | Result |
+|----------|--------|
+| Policy allows unmasking + caller has unmask permission | Allowed |
+| Policy allows unmasking + caller lacks unmask permission | Denied |
+| Policy disables unmasking + caller has unmask permission | Denied |
+
+## What namespaces and permissions do not do
+
+They do **not**:
+
+- Change masking behavior by themselves
+- Affect token determinism
+- Modify stored data
+- Require client-side logic
+
+They strictly control access.
+
+<Callout kind="tip">
+  **Mental model:** Think of namespaces as security boundaries around sensitive operations. Policies define behavior. Permissions define access. Both must be satisfied.
+</Callout>
+
+<ExpandableGroup>
+  <Expandable title="Common misunderstandings" default-open="false">
+    **"If my policy allows unmasking, anyone can unmask."**
+    No. Permissions must also allow it. Both layers are required.
+
+    **"Namespaces are just naming conventions."**
+    No. They are enforcement boundaries — operations in one namespace do not affect another.
+
+    **"Permissions are optional."**
+    No. They are always evaluated on every request.
+  </Expandable>
+</ExpandableGroup>

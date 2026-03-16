@@ -1,0 +1,57 @@
+---
+title: "Configure Identification Endpoints"
+description: "Requirements and contract for the customer-hosted endpoint Protecto calls to detect custom PII in text."
+---
+
+The identification endpoint is the service **you host** that Protecto calls to detect custom PII in text. Protecto treats this endpoint as the source of truth for identifying the custom tag.
+
+## Required contract
+
+| Requirement | Description |
+|-------------|-------------|
+| Input | Text payload from Protecto |
+| Output | Detected values with character positions |
+| Latency | Low latency recommended — called inline during masking |
+| Authentication | Optional, via headers configured in the tag |
+
+## Input format (Protecto sends)
+
+Protecto sends the input text to your endpoint in a structured payload. Your endpoint receives the text and must return all detected occurrences of the custom entity.
+
+## Output format (your endpoint returns)
+
+Your endpoint must return the position of each detected value:
+
+```json
+[
+  {
+    "text": "56789",
+    "start": 12,
+    "end": 17
+  }
+]
+```
+
+| Field | Description |
+|-------|-------------|
+| `text` | The detected value |
+| `start` | Start character position in the input text |
+| `end` | End character position in the input text |
+
+## Reachability requirements
+
+Your identification endpoint must be:
+
+- Accessible via HTTPS from Protecto's infrastructure
+- Available with low, consistent latency (it is called synchronously during masking)
+- Returning responses in a timely manner to avoid masking timeouts
+
+<Callout kind="alert">
+  If your identification endpoint is down or returns errors, custom PII detection for that tag will fail. Build appropriate availability and error handling into your service.
+</Callout>
+
+## Authentication
+
+You can optionally include authentication headers for your endpoint in the tag configuration. These are sent with every request Protecto makes to your identification service.
+
+See [Create or Update Custom Tags](/custom-pii/create-update-tags) to configure headers.

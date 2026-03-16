@@ -1,0 +1,56 @@
+---
+title: "Core Concepts"
+description: "The foundational ideas behind Protecto — tokenization, masking, policies, and permissions. Understanding these concepts helps you design integrations correctly and predict behavior."
+---
+
+Understanding these concepts will help you design integrations correctly, anticipate behavior, and use the right tools for each use case.
+
+<Columns cols="3">
+  <Card title="Tokenization Basics" href="/core-concepts/tokenization-basics" icon="key" horizontal={false}>
+    What tokenization is, why tokens are deterministic, and how the token lifecycle works.
+  </Card>
+
+  <Card title="Detection vs Masking" href="/core-concepts/detection-vs-masking" icon="eye" horizontal={false}>
+    Why these are two separate steps, and when each applies.
+  </Card>
+
+  <Card title="Auto-Detect and Mask" href="/core-concepts/auto-detect-mask" icon="scan" horizontal={false}>
+    The default mode for free-form text — how it works and when to use it.
+  </Card>
+
+  <Card title="Tokens vs Formats" href="/core-concepts/tokens-vs-formats" icon="shuffle" horizontal={false}>
+    Two different masking strategies — when to replace a value vs preserve its structure.
+  </Card>
+
+  <Card title="Entity Tags" href="/core-concepts/entity-tags" icon="tag" horizontal={false}>
+    How Protecto preserves semantic meaning by wrapping masked values in typed tags.
+  </Card>
+
+  <Card title="Unmasking" href="/core-concepts/unmasking" icon="unlock" horizontal={false}>
+    Why unmasking is always explicit, how it's governed, and what it returns.
+  </Card>
+
+  <Card title="Policies" href="/core-concepts/policies" icon="scroll" horizontal={false}>
+    The rulebook that governs detection, masking, reversibility, and analysis.
+  </Card>
+
+  <Card title="Anonymization vs Pseudonymization" href="/core-concepts/anonymization-vs-pseudonymization" icon="user-x" horizontal={false}>
+    The structural difference between irreversible and reversible masking.
+  </Card>
+
+  <Card title="Namespaces & Permissions" href="/core-concepts/namespaces-permissions" icon="shield-check" horizontal={false}>
+    Logical boundaries and access controls for sensitive operations.
+  </Card>
+
+  <Card title="Custom PII" href="/core-concepts/custom-pii" icon="fingerprint" horizontal={false}>
+    How to teach Protecto to recognize your own internal identifiers.
+  </Card>
+
+  <Card title="Toxicity Detection" href="/core-concepts/toxicity-detection" icon="alert-triangle" horizontal={false}>
+    Additive safety signals for AI and GenAI workflows.
+  </Card>
+
+  <Card title="Sync vs Async Processing" href="/core-concepts/sync-vs-async" icon="clock" horizontal={false}>
+    When to use real-time APIs vs background batch processing.
+  </Card>
+</Columns>

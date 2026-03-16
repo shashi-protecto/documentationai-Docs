@@ -1,0 +1,82 @@
+---
+title: "Anonymization vs Pseudonymization"
+description: "The structural difference between irreversible and reversible masking — and how Protecto enforces this distinction through policy configuration."
+---
+
+Anonymization and pseudonymization describe **whether masked data can ever be reversed**. In Protecto, this distinction is enforced entirely through **policy configuration**.
+
+## Anonymization
+
+**Anonymization means irreversibility.**
+
+Once data is anonymized:
+- The original value cannot be restored
+- No unmasking is possible, regardless of permissions
+- The relationship to the original value is permanently broken
+
+### What anonymization guarantees
+
+When a policy enforces anonymization:
+- All unmask requests are denied
+- No permissions can override this
+- Tokens cannot be resolved back to originals
+
+This is a **strong, structural guarantee** — not a runtime choice.
+
+**Typical use cases:** Analytics and BI, reporting and dashboards, data sharing with third parties, compliance and regulatory storage.
+
+## Pseudonymization
+
+**Pseudonymization means controlled reversibility.**
+
+With pseudonymization:
+- Data is masked using tokens or formats
+- Original values are preserved internally
+- Unmasking is allowed only under strict conditions (permissions + policy)
+
+**Typical use cases:** Customer support tools, CRM systems, AI-assisted workflows, secure application logs.
+
+### What pseudonymization guarantees
+
+When a policy enforces pseudonymization:
+- Masked data is safe to store and process
+- Original values can be restored only via Unmask API, under permission controls
+- Permissions and audit controls apply
+
+## Comparison
+
+| Aspect | Anonymization | Pseudonymization |
+|--------|-------------|-----------------|
+| Reversible | No | Yes (controlled) |
+| Unmask allowed | No | Yes |
+| Suitable for analytics | Yes | Yes |
+| Suitable for operations | No | Yes |
+| Compliance-friendly | Yes | Yes |
+
+## How Protecto enforces the distinction
+
+The same Mask API call behaves differently based on the active policy:
+
+| Policy type | Masking | Unmasking |
+|------------|---------|-----------|
+| Anonymization policy | Allowed | Permanently disabled |
+| Pseudonymization policy | Allowed | Conditionally allowed |
+
+The client does not change requests. Only the policy changes.
+
+<Callout kind="tip">
+  **Mental model:** Anonymization closes the door permanently. Pseudonymization keeps the door locked with a key — and the key is controlled by policy and permissions.
+</Callout>
+
+<ExpandableGroup>
+  <Expandable title="Common misunderstandings" default-open="false">
+    **"Anonymized data is less useful."**
+    No. It remains fully usable for aggregates, analytics, and analysis.
+
+    **"Pseudonymized data is unsafe."**
+    No. It is safe when unmasking permissions are properly controlled.
+
+    **"I choose anonymization in the request."**
+    No. This is always a policy-level decision, not a per-request choice.
+  </Expandable>
+</ExpandableGroup>

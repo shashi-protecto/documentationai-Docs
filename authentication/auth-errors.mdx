@@ -1,0 +1,57 @@
+---
+title: "Authentication Errors"
+description: "How to identify and resolve Protecto authentication and authorization failures."
+---
+
+## Error response format
+
+Authentication errors return a consistent JSON structure:
+
+```json
+{
+  "success": false,
+  "error": {
+    "message": "Authentication failed"
+  }
+}
+```
+
+## Common authentication errors
+
+| Error scenario | Description |
+|---------------|-------------|
+| Missing token | `Authorization` header not provided |
+| Invalid token | Token is malformed or not recognized |
+| Expired token | Token is past its expiry date |
+| Revoked token | Token has been deactivated |
+| Insufficient permissions | Token is valid but not authorized for the requested operation |
+
+## How to debug authentication issues
+
+Work through this checklist when a request returns an authentication error:
+
+<Steps>
+  <Step title="Verify the Authorization header is present" icon="check" titleType="p">
+    Confirm the request includes `Authorization: Bearer YOUR_TOKEN`. The header name and `Bearer` prefix are required exactly as shown.
+  </Step>
+
+  <Step title="Check token expiry" icon="clock" titleType="p">
+    Retrieve a fresh token from the Protecto portal if you suspect expiry. Protecto does not auto-refresh tokens.
+  </Step>
+
+  <Step title="Confirm permissions for the operation" icon="shield" titleType="p">
+    Verify the token has the correct permission level. Unmask operations require explicit unmask permission — mask-only tokens cannot unmask.
+  </Step>
+
+  <Step title="Ensure the correct namespace" icon="layers" titleType="p">
+    Tokens are namespace-scoped. Confirm the token belongs to the namespace targeted by the request.
+  </Step>
+
+  <Step title="Verify the policy exists" icon="scroll" titleType="p">
+    If `policy_name` is included in the request, confirm that policy exists in the namespace. A missing policy can trigger authorization failures.
+  </Step>
+</Steps>
+
+<Callout kind="info">
+  Authentication failures always occur **before** masking or unmasking logic runs. If you receive an auth error, no data was processed.
+</Callout>

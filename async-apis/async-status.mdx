@@ -1,0 +1,180 @@
+---
+title: "Async Status Tracking"
+description: "Poll the status of an async mask or unmask job using a tracking ID, and retrieve results when the job completes."
+---
+
+Fetches the current status of an async job and returns the original input payload, final output (when ready), timestamps, and error details when applicable.
+
+## Endpoint
+
+| Method | URL |
+|--------|-----|
+| PUT | `https://protecto-trial.protecto.ai/api/vault/async-status` |
+
+## Request body
+
+<ParamField body="status" param-type="array" required="true">
+  List of tracking IDs to check status for.
+</ParamField>
+
+<ParamField body="status[].tracking_id" param-type="string" required="true">
+  The tracking ID returned by the async submit endpoint.
+</ParamField>
+
+## Example
+
+<Request tabs="cURL,Python">
+  ```bash
+  curl -X PUT https://protecto-trial.protecto.ai/api/vault/async-status \
+    -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "status": [
+        { "tracking_id": "747027ff-5ce7-4780-8cca-000f908edae721052025073644" }
+      ]
+    }'
+  ```
+
+  ```python
+  import requests, time
+
+  def poll_status(tracking_id, token, interval=30):
+      while True:
+          response = requests.put(
+              "https://protecto-trial.protecto.ai/api/vault/async-status",
+              headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
+              json={"status": [{"tracking_id": tracking_id}]}
+          )
+          job = response.json()["data"][0]
+          if job["status"] in ("SUCCESS", "FAILED", "PURGED"):
+              return job
+          time.sleep(interval)
+  ```
+</Request>
+
+## Response shapes by status
+
+<Tabs>
+  <Tab title="SUCCESS" icon="check-circle">
+    The job completed successfully. Read the `result` field for the output.
+
+    ```json
+    {
+      "data": [
+        {
+          "tracking_id": "747027ff-5ce7-4780-8cca-000f908edae721052025073644",
+          "call_type": "mask",
+          "input_payload": { "mask": [ { "token_name": "Person token", "value": "jackson" } ] },
+          "result": [ { "token_name": "Person token", "token_value": "Chidi", "value": "jackson" } ],
+          "error_msg": null,
+          "submitted_time": "2025-05-21 07:36:44",
+          "process_start_time": "2025-05-21 07:36:47",
+          "completed_time": "2025-05-21 07:36:48",
+          "status": "SUCCESS"
+        }
+      ],
+      "success": true,
+      "error": { "message": "" }
+    }
+    ```
+  </Tab>
+
+  <Tab title="IN-PROGRESS" icon="loader">
+    The job is still processing. Continue polling.
+
+    ```json
+    {
+      "data": [
+        {
+          "tracking_id": "b6b7ef0e-86f6-4490-b0f8-4962a43656f929042024083721",
+          "call_type": "unmask",
+          "input_payload": { "unmask": [ { "token_value": "n3dVs6D0Ni" } ] },
+          "result": "None",
+          "error_msg": "None",
+          "submitted_time": "2024-04-29 08:37:21",
+          "completed_time": "None",
+          "status": "IN-PROGRESS"
+        }
+      ],
+      "success": true,
+      "error": { "message": "" }
+    }
+    ```
+  </Tab>
+
+  <Tab title="FAILED" icon="x-circle">
+    The job failed. Read `error_msg` to understand the failure reason.
+
+    ```json
+    {
+      "data": [
+        {
+          "tracking_id": "43318680-9515-432c-a152-1b9b9ebc1ba629042024114022",
+          "call_type": "unmask",
+          "input_payload": { "unmask": [] },
+          "result": null,
+          "error_msg": "Processing Async request failed for tracker_id:... with error: Payload is empty",
+          "submitted_time": "2024-04-29 11:40:22",
+          "completed_time": "2024-04-29 11:40:23",
+          "status": "FAILED"
+        }
+      ],
+      "success": true,
+      "error": { "message": "" }
+    }
+    ```
+  </Tab>
+
+  <Tab title="PURGED" icon="trash-2">
+    Job data has expired and is no longer available. Re-run the operation if results are needed.
+
+    ```json
+    {
+      "data": [
+        {
+          "tracking_id": "b6b7ef0e-86f6-4490-b0f8-4962a43656f929042024083721",
+          "call_type": "unmask",
+          "input_payload": "None",
+          "result": "None",
+          "error_msg": "None",
+          "submitted_time": "2024-04-29 08:37:21",
+          "completed_time": "2024-04-29 08:37:23",
+          "status": "PURGED"
+        }
+      ],
+      "success": true,
+      "error": { "message": "" }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Response fields
+
+<ResponseField name="tracking_id" field-type="string" required="true">
+  The job identifier.
+</ResponseField>
+
+<ResponseField name="call_type" field-type="string" required="true">
+  Either `mask` or `unmask`.
+</ResponseField>
+
+<ResponseField name="status" field-type="string" required="true">
+  Current job state: `PENDING`, `IN-PROGRESS`, `SUCCESS`, `FAILED`, or `PURGED`.
+</ResponseField>
+
+<ResponseField name="result" field-type="array" required="false">
+  The masking or unmasking output. Only present when `status` is `SUCCESS`.
+</ResponseField>
+
+<ResponseField name="error_msg" field-type="string" required="false">
+  Error description. Only present when `status` is `FAILED`.
+</ResponseField>
+
+<ResponseField name="submitted_time" field-type="string" required="true">
+  Timestamp when the job was submitted.
+</ResponseField>
+
+<ResponseField name="completed_time" field-type="string" required="false">
+  Timestamp when the job finished. `"None"` if still in progress.
+</ResponseField>

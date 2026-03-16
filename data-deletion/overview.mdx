@@ -1,0 +1,57 @@
+---
+title: "Data Deletion & Retention"
+description: "Admin APIs for enforcing data retention policies — delete stored token mappings and audit records after a defined retention window."
+---
+
+Protecto provides admin-only APIs to enforce data retention policies by deleting stored data mappings and audit records after a specified time window. All deletion operations run **asynchronously** and return a tracking ID.
+
+<Callout kind="alert">
+  Data deletion APIs are **not available on trial accounts**. A paid subscription and Namespace Admin token with `metadata_change` permission are required.
+</Callout>
+
+## What can be deleted
+
+| Data type | Description | Typical use |
+|-----------|-------------|-------------|
+| Personal Data Mappings | Stored mappings between clear text and tokens for pseudonymizable entities | Required for unmasking — delete to enforce right-to-erasure |
+| Audit Records | Logs of API calls, users, payloads, and responses | Compliance, forensics, reporting — delete after retention window |
+
+## How deletion works
+
+All deletion requests:
+
+- Run as background jobs
+- Return a `tracking_id`
+- Can be monitored via the job status API
+
+You can delete records older than:
+
+- A **specific date** (`YYYY-MM-DD`)
+- A **duration in days** (e.g., `90` for records older than 90 days)
+
+## Compliance use cases
+
+| Regulation | Requirement | Protecto API |
+|------------|-------------|--------------|
+| GDPR Article 17 | Right to erasure | Delete personal data mappings |
+| GDPR Article 5 | Storage limitation | Schedule deletion after retention window |
+| SOC 2 | Data retention controls | Background deletion with auditable tracking |
+| HIPAA | Minimum necessary rule | Delete PHI token mappings after use |
+
+<Callout kind="danger">
+  Deletion is **irreversible**. Deleting personal data mappings removes the ability to unmask those tokens. Ensure this is intentional and aligned with your retention policy.
+</Callout>
+
+## API reference
+
+<Columns cols="2">
+  <Card title="Delete Personal Data" href="/data-deletion/delete-personal-data" icon="trash-2" horizontal={false}>
+    Delete stored text-to-token mappings older than a date or duration.
+  </Card>
+  <Card title="Delete Audit Records" href="/data-deletion/delete-audit-records" icon="file-minus" horizontal={false}>
+    Delete audit log records older than a date or duration.
+  </Card>
+  <Card title="Track Deletion Jobs" href="/data-deletion/track-deletion-jobs" icon="activity" horizontal={false}>
+    Monitor the status of async deletion jobs.
+  </Card>
+</Columns>

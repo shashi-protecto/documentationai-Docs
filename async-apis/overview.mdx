@@ -1,0 +1,68 @@
+---
+title: "Async APIs"
+description: "Submit large masking or unmasking jobs for background processing and poll for results using a tracking ID."
+---
+
+## Overview
+
+Protecto's async endpoints are for **large payloads** or **long-running operations** where you don't want the request to block or risk timeouts.
+
+The async flow is always:
+
+1. **Submit** an async job (mask or unmask) → receive a `tracking_id`
+2. **Poll** the Async Status API with `tracking_id` until the job reaches a terminal state
+3. **Read** the `result` from the status response
+
+<Callout kind="info">
+  Async APIs require a paid subscription. They are not available on the trial.
+</Callout>
+
+## When to use async
+
+| Scenario | Use async? |
+|----------|-----------|
+| Small, single-value requests | No — use synchronous APIs |
+| Large batch of values | Yes |
+| Payloads that may exceed request timeouts | Yes |
+| Need reliable job tracking for batch workflows | Yes |
+
+## Submit response
+
+All async submit endpoints return a `tracking_id` and initial status:
+
+```json
+{
+  "data": [
+    {
+      "tracking_id": "17079670-e3a1-4643-b821-59f7b3c7824a26092024151238",
+      "status": "PENDING"
+    }
+  ],
+  "success": true,
+  "error": { "message": "" }
+}
+```
+
+## Polling guidance
+
+- Poll the [Async Status](/async-apis/async-status) endpoint every **30–60 seconds**
+- Stop polling when status becomes `SUCCESS`, `FAILED`, or `PURGED`
+- Store results on your side when `SUCCESS` — results may eventually be purged
+
+<Columns cols="2">
+  <Card title="Mask Async" href="/async-apis/mask-async" icon="eye-off" horizontal={false}>
+    Submit a masking job for background processing.
+  </Card>
+
+  <Card title="Unmask Async" href="/async-apis/unmask-async" icon="eye" horizontal={false}>
+    Submit an unmask job for background processing.
+  </Card>
+
+  <Card title="Async Status Tracking" href="/async-apis/async-status" icon="activity" horizontal={false}>
+    Poll for job results using a tracking ID.
+  </Card>
+
+  <Card title="Status Lifecycle" href="/async-apis/status-lifecycle" icon="git-branch" horizontal={false}>
+    Understand PENDING, IN-PROGRESS, SUCCESS, FAILED, and PURGED states.
+  </Card>
+</Columns>
