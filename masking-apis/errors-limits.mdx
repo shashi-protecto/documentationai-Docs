@@ -1,0 +1,103 @@
+---
+title: "Masking Errors & Limits"
+description: "All error responses, HTTP status codes, and payload limits for Protecto Masking APIs."
+---
+
+All Masking APIs (Mask with Token, Mask with Format, Identify and Mask, Mask with Policy, Mask with Attributes) share the same error format and limits.
+
+## Error response format
+
+All masking errors return a consistent structure:
+
+```json
+{
+  "data": null,
+  "success": false,
+  "error": {
+    "message": "Payload is empty"
+  }
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `success` | boolean | Always `false` for errors |
+| `data` | null | Always `null` for errors |
+| `error.message` | string | Human-readable error description |
+
+## Error messages by category
+
+<ExpandableGroup>
+  <Expandable title="Payload and structure errors" default-open="true">
+    | HTTP status | Error message | When it occurs |
+    |-------------|--------------|----------------|
+    | 400 | `Payload is empty` | Request body is empty or `mask` array is empty |
+    | 400 | `mask data missing` | The `mask` key is missing from the request body |
+    | 400 | `Missing value` | One or more `mask[].value` fields are empty |
+    | 400 | `Missing token_name` | The `token_name` field is empty or not provided |
+  </Expandable>
+
+  <Expandable title="Token errors" default-open="false">
+    | HTTP status | Error message | When it occurs |
+    |-------------|--------------|----------------|
+    | 400 | `token_name not defined: {INVALID_TOKEN_NAME}` | An unsupported `token_name` is provided |
+
+    Token names are **case- and spelling-sensitive**. The invalid name is interpolated into the error message.
+  </Expandable>
+
+  <Expandable title="Format errors" default-open="false">
+    | HTTP status | Error message | When it occurs |
+    |-------------|--------------|----------------|
+    | 400 | `Missing format` | The `format` field is empty or not provided |
+    | 400 | `format name not defined: {INVALID_FORMAT_NAME}` | An unsupported `format` is provided |
+
+    Format names are **case- and spelling-sensitive**. Only supported formats are accepted.
+  </Expandable>
+
+  <Expandable title="Metadata errors" default-open="false">
+    | HTTP status | Error message | When it occurs |
+    |-------------|--------------|----------------|
+    | 400 | `Token and Format Metadata not available` | Required token/format metadata is missing or unresolvable |
+
+    This typically occurs when metadata is not configured for the environment, or when token and format metadata cannot be resolved for the request.
+  </Expandable>
+
+  <Expandable title="Subscription and limit errors" default-open="false">
+    | HTTP status | Error message | When it occurs |
+    |-------------|--------------|----------------|
+    | 403 | `You have exceeded the maximum number of token creation limit for your trial subscription. To upgrade your subscription, please contact help@protecto.ai.` | Trial token creation limit exceeded |
+    | 400 | `Masked data exceeds the approved limit of 600 characters. Please split the input value and try again.` | Masked output exceeds 600 characters |
+    | 500 | `Masking failed after 3 retries` | Internal masking operation failed after retries |
+  </Expandable>
+</ExpandableGroup>
+
+## Limits
+
+| Constraint | Value |
+|-----------|-------|
+| Maximum masked output length | 600 characters |
+| Trial token creation limit | 1,000 masked values |
+| Rate limits | Plan-based (enforced on all tiers) |
+
+<Callout kind="info">
+  The 600-character limit applies to the **masked output**, not just the input. Split large inputs into smaller values before masking.
+</Callout>
+
+## Retry behavior
+
+| HTTP status | Scenario | Recommended action |
+|-------------|----------|-------------------|
+| 400 | Validation or input error | Do not retry — fix the request |
+| 403 | Trial subscription exhausted | Upgrade subscription |
+| 500 | Internal failure after retries | Retry with exponential backoff or contact support |
+
+<Callout kind="tip">
+  Masking is deterministic. Retrying the same request does not create duplicate or inconsistent tokens.
+</Callout>
+
+## Best practices
+
+- Validate request payloads before sending — check that `mask`, `value`, `token_name`, and `format` fields are populated
+- Keep masked outputs under 600 characters by splitting long inputs
+- Handle trial subscription exhaustion gracefully with clear user-facing messaging
+- Log error messages exactly as returned for support and debugging

@@ -1,0 +1,102 @@
+---
+title: "Mask with Format"
+description: "Mask sensitive values while preserving the structure of the original — such as phone number punctuation or email domain format."
+---
+
+Use this when the **structure of the value must be preserved**, such as punctuation in phone numbers or domains in email addresses. The masked output will look like a valid value of the same type.
+
+## Endpoint
+
+| Method | URL |
+|--------|-----|
+| PUT | `https://protecto-trial.protecto.ai/api/vault/mask` |
+
+## Request body
+
+<ParamField body="mask" param-type="array" required="true">
+  List of values to mask with format preservation.
+</ParamField>
+
+<ParamField body="mask[].value" param-type="string" required="true">
+  The raw sensitive value to mask.
+</ParamField>
+
+<ParamField body="mask[].format" param-type="string" required="true">
+  The format to apply. Must be a supported format name (e.g., `Phone Number`, `Email Address`, `URL`). See [Supported Formats](/supported-data-types/formats) for the full list.
+</ParamField>
+
+<ParamField body="mask[].token_name" param-type="string" required="true">
+  The token type to use alongside the format.
+</ParamField>
+
+## Example
+
+<Request tabs="cURL,Python">
+  ```bash
+  curl -X PUT https://protecto-trial.protecto.ai/api/vault/mask \
+    -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "mask": [
+        {
+          "value": "(408)- 426 - 9989",
+          "format": "Phone Number",
+          "token_name": "Numeric Token"
+        },
+        {
+          "value": "kumar@fss.com",
+          "format": "Email Address",
+          "token_name": "Text Token"
+        }
+      ]
+    }'
+  ```
+
+  ```python
+  import requests
+
+  response = requests.put(
+      "https://protecto-trial.protecto.ai/api/vault/mask",
+      headers={
+          "Authorization": "Bearer YOUR_AUTH_TOKEN",
+          "Content-Type": "application/json"
+      },
+      json={
+          "mask": [
+              {"value": "(408)- 426 - 9989", "format": "Phone Number", "token_name": "Numeric Token"},
+              {"value": "kumar@fss.com", "format": "Email Address", "token_name": "Text Token"}
+          ]
+      }
+  )
+  ```
+</Request>
+
+<Response tabs="200">
+  ```json
+  {
+    "data": [
+      {
+        "value": "(408)- 426 - 9989",
+        "format": "Phone Number",
+        "token_name": "Numeric Token",
+        "token_value": "(07432)- 29915 - 56713"
+      },
+      {
+        "value": "kumar@fss.com",
+        "format": "Email Address",
+        "token_name": "Text Token",
+        "token_value": "LEFQS@WJoZudg"
+      }
+    ],
+    "success": true,
+    "error": { "message": "" }
+  }
+  ```
+</Response>
+
+## Notes
+
+- Format names are **case- and spelling-sensitive**. An invalid name returns a `format name not defined` error.
+- Format-masked output preserves the structure (length, character pattern, separators) but not the content.
+- See [Supported Formats](/supported-data-types/formats) for all valid format names.
+- See [Errors & Limits](/masking-apis/errors-limits) for the full list of error responses.

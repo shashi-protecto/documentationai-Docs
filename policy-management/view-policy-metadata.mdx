@@ -1,0 +1,88 @@
+---
+title: "View Policy Metadata"
+description: "Retrieve entity-level metadata for a policy — which entities are anonymizable, pseudonymizable, or excluded."
+---
+
+Retrieves entity-level metadata for a specific policy, showing which entities are anonymizable, pseudonymizable, or excluded.
+
+## Endpoint
+
+| Method | Endpoint |
+|--------|----------|
+| `GET` | `https://<domain>/api/vault/metadata/personal-data-entities/list` |
+
+## Query parameters
+
+<ParamField query="policy_name" param-type="string" required="false">
+  Policy to retrieve metadata for. If omitted, returns the master entity list without policy-specific overrides.
+</ParamField>
+
+<ParamField query="next_page_token" param-type="string" required="false">
+  Pagination token for large result sets.
+</ParamField>
+
+<Request tabs="cURL">
+```bash
+curl -X GET "https://<domain>/api/vault/metadata/personal-data-entities/list?policy_name=customer-support-policy" \
+  -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>"
+```
+</Request>
+
+<Response tabs="200">
+```json
+{
+  "data": {
+    "details": [
+      {
+        "policy_name": "customer-support-policy",
+        "metadata": {
+          "anonymizable_entities": [
+            {
+              "entity_name": "CREDIT_CARD",
+              "entity_type": "PCI",
+              "prefix": "<CREDIT_CARD>",
+              "suffix": "</CREDIT_CARD>",
+              "description": "Credit Card"
+            }
+          ],
+          "pseudonymizable_entities": [
+            {
+              "entity_name": "PERSON",
+              "entity_type": "PII",
+              "prefix": "<PER>",
+              "suffix": "</PER>",
+              "description": "Person Name"
+            },
+            {
+              "entity_name": "EMAIL_ADDRESS",
+              "entity_type": "PII",
+              "prefix": "<EMAIL_ADDRESS>",
+              "suffix": "</EMAIL_ADDRESS>",
+              "description": "Email Address"
+            }
+          ],
+          "excluded_entities": [
+            {
+              "entity_name": "URL",
+              "entity_type": "PII",
+              "description": "URL"
+            }
+          ]
+        }
+      }
+    ],
+    "next_page_token": null
+  },
+  "success": true,
+  "error": { "message": "" }
+}
+```
+</Response>
+
+## Entity categories
+
+| Category | Behavior |
+|----------|---------|
+| `anonymizable_entities` | Masked and **cannot be unmasked** — irreversible |
+| `pseudonymizable_entities` | Masked and **can be unmasked** — reversible with permissions |
+| `excluded_entities` | Not detected or masked — appear as plain text |

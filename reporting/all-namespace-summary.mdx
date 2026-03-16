@@ -1,0 +1,75 @@
+---
+title: "All Namespace Summary"
+description: "API usage counts across all namespaces visible to the admin — for platform-level monitoring and tenant usage overview."
+---
+
+Returns usage counts **across all namespaces** visible to the admin. Commonly used by platform or super admins to monitor tenant-level activity.
+
+## Endpoint
+
+| Method | Endpoint |
+|--------|----------|
+| `GET` | `https://<domain>/api/vault/reports/all-namespace-summary` |
+
+## Query parameters
+
+<ParamField query="start_date" param-type="string" required="true">
+  Start of the reporting window. Format: `YYYY-MM-DD HH:MM:SS`.
+</ParamField>
+
+<ParamField query="end_date" param-type="string" required="true">
+  End of the reporting window. Format: `YYYY-MM-DD HH:MM:SS`.
+</ParamField>
+
+<ParamField query="next_page_token" param-type="string" required="false">
+  Pagination token for large result sets.
+</ParamField>
+
+<Request tabs="cURL">
+```bash
+curl -X GET "https://<domain>/api/vault/reports/all-namespace-summary?start_date=2024-05-01+00:00:00&end_date=2024-05-31+23:59:59" \
+  -H "Authorization: Bearer <ADMIN_USER_AUTH_KEY>"
+```
+</Request>
+
+<Response tabs="200">
+```json
+{
+  "data": [
+    {
+      "namespace": "production",
+      "start_time": "2024-05-01 00:00:00",
+      "end_time": "2024-05-31 23:59:59",
+      "count": 482931
+    },
+    {
+      "namespace": "staging",
+      "start_time": "2024-05-01 00:00:00",
+      "end_time": "2024-05-31 23:59:59",
+      "count": 14820
+    }
+  ],
+  "next_page_token": null,
+  "success": true,
+  "error": { "message": "" }
+}
+```
+</Response>
+
+## Response fields
+
+<ResponseField name="namespace" field-type="string" required="true">
+  Namespace name.
+</ResponseField>
+
+<ResponseField name="start_time" field-type="string" required="true">
+  Reporting window start timestamp.
+</ResponseField>
+
+<ResponseField name="end_time" field-type="string" required="true">
+  Reporting window end timestamp.
+</ResponseField>
+
+<ResponseField name="count" field-type="integer" required="true">
+  Total API calls in this namespace during the window.
+</ResponseField>

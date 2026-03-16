@@ -1,0 +1,57 @@
+---
+title: "Delete Policy"
+description: "Permanently delete a policy and all its associated metadata from the namespace."
+---
+
+Deletes a policy and all associated metadata.
+
+## Endpoint
+
+| Method | Endpoint |
+|--------|----------|
+| `PUT` | `https://<domain>/api/vault/metadata/policy/delete` |
+
+<Request tabs="cURL">
+```bash
+curl -X PUT https://<domain>/api/vault/metadata/policy/delete \
+  -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>" \
+  -H "Content-Type: application/json; charset=utf-8" \
+  -d '{
+    "data": {
+      "policy_name": "old-test-policy"
+    }
+  }'
+```
+</Request>
+
+<Response tabs="200,Error">
+```json
+{
+  "data": {
+    "message": "Policy old-test-policy deleted successfully."
+  },
+  "success": true,
+  "error": { "message": "" }
+}
+```
+
+```json
+{
+  "data": {},
+  "success": false,
+  "error": { "message": "Policy old-test-policy not found." }
+}
+```
+</Response>
+
+## Behavior after deletion
+
+| Item | Behavior |
+|------|----------|
+| Previously masked data | Not affected — existing tokens remain valid |
+| New Mask/Unmask calls with this `policy_name` | Will fail with a policy not found error |
+| Re-creation | Allowed — you can create a new policy with the same name |
+
+<Callout kind="danger">
+  Deleting a policy immediately affects all systems using it. Any Mask or Unmask API calls that reference the deleted `policy_name` will fail until they are updated to use a different policy.
+</Callout>

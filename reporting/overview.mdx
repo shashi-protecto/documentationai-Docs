@@ -1,0 +1,47 @@
+---
+title: "Reporting & Auditing"
+description: "Visibility into API usage, data access patterns, and full audit trails for compliance, security reviews, and governance."
+---
+
+Protecto's Reporting & Auditing APIs give namespace administrators visibility into **who accessed data**, **what APIs were called**, and **how frequently**.
+
+<Callout kind="alert">
+  Reporting & Auditing APIs are **not available on trial accounts**. A paid subscription and Namespace Admin or Admin User Auth Key are required.
+</Callout>
+
+## Common requirements
+
+| Item | Value |
+|------|-------|
+| Authentication | `Bearer <ADMIN_USER_AUTH_KEY>` |
+| Date format | `YYYY-MM-DD HH:MM:SS` |
+| Pagination | `next_page_token` |
+| HTTP method | `GET` |
+
+## Use cases
+
+| Use case | What to look for |
+|----------|-----------------|
+| Compliance audit | API call times, input payloads, responses |
+| Security investigation | User identity, method, status across time |
+| Incident forensics | Full request and response payloads |
+| Unmask access review | `/unmask` calls grouped by user |
+| Usage monitoring | Call counts by API type and status |
+| Insider threat detection | Frequency of sensitive calls per user |
+
+## API reference
+
+<Columns cols="2">
+  <Card title="User Namespace Summary" href="/reporting/user-namespace-summary" icon="user" horizontal={false}>
+    API usage per user within a namespace.
+  </Card>
+  <Card title="Namespace Summary" href="/reporting/namespace-summary" icon="bar-chart" horizontal={false}>
+    Aggregated usage counts for a single namespace.
+  </Card>
+  <Card title="All Namespace Summary" href="/reporting/all-namespace-summary" icon="globe" horizontal={false}>
+    Usage counts across all namespaces visible to the admin.
+  </Card>
+  <Card title="Audit Logs" href="/reporting/audit-logs" icon="file-text" horizontal={false}>
+    Full audit-level detail for every API request in a namespace.
+  </Card>
+</Columns>

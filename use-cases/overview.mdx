@@ -1,0 +1,40 @@
+---
+title: "Use Cases"
+description: "Real-world patterns for protecting sensitive data across applications, AI pipelines, logs, analytics, and CRM systems using Protecto."
+---
+
+## Common integration patterns
+
+Protecto fits naturally into the data flows where sensitive information is most at risk. The use cases below cover the most common patterns engineering teams encounter.
+
+<Columns cols="2">
+  <Card title="Protect PII in GenAI / LLM Prompts" href="/use-cases/genai-llm-prompts" icon="bot" horizontal={false}>
+    Mask sensitive data before sending prompts to an LLM. No raw PII leaves your system.
+  </Card>
+
+  <Card title="Redact Sensitive Data in Logs" href="/use-cases/redact-logs" icon="file-text" horizontal={false}>
+    Mask log lines before writing them so sensitive data is never stored in plain text.
+  </Card>
+
+  <Card title="Mask PII in Analytics & BI Pipelines" href="/use-cases/analytics-bi-pipelines" icon="bar-chart-2" horizontal={false}>
+    Tokenize known fields at ingestion time so dashboards and warehouses never hold raw PII.
+  </Card>
+
+  <Card title="AI Agent for CRM Support" href="/use-cases/crm-support" icon="headphones" horizontal={false}>
+    Mask CRM records before your AI agent processes them, then unmask only in authorized workflows.
+  </Card>
+
+  <Card title="Detect Custom PII (Internal IDs)" href="/use-cases/custom-pii-detection" icon="tag" horizontal={false}>
+    Teach Protecto to recognize your own internal identifiers as first-class PII types.
+  </Card>
+</Columns>
+
+## Choosing the right masking approach
+
+| Scenario | Recommended approach |
+|----------|---------------------|
+| Free-form text, LLM prompts, logs | Auto-Detect and Mask |
+| Known structured fields (CRM, DB records) | Mask with Token |
+| Fields that must preserve format/length | Mask with Format |
+| Internal identifiers (Customer IDs, Account IDs) | Custom PII detection |
+| Governance-controlled workflows | Policy-based masking |

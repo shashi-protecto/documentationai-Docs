@@ -1,0 +1,63 @@
+---
+title: "Masking Errors"
+description: "Common error messages from the Mask API, what causes them, and how to fix them."
+---
+
+The Mask API returns structured error messages for invalid requests.
+
+**Endpoint:** `PUT https://protecto-trial.protecto.ai/api/vault/mask`
+
+## Common errors
+
+| Scenario | Error message |
+|----------|---------------|
+| Empty payload | `Payload is empty` |
+| Missing `mask` key | `mask data missing` |
+| Missing `value` | `Missing value` |
+| Missing `token_name` | `Missing token_name` |
+| Invalid `token_name` | `token_name not defined: {<INVALID_TOKEN_NAME>}` |
+| Missing `format` | `Missing format` |
+| Invalid `format` | `format name not defined: {<INVALID_FORMAT_NAME>}` |
+| Missing metadata | `Token and Format Metadata not available` |
+| Trial quota exceeded | `You have exceeded the maximum number of token creation limit for your trial subscription` |
+| Value too large | `Masked data exceeds the approved limit of 600 characters` |
+| Processing failure | `Masking failed after 3 retries` |
+
+## Example: Missing `token_name`
+
+**Request:**
+```json
+{
+  "mask": [
+    { "value": "George Williams", "token_name": "" }
+  ]
+}
+```
+
+**Response:**
+```json
+{
+  "data": null,
+  "success": false,
+  "error": { "message": "Missing token_name" }
+}
+```
+
+## Fixes
+
+<ExpandableGroup>
+  <Expandable title="Missing or invalid token_name" default-open="false">
+    Ensure `token_name` is one of the supported values: `Default Token`, `Text Token`, `Numeric Token`, `Special Token`, `Person Token`, `Date Token`, `State Token`.
+
+    Token names are case-sensitive.
+  </Expandable>
+  <Expandable title="Invalid format name" default-open="false">
+    Format names are case- and spelling-sensitive. Use the exact strings from the [Formats reference](/supported-data-types/formats). Example: `"Phone Number"` not `"phone_number"`.
+  </Expandable>
+  <Expandable title="Value too large" default-open="false">
+    Maximum masked value length is **600 characters**. Split long strings into shorter segments before sending.
+  </Expandable>
+  <Expandable title="Trial quota exceeded" default-open="false">
+    Trial accounts have a hard limit on total token creations. Upgrade to a paid subscription or contact Protecto to increase limits.
+  </Expandable>
+</ExpandableGroup>

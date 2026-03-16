@@ -1,0 +1,43 @@
+---
+title: "Delete Namespace"
+description: "Delete an entire namespace including all data, tokens, and metadata. This operation is irreversible and runs asynchronously."
+---
+
+Deletes an entire namespace including **all data and metadata**. This operation is **irreversible** and runs asynchronously.
+
+## Endpoint
+
+| Method | Endpoint |
+|--------|----------|
+| `PUT` | `https://<domain>/api/vault/super-admin/namespace/delete` |
+
+<Request tabs="cURL">
+```bash
+curl -X PUT https://<domain>/api/vault/super-admin/namespace/delete \
+  -H "Authorization: Bearer <MASTER_API_KEY>" \
+  -H "Content-Type: application/json; charset=utf-8" \
+  -d '{
+    "namespace_to_be_deleted": "customer_ns_1"
+  }'
+```
+</Request>
+
+<Response tabs="200">
+```json
+{
+  "data": {
+    "tracking_id": "9f799cb6-5315-4199-8d47-3a7ced21dd1d",
+    "status": "PENDING",
+    "job_type": "namespace-deletion"
+  },
+  "success": true,
+  "error": { "message": "" }
+}
+```
+</Response>
+
+Use the [Track Namespace Jobs](/super-admin/track-namespace-jobs) API to monitor deletion progress.
+
+<Callout kind="danger">
+  Deleting a namespace removes all stored token mappings, policies, custom PII configurations, audit logs, and user tokens. This operation cannot be undone.
+</Callout>

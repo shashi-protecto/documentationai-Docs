@@ -1,0 +1,40 @@
+---
+title: "Toxicity Categories"
+description: "The six toxicity categories Protecto reports — what each measures and how to use them in your moderation and safety workflows."
+---
+
+Protecto reports six toxicity categories for every analyzed text. All fields are always present in the response, even when scores are near zero.
+
+## Categories
+
+| Field Name | Description |
+|------------|-------------|
+| `toxicity` | Overall toxicity score for the text |
+| `severe_toxicity` | Highly aggressive or extreme toxicity |
+| `obscene` | Profanity or sexually explicit language |
+| `threat` | Direct or indirect threats of harm |
+| `insult` | Derogatory or demeaning language |
+| `identity_attack` | Attacks targeting a protected group or identity |
+
+## How categories relate
+
+The categories are **independent** — high scores on one category do not imply high scores on others.
+
+For example:
+- Content can score high on `insult` while scoring near zero on `threat`
+- Content can be `obscene` without being an `identity_attack`
+- `toxicity` captures overall toxicity and may be elevated even when specific sub-categories are low
+
+## Using multiple categories together
+
+Many moderation workflows combine categories:
+
+```
+flag if toxicity > 0.7 OR identity_attack > 0.4 OR threat > 0.5
+escalate if severe_toxicity > 0.3
+log if any category > 0.2
+```
+
+<Callout kind="tip">
+  Use `identity_attack` specifically for detecting hate speech and discriminatory content. It is designed to catch language targeting people based on race, religion, gender, sexual orientation, or other identity characteristics.
+</Callout>

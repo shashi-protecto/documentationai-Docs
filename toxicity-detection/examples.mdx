@@ -1,0 +1,35 @@
+---
+title: "Toxicity Score Examples"
+description: "Real examples showing how different types of language score across toxicity categories — to help calibrate your thresholds."
+---
+
+The following examples show how different types of language score across the six toxicity categories. Use these to calibrate your thresholds and understand how the scoring behaves.
+
+## Score reference table
+
+| Text | Toxicity | Insult | Obscene | Threat | Identity attack |
+|------|----------|--------|---------|--------|----------------|
+| "You disgusting piece of s***." | 1.00 | 0.96 | 0.97 | 0.00 | 0.00 |
+| "You are ugly, nobody likes you." | 0.97 | 0.84 | 0.13 | 0.00 | 0.00 |
+| "You're really dumb, aren't you?" | 0.96 | 0.90 | 0.39 | 0.00 | 0.00 |
+| "If you make this mistake again, I will kill you" | 0.83 | 0.07 | 0.05 | 0.81 | 0.00 |
+| "I hate people from India" | 0.80 | 0.03 | 0.01 | 0.01 | 0.47 |
+| "Watch your back, or you'll be sorry." | 0.49 | 0.01 | 0.01 | 0.26 | 0.00 |
+| "You're not very good at this, are you?" | 0.07 | 0.00 | 0.00 | 0.00 | 0.00 |
+| "I hope you understand the consequences of your actions." | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 |
+
+## Key observations
+
+- **Insults and profanity score independently** — the first example scores near 1.0 on both `toxicity` and `obscene`, while a pure insult ("you're dumb") scores high on `toxicity` and `insult` but lower on `obscene`.
+
+- **Threats are specifically detected** — "I will kill you" scores 0.81 on `threat` while scoring low on `insult` and `obscene`, confirming category independence.
+
+- **Identity attacks register separately** — "I hate people from India" registers on `identity_attack` (0.47) while having minimal scores on other categories.
+
+- **Ambiguous language scores moderately** — "Watch your back, or you'll be sorry" scores 0.49 on `toxicity` and 0.26 on `threat`, reflecting genuine ambiguity.
+
+- **Neutral language scores near zero** — "I hope you understand the consequences" scores 0.00 across all categories, confirming that stern but non-harmful language is not flagged.
+
+<Callout kind="tip">
+  The table above is a calibration guide. Your thresholds should reflect your product's risk tolerance and user context — a children's platform should apply stricter thresholds than an enterprise support tool.
+</Callout>

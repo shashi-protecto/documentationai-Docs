@@ -1,0 +1,81 @@
+---
+title: "Toxicity in Mask API"
+description: "How toxicity analysis appears in Identify and Mask (Auto-detect) responses alongside masked entity data."
+---
+
+Toxicity analysis is returned when using **Identify and Mask (Auto-detect)**. In addition to masked output, the response includes a `toxicity_analysis` object and `individual_tokens` with detected entity positions.
+
+## How it appears in the response
+
+<Request tabs="cURL">
+```bash
+curl -X PUT https://protecto-trial.protecto.ai/api/vault/mask \
+  -H "Authorization: Bearer <AUTH_TOKEN>" \
+  -H "Content-Type: application/json; charset=utf-8" \
+  -d '{
+    "mask": [
+      {
+        "value": "Sarah Connors can be reached at 217-555-2020 or sarah.connors88@example.com"
+      }
+    ]
+  }'
+```
+</Request>
+
+<Response tabs="200">
+```json
+{
+  "data": [
+    {
+      "value": "Sarah Connors can be reached at 217-555-2020 or sarah.connors88@example.com",
+      "token_value": "<PER>6qdEj</PER> can be reached at <PHONE_NUMBER>397-481-2948</PHONE_NUMBER> or <EMAIL_ADDRESS>bqpzj.wfzewdj44@hgbraqmp.pnk</EMAIL_ADDRESS>",
+      "individual_tokens": [
+        {
+          "value": "Sarah Connors",
+          "token_value": "6qdEj",
+          "entity_type": "PER",
+          "start": 0,
+          "end": 13
+        },
+        {
+          "value": "217-555-2020",
+          "token_value": "397-481-2948",
+          "entity_type": "PHONE_NUMBER",
+          "start": 32,
+          "end": 44
+        },
+        {
+          "value": "sarah.connors88@example.com",
+          "token_value": "bqpzj.wfzewdj44@hgbraqmp.pnk",
+          "entity_type": "EMAIL_ADDRESS",
+          "start": 48,
+          "end": 75
+        }
+      ],
+      "toxicity_analysis": {
+        "toxicity": 0.0006348,
+        "severe_toxicity": 0.0001197,
+        "obscene": 0.0001864,
+        "threat": 0.0001172,
+        "insult": 0.0001784,
+        "identity_attack": 0.0001435
+      }
+    }
+  ],
+  "success": true,
+  "error": { "message": "" }
+}
+```
+</Response>
+
+## Important notes
+
+- Toxicity detection does **not** depend on policy configuration in the Mask API
+- Masking proceeds normally regardless of toxicity score
+- Scores reflect the full sentence context, not individual entities
+- `individual_tokens` provides entity-level detection results with character positions
+- Toxicity analysis is not available for token-based or format-based masking — only auto-detect
+
+<Callout kind="info">
+  Toxicity detection always runs on the **original text**, before any masking occurs. This ensures that masking PII does not affect toxicity scoring.
+</Callout>

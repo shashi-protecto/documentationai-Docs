@@ -1,0 +1,49 @@
+---
+title: "Unmasking APIs"
+description: "Reverse tokenized values back to their original sensitive content. Unmasking is a privileged operation governed by permissions and policies."
+---
+
+## Overview
+
+The Unmasking API reverses tokenized content back to its **original sensitive values**. It is designed for **authorized recovery of tokenized text** — including entities such as names, emails, phone numbers, URLs, addresses, and nationalities.
+
+Unmasking is a **privileged operation** and must only be used by authorized users in accordance with your organization's security and compliance requirements.
+
+All unmasking operations use **HTTP PUT**.
+
+<Callout kind="alert">
+  Unmasking exposes original sensitive data. Restrict access to unmasking endpoints, enforce role-based access controls, and audit all unmask operations.
+</Callout>
+
+## Authentication
+
+| Header | Value |
+|--------|-------|
+| `Authorization` | `Bearer <AUTH_TOKEN>` |
+
+## Base URLs
+
+| Environment | Base URL |
+|-------------|----------|
+| Trial | `https://protecto-trial.protecto.ai` |
+| Production | `https://api.protecto.ai` |
+
+## Available endpoints
+
+<Columns cols="2">
+  <Card title="Unmask with Token" href="/unmasking-apis/unmask-with-token" icon="unlock" horizontal={false}>
+    Restore original values from tokenized text produced by auto-detect masking.
+  </Card>
+
+  <Card title="Unmask with Policy" href="/unmasking-apis/unmask-with-policy" icon="scroll" horizontal={false}>
+    Apply a named policy during unmasking for governance-controlled re-identification.
+  </Card>
+
+  <Card title="Toxicity in Unmask API" href="/unmasking-apis/toxicity-in-unmask" icon="alert-triangle" horizontal={false}>
+    Understand the toxicity scores returned alongside unmasked values.
+  </Card>
+
+  <Card title="Errors" href="/unmasking-apis/errors" icon="alert-circle" horizontal={false}>
+    Full list of unmasking error messages and HTTP status codes.
+  </Card>
+</Columns>

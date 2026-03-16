@@ -1,0 +1,57 @@
+---
+title: "Update Entity Categories"
+description: "Move entities between anonymizable, pseudonymizable, and excluded groups within a policy."
+---
+
+Moves entities between anonymizable, pseudonymizable, and excluded groups within a policy. The response returns the entire updated metadata.
+
+## Endpoint
+
+| Method | Endpoint |
+|--------|----------|
+| `PUT` | `https://<domain>/api/vault/metadata/personal-data-entities/update-category` |
+
+## Request body
+
+<ParamField body="policy_name" param-type="string" required="true">
+  Target policy to update.
+</ParamField>
+
+<ParamField body="anonymizable_entities" param-type="array[string]" required="false">
+  Entity names to set as anonymizable (irreversible masking).
+</ParamField>
+
+<ParamField body="pseudonymizable_entities" param-type="array[string]" required="false">
+  Entity names to set as pseudonymizable (reversible masking).
+</ParamField>
+
+<ParamField body="excluded_entities" param-type="array[string]" required="false">
+  Entity names to exclude from detection and masking entirely.
+</ParamField>
+
+<Request tabs="cURL">
+```bash
+curl -X PUT https://<domain>/api/vault/metadata/personal-data-entities/update-category \
+  -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>" \
+  -H "Content-Type: application/json; charset=utf-8" \
+  -d '{
+    "data": {
+      "policy_name": "customer-support-policy",
+      "anonymizable_entities": ["CREDIT_CARD", "PHONE_NUMBER"],
+      "pseudonymizable_entities": ["PERSON", "EMAIL_ADDRESS"],
+      "excluded_entities": ["URL"]
+    }
+  }'
+```
+</Request>
+
+## Behavior notes
+
+- All entity names must be valid supported entities
+- The response returns the **entire updated metadata**, not just the changed entities
+- Entities listed in `excluded_entities` appear as clear text in Mask responses — they are not masked
+- Changes take effect immediately for all subsequent API calls using this policy
+
+<Callout kind="tip">
+  Use `anonymizable_entities` for data that should never be restored — financial data sent to analytics pipelines, data shared with third parties. Use `pseudonymizable_entities` for data that support teams need to access.
+</Callout>

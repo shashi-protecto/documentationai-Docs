@@ -1,0 +1,71 @@
+---
+title: "Masking APIs"
+description: "Overview of all Protecto masking endpoints — from explicit token-based masking to auto-detection of PII in free-form text."
+---
+
+## Overview
+
+The Masking APIs transform sensitive input values into **secure, deterministic tokens**. Depending on how you call the API, Protecto can:
+
+- Mask known values using explicit token types
+- Preserve structure using formats (email, phone, URL)
+- Automatically detect and mask PII in free-form text
+- Apply masking behavior defined in a named policy
+- Attach custom metadata to masked values
+
+All masking operations use **HTTP PUT** and require a valid authorization token.
+
+## Authentication
+
+| Header | Value |
+|--------|-------|
+| `Authorization` | `Bearer <AUTH_TOKEN>` |
+
+## Base URLs
+
+| Environment | Base URL |
+|-------------|----------|
+| Trial | `https://protecto-trial.protecto.ai` |
+| Production | `https://api.protecto.ai` |
+
+<Callout kind="info">
+  The trial endpoint is publicly accessible. The production endpoint is activated upon subscription and requires production credentials.
+</Callout>
+
+## Available masking modes
+
+<Columns cols="2">
+  <Card title="Mask with Token" href="/masking-apis/mask-with-token" icon="hash" horizontal={false}>
+    Explicitly specify the token type when you already know the data type.
+  </Card>
+
+  <Card title="Mask with Format" href="/masking-apis/mask-with-format" icon="type" horizontal={false}>
+    Preserve value structure (phone format, email format) while replacing the actual content.
+  </Card>
+
+  <Card title="Identify and Mask (Auto-Detect)" href="/masking-apis/identify-and-mask" icon="scan" horizontal={false}>
+    Detect and mask all PII in free-form text automatically, driven by your active policy.
+  </Card>
+
+  <Card title="Mask with Policy" href="/masking-apis/mask-with-policy" icon="scroll" horizontal={false}>
+    Apply policy-defined masking behavior, including anonymization vs pseudonymization rules.
+  </Card>
+
+  <Card title="Mask with Attributes" href="/masking-apis/mask-with-attributes" icon="sliders" horizontal={false}>
+    Attach custom metadata key-value pairs to masked values.
+  </Card>
+
+  <Card title="Prefix & Suffix Behavior" href="/masking-apis/prefix-suffix-behavior" icon="code" horizontal={false}>
+    Understand how entity tags wrap masked values and how to customize them.
+  </Card>
+</Columns>
+
+## Choosing the right masking mode
+
+| Input type | Recommended mode |
+|-----------|-----------------|
+| Free-form text, logs, prompts | Identify and Mask (Auto-Detect) |
+| Known structured fields | Mask with Token |
+| Fields requiring format preservation | Mask with Format |
+| Policy-governed workflows | Mask with Policy |
+| Values needing custom metadata | Mask with Attributes |

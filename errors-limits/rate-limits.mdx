@@ -1,0 +1,45 @@
+---
+title: "Rate Limits"
+description: "How Protecto rate limits apply per namespace and subscription tier, and how to handle 429 responses."
+---
+
+Rate limits apply per namespace and subscription tier.
+
+## Rate limit behavior
+
+| Account type | Behavior |
+|-------------|---------|
+| Trial accounts | Hard-limited usage |
+| Production accounts | Tier-based limits |
+| Exceeded limit | HTTP 429 with error message |
+
+## Error response
+
+```json
+{
+  "data": null,
+  "success": false,
+  "error": {
+    "message": "API usage limit exceeded"
+  }
+}
+```
+
+## Handling 429 responses
+
+When you receive a `429 Too Many Requests` response:
+
+1. **Stop sending requests immediately** — do not retry in a tight loop
+2. **Implement exponential backoff** — wait before retrying (e.g., 1s, 2s, 4s, 8s)
+3. **Batch your requests** — combine multiple values into a single API call
+4. **Consider async APIs** — for large volumes, use async masking/unmasking
+
+## Reducing rate limit exposure
+
+- Batch values into arrays within a single request instead of one request per value
+- Use async APIs for bulk operations
+- Cache masked values to avoid re-masking the same input
+
+<Callout kind="info">
+  For production rate limit details specific to your subscription tier, contact Protecto at help@protecto.ai.
+</Callout>

@@ -1,0 +1,66 @@
+---
+title: "Toxicity in Unmask API"
+description: "How toxicity analysis appears in Unmask API responses — auditing restored content for safety compliance."
+---
+
+The Unmask API also returns toxicity analysis for the **unmasked text**. This allows you to audit restored content, apply moderation after de-tokenization, and enforce stricter controls on data access workflows.
+
+## How it appears in the response
+
+<Request tabs="cURL">
+```bash
+curl -X PUT https://protecto-trial.protecto.ai/api/vault/unmask \
+  -H "Authorization: Bearer <AUTH_TOKEN>" \
+  -H "Content-Type: application/json; charset=utf-8" \
+  -d '{
+    "unmask": [
+      {
+        "value": "<PER>hSw8kAEB10</PER> lives in <ADDRESS>748785848000</ADDRESS>"
+      }
+    ]
+  }'
+```
+</Request>
+
+<Response tabs="200">
+```json
+{
+  "data": [
+    {
+      "value": "George Williams lives in Washington",
+      "token_value": "<PER>hSw8kAEB10</PER> lives in <ADDRESS>748785848000</ADDRESS>",
+      "toxicity_analysis": {
+        "toxicity": 0.0008883,
+        "severe_toxicity": 0.0001045,
+        "obscene": 0.0001825,
+        "threat": 0.0001108,
+        "insult": 0.0001754,
+        "identity_attack": 0.0001380
+      }
+    }
+  ],
+  "success": true,
+  "error": { "message": "" }
+}
+```
+</Response>
+
+## Important notes
+
+- `policy_name` is optional in unmask requests
+- Toxicity scores are always returned when unmasking succeeds
+- Unmask authorization rules still apply — toxicity detection does not bypass access controls
+- Scores reflect the **restored original text**, not the tokenized form
+
+## Use cases for unmask toxicity
+
+| Use case | Description |
+|----------|-------------|
+| Post-unmask moderation | Check restored content before displaying to users |
+| Audit logging | Log toxicity scores alongside all unmask operations |
+| Access control augmentation | Apply additional review when high toxicity + unmask are combined |
+| Compliance reporting | Record safety signals for regulated workflows |
+
+<Callout kind="tip">
+  Combining `identity_attack` scores with unmask audit logs is useful for detecting whether sensitive personal data is being accessed in discriminatory contexts.
+</Callout>

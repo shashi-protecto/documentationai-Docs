@@ -1,0 +1,72 @@
+---
+title: "Track Namespace Jobs"
+description: "Monitor the status of asynchronous namespace creation and deletion jobs."
+---
+
+Tracks background jobs for **namespace creation** and **namespace deletion**.
+
+## Endpoint
+
+| Method | Endpoint |
+|--------|----------|
+| `GET` | `https://<domain>/api/vault/super-admin/namespace/job-status` |
+
+## Query parameters
+
+<ParamField query="tracking_id" param-type="string" required="true">
+  Tracking ID returned by namespace creation or deletion APIs.
+</ParamField>
+
+<Request tabs="cURL">
+```bash
+curl -X GET "https://<domain>/api/vault/super-admin/namespace/job-status?tracking_id=c37c070e-ff34-4738-8c32-de54d4ae26d3" \
+  -H "Authorization: Bearer <MASTER_API_KEY>"
+```
+</Request>
+
+<Response tabs="SUCCESS,FAILED">
+```json
+{
+  "data": [
+    {
+      "tracking_id": "c37c070e-ff34-4738-8c32-de54d4ae26d3",
+      "requested_user": "super_admin",
+      "job_type": "namespace-deletion",
+      "status": "SUCCESS",
+      "response": {
+        "message": "Namespace customer_ns_1 deleted successfully."
+      },
+      "error_message": null
+    }
+  ],
+  "success": true,
+  "error": { "message": "" }
+}
+```
+
+```json
+{
+  "data": [
+    {
+      "tracking_id": "c37c070e-ff34-4738-8c32-de54d4ae26d3",
+      "requested_user": "super_admin",
+      "job_type": "namespace-creation",
+      "status": "FAILED",
+      "response": null,
+      "error_message": "Namespace already exists."
+    }
+  ],
+  "success": true,
+  "error": { "message": "" }
+}
+```
+</Response>
+
+## Status values
+
+| Status | Meaning |
+|--------|---------|
+| `PENDING` | Job queued |
+| `IN-PROGRESS` | Job running |
+| `SUCCESS` | Job completed successfully |
+| `FAILED` | Job failed — check `error_message` |

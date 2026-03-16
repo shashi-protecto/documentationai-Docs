@@ -1,0 +1,171 @@
+---
+title: "Mask PII in Analytics & BI Pipelines"
+description: "Tokenize sensitive fields at ingestion time so data warehouses and BI dashboards never hold raw PII, with policy-controlled unmasking for authorized re-identification."
+---
+
+## What this solves
+
+Analytics and BI systems often ingest customer data — names, emails, and identifiers. If raw PII lands in your warehouse or dashboards, it becomes widely accessible and hard to clean up later.
+
+This pattern masks PII **before ingestion**, stores only masked values in analytics systems, and uses **policy-based unmasking** when original values must be retrieved by authorized users.
+
+## How it works
+
+| Step | What happens | API |
+|------|-------------|-----|
+| 1 | Mask sensitive values during ingestion | Mask API (token-based) |
+| 2 | Store masked values in analytics/BI | External system |
+| 3 | Unmask using a policy (restricted) | Unmask API (policy-based) |
+
+<Steps>
+  <Step title="Mask values before ingestion" icon="eye-off" titleType="p">
+    For structured analytics data, use **token-based masking** — you know which fields are sensitive, so you specify the `token_name` directly without relying on auto-detection.
+
+    <Request tabs="cURL,Python">
+      ```bash
+      curl -X PUT https://protecto-trial.protecto.ai/api/vault/mask \
+        -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
+        -H "Content-Type: application/json" \
+        -d '{
+          "mask": [
+            { "value": "John", "token_name": "Text Token" },
+            { "value": "Australia", "token_name": "Numeric Token" },
+            { "value": "john.doe@example.com", "token_name": "Special Token" }
+          ]
+        }'
+      ```
+
+      ```python
+      import requests
+
+      response = requests.put(
+          "https://protecto-trial.protecto.ai/api/vault/mask",
+          headers={
+              "Authorization": "Bearer YOUR_AUTH_TOKEN",
+              "Content-Type": "application/json"
+          },
+          json={
+              "mask": [
+                  {"value": "John", "token_name": "Text Token"},
+                  {"value": "Australia", "token_name": "Numeric Token"},
+                  {"value": "john.doe@example.com", "token_name": "Special Token"}
+              ]
+          }
+      )
+      tokens = {item["value"]: item["token_value"] for item in response.json()["data"]}
+      ```
+    </Request>
+
+    <Response tabs="200">
+      ```json
+      {
+        "data": [
+          {
+            "value": "John",
+            "token_name": "Text Token",
+            "token_value": "t9Eyj"
+          },
+          {
+            "value": "Australia",
+            "token_name": "Numeric Token",
+            "token_value": "874890078"
+          },
+          {
+            "value": "john.doe@example.com",
+            "token_name": "Special Token",
+            "token_value": "fuot3"
+          }
+        ],
+        "success": true,
+        "error": {
+          "message": ""
+        }
+      }
+      ```
+    </Response>
+  </Step>
+
+  <Step title="Store masked values in your analytics system" icon="database" titleType="p">
+    Store only the `token_value` outputs — not the original `value` — in your data warehouse or BI tables.
+
+    Because Protecto tokenization is **deterministic**, the same input always produces the same token. This means:
+
+    - Dashboards, analysts, and ad hoc queries never see raw PII
+    - You can still `JOIN`, `GROUP BY`, and filter on tokenized values
+    - Analytics and aggregations remain accurate
+
+    Protecto is not involved in this step.
+  </Step>
+
+  <Step title="Policy-based unmasking for authorized re-identification (optional)" icon="unlock" titleType="p">
+    When you need to retrieve original values, use **policy-based unmasking** by including `policy_name` in the unmask request.
+
+    <Callout kind="info">
+      `policy_name` is optional. If provided, unmasking uses that policy's metadata and permissions. If omitted, the default namespace policy applies.
+    </Callout>
+
+    <Request tabs="cURL,Python">
+      ```bash
+      curl -X PUT https://protecto-trial.protecto.ai/api/vault/unmask \
+        -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
+        -H "Content-Type: application/json" \
+        -d '{
+          "policy_name": "Anonymization-policy-1",
+          "unmask": [
+            {
+              "token_value": "<PER>hSw8kAEB10 ITItAd8FsN</PER> lives in <ADDRESS>748785848000</ADDRESS>"
+            }
+          ]
+        }'
+      ```
+
+      ```python
+      response = requests.put(
+          "https://protecto-trial.protecto.ai/api/vault/unmask",
+          headers={
+              "Authorization": "Bearer YOUR_AUTH_TOKEN",
+              "Content-Type": "application/json"
+          },
+          json={
+              "policy_name": "Anonymization-policy-1",
+              "unmask": [
+                  {"token_value": "<PER>hSw8kAEB10 ITItAd8FsN</PER> lives in <ADDRESS>748785848000</ADDRESS>"}
+              ]
+          }
+      )
+      ```
+    </Request>
+
+    <Response tabs="200">
+      ```json
+      {
+        "data": [
+          {
+            "token_value": "<PER>hSw8kAEB10 ITItAd8FsN</PER> lives in <ADDRESS>748785848000</ADDRESS>",
+            "value": "George Williams lives in Washington",
+            "toxicity_analysis": {
+              "toxicity": 0.00088834815,
+              "severe_toxicity": 0.000104515464,
+              "obscene": 0.00018257574,
+              "threat": 0.0001108902,
+              "insult": 0.00017547917,
+              "identity_attack": 0.00013806517
+            }
+          }
+        ],
+        "success": true,
+        "error": {
+          "message": ""
+        }
+      }
+      ```
+    </Response>
+  </Step>
+</Steps>
+
+<Callout kind="tip">
+  **Key takeaways:**
+  - For analytics ingestion, use **token-based masking** with `token_name` for known fields
+  - Deterministic tokens enable joins and aggregations without exposing raw PII
+  - For restricted re-identification, use **policy-based unmasking** with `policy_name`
+</Callout>

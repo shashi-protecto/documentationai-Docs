@@ -1,0 +1,53 @@
+---
+title: "Policy Management"
+description: "Create and manage named policies that control how Protecto detects, masks, and treats sensitive data across your namespace."
+---
+
+Policy and metadata APIs let namespace admins define **how Protecto identifies, masks, and treats personal data**. Policies act as named configurations that can be attached to Mask and Unmask calls.
+
+<Callout kind="alert">
+  Policy management APIs are **not available on trial accounts**. A paid subscription and `metadata_change` permission are required.
+</Callout>
+
+## What a policy controls
+
+A **policy** is a named metadata configuration that controls:
+
+- Which entities are detected
+- Whether each entity is anonymizable (irreversible), pseudonymizable (reversible), or excluded (not masked)
+- The prefix and suffix used during masking
+
+When a policy is passed to Mask or Unmask APIs, Protecto uses that policy's metadata instead of the default configuration.
+
+## Default policy behavior
+
+When a policy is first created:
+
+- All supported entities are set to **pseudonymizable** (reversible)
+- Default prefixes and suffixes are applied
+- No entities are excluded
+
+You then update the policy to move entities between categories or customize prefixes and suffixes.
+
+## API reference
+
+<Columns cols="2">
+  <Card title="Create Policy" href="/policy-management/create-policy" icon="plus" horizontal={false}>
+    Create a new policy with default metadata.
+  </Card>
+  <Card title="List Policies" href="/policy-management/list-policies" icon="list" horizontal={false}>
+    Return all policies in the namespace.
+  </Card>
+  <Card title="View Policy Metadata" href="/policy-management/view-policy-metadata" icon="eye" horizontal={false}>
+    Retrieve entity-level metadata for a policy.
+  </Card>
+  <Card title="Update Entity Categories" href="/policy-management/update-entity-categories" icon="edit" horizontal={false}>
+    Move entities between anonymizable, pseudonymizable, and excluded groups.
+  </Card>
+  <Card title="Update Prefixes & Suffixes" href="/policy-management/update-prefixes-suffixes" icon="type" horizontal={false}>
+    Customize the wrapping format for masked entity output.
+  </Card>
+  <Card title="Delete Policy" href="/policy-management/delete-policy" icon="trash" horizontal={false}>
+    Remove a policy and all associated metadata.
+  </Card>
+</Columns>

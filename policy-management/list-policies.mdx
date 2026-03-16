@@ -1,0 +1,41 @@
+---
+title: "List Policies"
+description: "Return all policy names available in the namespace."
+---
+
+Returns all policies available in the namespace.
+
+## Endpoint
+
+| Method | Endpoint |
+|--------|----------|
+| `GET` | `https://<domain>/api/vault/metadata/policy/list` |
+
+<Request tabs="cURL">
+```bash
+curl -X GET https://<domain>/api/vault/metadata/policy/list \
+  -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>"
+```
+</Request>
+
+<Response tabs="200">
+```json
+{
+  "data": {
+    "policies": [
+      "Testing_Default_Policy",
+      "customer-support-policy",
+      "analytics-anonymization-policy"
+    ]
+  },
+  "success": true,
+  "error": { "message": "" }
+}
+```
+</Response>
+
+## Response fields
+
+<ResponseField name="policies" field-type="array[string]" required="true">
+  List of all policy names in the namespace. Use these names in `policy_name` fields of Mask and Unmask requests.
+</ResponseField>

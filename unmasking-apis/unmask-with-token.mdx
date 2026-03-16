@@ -1,0 +1,126 @@
+---
+title: "Unmask with Token"
+description: "Restore original sensitive values from tokenized text. The API resolves all embedded entity tokens automatically — no token_name required."
+---
+
+Use this to unmask **tokenized free-form text** typically produced by auto-detect masking, where multiple entity tokens are embedded in a single string.
+
+## Endpoint
+
+| Method | URL |
+|--------|-----|
+| PUT | `https://protecto-trial.protecto.ai/api/vault/unmask` |
+
+## Request body
+
+<ParamField body="unmask" param-type="array" required="true">
+  List of tokenized values to unmask.
+</ParamField>
+
+<ParamField body="unmask[].token_value" param-type="string" required="true">
+  Tokenized text containing one or more embedded entity tokens (e.g., `<PERSON>VJYe 03W</PERSON>`). The API resolves all tokens automatically — `token_name` is not required.
+</ParamField>
+
+## Example
+
+<Request tabs="cURL,Python,JavaScript">
+  ```bash
+  curl -X PUT https://protecto-trial.protecto.ai/api/vault/unmask \
+    -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "unmask": [
+        {
+          "token_value": "<PER>VJYe 03W</PER>, an <NATIONALITY>Q534kH4v</NATIONALITY>, can be reached via email at <EMAIL>1AI0s@Uzm3a</EMAIL> or phone at <PHN>+8-065-029-0616</PHN>"
+        }
+      ]
+    }'
+  ```
+
+  ```python
+  import requests
+
+  response = requests.put(
+      "https://protecto-trial.protecto.ai/api/vault/unmask",
+      headers={
+          "Authorization": "Bearer YOUR_AUTH_TOKEN",
+          "Content-Type": "application/json"
+      },
+      json={
+          "unmask": [
+              {
+                  "token_value": "<PER>VJYe 03W</PER>, an <NATIONALITY>Q534kH4v</NATIONALITY>, can be reached via email at <EMAIL>1AI0s@Uzm3a</EMAIL> or phone at <PHN>+8-065-029-0616</PHN>"
+              }
+          ]
+      }
+  )
+  print(response.json())
+  ```
+
+  ```javascript
+  const response = await fetch(
+    "https://protecto-trial.protecto.ai/api/vault/unmask",
+    {
+      method: "PUT",
+      headers: {
+        Authorization: "Bearer YOUR_AUTH_TOKEN",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        unmask: [
+          {
+            token_value:
+              "<PER>VJYe 03W</PER>, an <NATIONALITY>Q534kH4v</NATIONALITY>, can be reached via email at <EMAIL>1AI0s@Uzm3a</EMAIL> or phone at <PHN>+8-065-029-0616</PHN>",
+          },
+        ],
+      }),
+    }
+  );
+  ```
+</Request>
+
+<Response tabs="200">
+  ```json
+  {
+    "data": [
+      {
+        "value": "John Doe, an American, can be reached via email at johndoe@example.com or phone at +1-123-456-7890",
+        "token_value": "<PER>VJYe 03W</PER>, an <NATIONALITY>Q534kH4v</NATIONALITY>, can be reached via email at <EMAIL>1AI0s@Uzm3a</EMAIL> or phone at <PHN>+8-065-029-0616</PHN>",
+        "toxicity_analysis": {
+          "toxicity": 0.000597,
+          "severe_toxicity": 0.000123,
+          "obscene": 0.000191,
+          "threat": 0.000120,
+          "insult": 0.000177,
+          "identity_attack": 0.000140
+        }
+      }
+    ],
+    "success": true,
+    "error": {
+      "message": ""
+    }
+  }
+  ```
+</Response>
+
+## Response fields
+
+<ResponseField name="value" field-type="string" required="true">
+  The fully unmasked original text with all tokens resolved.
+</ResponseField>
+
+<ResponseField name="token_value" field-type="string" required="true">
+  The original tokenized input, echoed back.
+</ResponseField>
+
+<ResponseField name="toxicity_analysis" field-type="object" required="false">
+  Toxicity scores evaluated on the unmasked content. See [Toxicity in Unmask API](/unmasking-apis/toxicity-in-unmask) for details.
+</ResponseField>
+
+## Security considerations
+
+- Restrict unmasking to trusted services and users
+- Enforce role-based access control and audit all unmask operations
+- Use unmasking only when strictly required by the workflow
+- Ensure compliance with applicable data protection regulations before unmasking

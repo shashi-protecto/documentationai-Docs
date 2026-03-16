@@ -1,0 +1,70 @@
+---
+title: "On-Premises Deployment"
+description: "Run Protecto inside your own infrastructure or private cloud for full data residency control and air-gapped environments."
+---
+
+In the on-premises model, Protecto runs inside your infrastructure — your own data center or a private cloud environment (AWS, GCP, Azure).
+
+## Overview
+
+| Aspect | Details |
+|--------|---------|
+| Hosting | Customer-managed |
+| Infrastructure | Single-tenant |
+| Network | Fully private |
+| Upgrades | Customer-controlled |
+| Best for | Strict data residency or regulated environments |
+
+## Deployment characteristics
+
+| Area | Description |
+|------|-------------|
+| Runtime | Containerized Protecto services |
+| Networking | Internal VPC or data center network |
+| Data storage | Fully controlled by customer |
+| External access | Optional and configurable |
+
+Protecto provides deployment artifacts and configuration guidance during onboarding.
+
+## Base URL
+
+You define the base URL. For example:
+
+```
+https://protecto.internal.company.com
+```
+
+All API paths remain identical to SaaS:
+
+| API | Method | Full endpoint |
+|-----|--------|--------------|
+| Mask | `PUT` | `https://protecto.internal.company.com/api/vault/mask` |
+| Unmask | `PUT` | `https://protecto.internal.company.com/api/vault/unmask` |
+| Data Scan | `PUT` | `https://protecto.internal.company.com/data-scan/data-scan-async` |
+
+## Data residency and compliance
+
+| Requirement | Support |
+|-------------|---------|
+| Data residency | Full control |
+| Network isolation | Private-only if required |
+| Audit logging | Stored locally |
+| Regulatory controls | Customer-defined |
+
+This model is commonly used for healthcare, finance, and government organizations.
+
+## Operational responsibilities
+
+| Area | Responsibility |
+|------|---------------|
+| Scaling | Customer |
+| Monitoring | Customer |
+| Backups | Customer |
+| Upgrades | Customer |
+| High availability | Customer |
+
+Protecto provides reference architectures and recommended defaults. No API-level changes are required when switching from SaaS to on-premises.
+
+<Callout kind="info">
+  For on-premises or private cloud inquiries, contact **help@protecto.ai** to receive deployment artifacts and architecture guidance.
+</Callout>

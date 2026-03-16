@@ -1,0 +1,84 @@
+---
+title: "Mask with Attributes"
+description: "Attach custom metadata key-value pairs to masked values for downstream tracking, auditing, or contextual reference."
+---
+
+Attributes allow you to attach custom metadata to masked values. This is useful for associating contextual information — such as a page number, record ID, or source system — with each masked value.
+
+## Endpoint
+
+| Method | URL |
+|--------|-----|
+| PUT | `https://protecto-trial.protecto.ai/api/vault/mask` |
+
+## Request body
+
+<ParamField body="mask" param-type="array" required="true">
+  List of values to mask.
+</ParamField>
+
+<ParamField body="mask[].value" param-type="string" required="true">
+  The raw sensitive value to mask.
+</ParamField>
+
+<ParamField body="mask[].format" param-type="string" required="false">
+  The format to apply for structure-preserving masking.
+</ParamField>
+
+<ParamField body="mask[].token_name" param-type="string" required="false">
+  The token type to use.
+</ParamField>
+
+<ParamField body="mask[].attributes" param-type="object" required="false">
+  Arbitrary key-value metadata to attach to the masked value.
+</ParamField>
+
+## Example
+
+<Request tabs="cURL,Python">
+  ```bash
+  curl -X PUT https://protecto-trial.protecto.ai/api/vault/mask \
+    -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "mask": [
+        {
+          "value": "https://platform.openai.com/playground/chat",
+          "format": "URL",
+          "token_name": "Text Token",
+          "attributes": {
+            "page_number": "1"
+          }
+        }
+      ]
+    }'
+  ```
+
+  ```python
+  import requests
+
+  response = requests.put(
+      "https://protecto-trial.protecto.ai/api/vault/mask",
+      headers={
+          "Authorization": "Bearer YOUR_AUTH_TOKEN",
+          "Content-Type": "application/json"
+      },
+      json={
+          "mask": [
+              {
+                  "value": "https://platform.openai.com/playground/chat",
+                  "format": "URL",
+                  "token_name": "Text Token",
+                  "attributes": {"page_number": "1"}
+              }
+          ]
+      }
+  )
+  ```
+</Request>
+
+## Notes
+
+- `attributes` is an **object** with string keys and string values.
+- Attributes are stored alongside the token and can be used for downstream reference or auditing.
+- Attributes do not affect the masking output — they are metadata only.

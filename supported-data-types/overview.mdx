@@ -1,0 +1,62 @@
+---
+title: "Supported Data Types"
+description: "What data Protecto accepts, how entities, formats, and token types work together, and how to send values correctly."
+---
+
+This section defines what data Protecto accepts, what types of sensitive data it understands, and how masking behavior is controlled using **entities**, **formats**, and **token types**.
+
+## How to send values
+
+Protecto APIs accept and return **JSON**.
+
+| Rule | Requirement |
+|------|-------------|
+| Content type | `application/json; charset=utf-8` |
+| Masking input | String values only |
+| Batch operations | Arrays of objects |
+| Numeric values | Must be sent as strings |
+| Boolean values | Not supported for masking |
+
+Even if your data is numeric (phone numbers, account numbers, IDs), always send it as a **string**. Leading zeros, spacing, and punctuation are preserved only when values are strings.
+
+## Entities, formats, and token types
+
+Before choosing what fields to send, understand how these three concepts relate:
+
+| Concept | Meaning | Controls |
+|---------|---------|---------|
+| **Entity name** | What the data *is* | Detection engine or policy |
+| **Format name** | How the data *looks* | Explicit input hint |
+| **Token type (`token_name`)** | How masked output is generated | Explicit input choice |
+
+You can let Protecto detect entities automatically, or override detection using `format`. Token generation is always controlled explicitly using `token_name`.
+
+## Rules of precedence
+
+| Situation | Behavior |
+|-----------|----------|
+| `format` provided | Format is trusted |
+| No format, entity detected | Detected entity is used |
+| Format and detection conflict | Format wins |
+| Neither format nor detection | Treated as plain text |
+
+<Callout kind="info">
+  When detection is ambiguous (e.g., a value could be a passport number or an ID), provide `format` explicitly to ensure correct masking behavior.
+</Callout>
+
+## Next steps
+
+<Columns cols="2">
+  <Card title="PII, PHI & PCI Entities" href="/supported-data-types/pii-phi-pci-entities" icon="shield" horizontal={false}>
+    Complete entity and format mapping for all built-in sensitive data types.
+  </Card>
+  <Card title="Token Types" href="/supported-data-types/token-types" icon="key" horizontal={false}>
+    How token types control masked output generation.
+  </Card>
+  <Card title="Formats Reference" href="/supported-data-types/formats" icon="list" horizontal={false}>
+    All supported format names for structure-preserving masking.
+  </Card>
+  <Card title="Character Encoding" href="/supported-data-types/character-encoding" icon="code" horizontal={false}>
+    UTF-8 encoding requirements and considerations.
+  </Card>
+</Columns>

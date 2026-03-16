@@ -1,0 +1,37 @@
+---
+title: "Deployment Options"
+description: "Protecto supports SaaS and on-premises deployments. Both expose identical APIs — the difference is where Protecto runs and who operates it."
+---
+
+Protecto supports two primary deployment models: **SaaS** and **On-Premises / Private Cloud**. Both expose the same API surface and behavior, so your application logic does not change regardless of which model you use.
+
+## Comparison
+
+| Dimension | SaaS | On-Premises / Private Cloud |
+|-----------|------|---------------------------|
+| Setup time | Minutes | Days to weeks |
+| Infrastructure management | Protecto | Customer |
+| Data residency | Region-based | Fully controlled |
+| API behavior | Identical | Identical |
+| Scaling | Automatic | Manual |
+| Upgrade cadence | Automatic | Customer-controlled |
+| Trial availability | Yes | No |
+
+## Choosing a model
+
+| If you need | Recommended option |
+|-------------|------------------|
+| Fastest time to value | SaaS |
+| Zero infrastructure ops | SaaS |
+| Strict data residency | On-Premises / Private Cloud |
+| Air-gapped environments | On-Premises / Private Cloud |
+| Custom security controls | On-Premises / Private Cloud |
+
+<Columns cols="2">
+  <Card title="SaaS Deployment" href="/deployment/saas" icon="cloud" horizontal={false}>
+    Fully hosted by Protecto. Fastest setup, zero infrastructure overhead.
+  </Card>
+  <Card title="On-Premises Deployment" href="/deployment/on-premises" icon="server" horizontal={false}>
+    Runs inside your infrastructure. Full data residency control.
+  </Card>
+</Columns>

@@ -1,0 +1,58 @@
+---
+title: "SaaS Deployment"
+description: "Protecto SaaS — fully hosted and operated by Protecto. The fastest way to get started with zero infrastructure overhead."
+---
+
+In the SaaS model, Protecto is fully hosted and operated by Protecto. This is the default for trials and most production customers.
+
+## Overview
+
+| Aspect | Details |
+|--------|---------|
+| Hosting | Managed by Protecto |
+| Infrastructure | Multi-tenant, isolated by namespace |
+| Availability | High availability with managed scaling |
+| Upgrades | Automatic |
+| Best for | Teams that want zero infrastructure overhead |
+
+## Base URLs
+
+| Environment | Base URL |
+|-------------|---------|
+| Trial | `https://protecto-trial.protecto.ai` |
+| Production | Provided during onboarding |
+
+## API endpoints
+
+| API | Method | Full endpoint (trial) |
+|-----|--------|----------------------|
+| Mask | `PUT` | `https://protecto-trial.protecto.ai/api/vault/mask` |
+| Unmask | `PUT` | `https://protecto-trial.protecto.ai/api/vault/unmask` |
+| Mask Async | `PUT` | `https://protecto-trial.protecto.ai/api/vault/mask/async` |
+| Async Status | `PUT` | `https://protecto-trial.protecto.ai/api/vault/async-status` |
+
+## Authentication
+
+| Item | Description |
+|------|-------------|
+| Auth mechanism | Bearer token |
+| Header | `Authorization: Bearer <AUTH_TOKEN>` |
+| Token scope | Namespace-scoped |
+| Token lifecycle | Managed via Super Admin APIs |
+
+## Data flow
+
+1. Client sends request to Protecto SaaS endpoint
+2. Protecto processes masking, unmasking, or scanning
+3. Tokenized or processed data is returned in the response
+
+Protecto does not require persistent inbound connections from your systems. All calls are outbound HTTPS requests from your application.
+
+## Security
+
+| Area | Behavior |
+|------|---------|
+| Transport | HTTPS only |
+| Data isolation | Namespace-level isolation |
+| Token mappings | Stored securely within Protecto |
+| Compliance | SOC2-aligned controls |

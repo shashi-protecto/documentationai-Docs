@@ -1,0 +1,75 @@
+---
+title: "Unmasking Errors"
+description: "All error responses and HTTP status codes for the Protecto Unmasking API."
+---
+
+The Unmasking API returns **two distinct error response formats** depending on the error type:
+
+- **Application errors** — return `success`, `data`, and `error.message`
+- **Authentication errors** — return a `detail` field
+
+## Application error format
+
+```json
+{
+  "data": null,
+  "success": false,
+  "error": {
+    "message": "Payload is empty"
+  }
+}
+```
+
+## Authentication error format
+
+```json
+{
+  "detail": "Not authenticated"
+}
+```
+
+## Error messages by category
+
+<ExpandableGroup>
+  <Expandable title="Payload and structure errors" default-open="true">
+    | HTTP status | Error message | When it occurs |
+    |-------------|--------------|----------------|
+    | 500 | `Payload is empty` | Payload is empty or `unmask` array contains empty objects |
+    | 500 | `unmask data missing` | The `unmask` key is missing from the request |
+    | 500 | `Missing token value field` | `token_value` field is not present in an `unmask` object |
+    | 500 | `Missing token value` | `token_value` field is present but empty |
+  </Expandable>
+
+  <Expandable title="Unmasking operation errors" default-open="false">
+    | HTTP status | Error message | When it occurs |
+    |-------------|--------------|----------------|
+    | 500 | `Unmasking of given token values failed.` | Unmasking failed for the provided tokens |
+  </Expandable>
+
+  <Expandable title="Authentication and authorization errors" default-open="false">
+    | HTTP status | `detail` message | When it occurs |
+    |-------------|-----------------|----------------|
+    | 401 | `To access Protecto, a valid license is required. Please create an account to execute the code` | No authorization token provided |
+    | 401 | `Your license is currently being generated. Please wait for a moment before running the code.` | License provisioning in progress |
+    | 401 | `Protecto's license has expired. To execute the code, please contact help@protecto.ai.` | Token expired |
+    | 401 | `Access token has expired or is not yet valid.` | Invalid or expired token |
+    | 401 | `Not authenticated` | No `Authorization` header present |
+  </Expandable>
+</ExpandableGroup>
+
+## Retry behavior
+
+| HTTP status | Scenario | Recommended action |
+|-------------|----------|-------------------|
+| 500 | Payload or operation failure | Fix the request or retry with backoff |
+| 401 | Authentication or license issue | Refresh token or contact `help@protecto.ai` |
+
+<Callout kind="info">
+  Unmasking is deterministic. Retrying the same request with the same token values does not change the stored token state.
+</Callout>
+
+## Security considerations
+
+- Log error messages carefully to avoid leaking sensitive information in error outputs
+- Tightly control and audit access to unmasking endpoints
+- `401` errors indicate the token is invalid or expired — rotate tokens promptly

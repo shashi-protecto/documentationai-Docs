@@ -1,0 +1,41 @@
+---
+title: "Error Response Format"
+description: "The consistent JSON error structure returned by all Protecto API failures."
+---
+
+All failed Protecto API requests return a consistent JSON structure regardless of the error type.
+
+## Standard error object
+
+```json
+{
+  "data": null,
+  "success": false,
+  "error": {
+    "message": "Human-readable error description"
+  }
+}
+```
+
+| Field | Type | Value on failure |
+|-------|------|-----------------|
+| `data` | `null` | Always `null` on failure |
+| `success` | boolean | Always `false` on failure |
+| `error.message` | string | Human-readable description of what went wrong |
+
+## How to handle errors
+
+Check `success` first. If `false`, read `error.message` for the reason.
+
+```javascript
+const response = await protecto.mask(payload);
+
+if (!response.success) {
+  console.error("Mask failed:", response.error.message);
+  // Handle based on HTTP status code
+}
+```
+
+<Callout kind="info">
+  Errors never return partial data. If `success` is `false`, `data` will always be `null`. There are no partial success responses.
+</Callout>

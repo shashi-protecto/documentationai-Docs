@@ -1,0 +1,34 @@
+---
+title: "HTTP Status Codes"
+description: "HTTP status codes used by Protecto APIs and what each means for your integration."
+---
+
+Protecto uses standard HTTP status codes to signal success and failure type.
+
+## Status code reference
+
+| Status code | Meaning | When it happens |
+|-------------|---------|----------------|
+| `200` | OK | Request succeeded |
+| `201` | Created | Resource created successfully |
+| `400` | Bad Request | Invalid or incomplete payload |
+| `401` | Unauthorized | Missing, invalid, or expired auth token |
+| `404` | Not Found | Incorrect endpoint or route |
+| `405` | Method Not Allowed | Wrong HTTP method used |
+| `429` | Too Many Requests | Rate limit exceeded |
+| `500` | Internal Server Error | Processing failure after retries |
+
+## What to do for each code
+
+| Status code | Recommended action |
+|-------------|-------------------|
+| `400` | Fix the request payload — check required fields and data types |
+| `401` | Refresh or replace the auth token |
+| `404` | Verify the endpoint URL and path |
+| `405` | Check the HTTP method — most Protecto endpoints use `PUT` |
+| `429` | Retry with exponential backoff |
+| `500` | Safe to retry once — contact support if persistent |
+
+<Callout kind="info">
+  The HTTP status code always accompanies the JSON error body. Use the status code to decide *how* to respond and `error.message` to understand *why* it failed.
+</Callout>

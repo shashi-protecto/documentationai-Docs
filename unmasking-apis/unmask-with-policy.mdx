@@ -1,0 +1,93 @@
+---
+title: "Unmask with Policy"
+description: "Apply a named policy during unmasking to control re-identification behavior and enforce governance rules."
+---
+
+Include `policy_name` in the unmask request to apply a specific policy's metadata during unmasking. This is used in governance-controlled workflows where re-identification must follow defined rules.
+
+## Endpoint
+
+| Method | URL |
+|--------|-----|
+| PUT | `https://protecto-trial.protecto.ai/api/vault/unmask` |
+
+## Request body
+
+<ParamField body="policy_name" param-type="string" required="false">
+  The name of the policy to apply during unmasking. If omitted, the default namespace policy applies.
+</ParamField>
+
+<ParamField body="unmask" param-type="array" required="true">
+  List of tokenized values to unmask.
+</ParamField>
+
+<ParamField body="unmask[].token_value" param-type="string" required="true">
+  The tokenized text to unmask.
+</ParamField>
+
+## Example
+
+<Request tabs="cURL,Python">
+  ```bash
+  curl -X PUT https://protecto-trial.protecto.ai/api/vault/unmask \
+    -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "policy_name": "Anonymization-policy-1",
+      "unmask": [
+        {
+          "token_value": "<PER>hSw8kAEB10 ITItAd8FsN</PER> lives in <ADDRESS>748785848000</ADDRESS>"
+        }
+      ]
+    }'
+  ```
+
+  ```python
+  import requests
+
+  response = requests.put(
+      "https://protecto-trial.protecto.ai/api/vault/unmask",
+      headers={
+          "Authorization": "Bearer YOUR_AUTH_TOKEN",
+          "Content-Type": "application/json"
+      },
+      json={
+          "policy_name": "Anonymization-policy-1",
+          "unmask": [
+              {"token_value": "<PER>hSw8kAEB10 ITItAd8FsN</PER> lives in <ADDRESS>748785848000</ADDRESS>"}
+          ]
+      }
+  )
+  ```
+</Request>
+
+<Response tabs="200">
+  ```json
+  {
+    "data": [
+      {
+        "token_value": "<PER>hSw8kAEB10 ITItAd8FsN</PER> lives in <ADDRESS>748785848000</ADDRESS>",
+        "value": "George Williams lives in Washington",
+        "toxicity_analysis": {
+          "toxicity": 0.00088834815,
+          "severe_toxicity": 0.000104515464,
+          "obscene": 0.00018257574,
+          "threat": 0.0001108902,
+          "insult": 0.00017547917,
+          "identity_attack": 0.00013806517
+        }
+      }
+    ],
+    "success": true,
+    "error": {
+      "message": ""
+    }
+  }
+  ```
+</Response>
+
+## Notes
+
+- `policy_name` is **optional**. If provided, unmasking uses that policy's metadata and permission rules. If omitted, the default namespace policy applies.
+- The policy must exist in your namespace. A missing policy name results in an authorization error.
+- See [Policies](/core-concepts/policies) for a conceptual overview of how policies govern unmasking behavior.

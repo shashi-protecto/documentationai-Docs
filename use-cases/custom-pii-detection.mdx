@@ -1,0 +1,257 @@
+---
+title: "Detect and Tag Internal Customer IDs as Custom PII"
+description: "Configure Protecto to recognize your internal identifiers—like Customer IDs—as first-class PII types using custom tag detection endpoints."
+---
+
+## When to use this
+
+Your logs or CRM text contain internal identifiers that aren't standard PII formats — for example, `Customer ID 78901`. You want Protecto to identify these as a first-class PII type (such as `CUSTOMER_ID`) so they are masked alongside standard entities.
+
+## How it works
+
+You configure two things:
+
+1. **Tell Protecto how to find your custom IDs** by registering an **Identification Endpoint** — a customer-hosted endpoint that Protecto calls with raw text and expects back the positions of matching identifiers.
+2. Optionally, register a **Whitelist (PI elements list) Endpoint** that returns the known values for that tag type.
+
+Protecto stores the tag's **prefix/suffix** (e.g., `<CUSTOMER_ID>…</CUSTOMER_ID>`) and default token/format metadata for the custom tag.
+
+<Callout kind="info">
+  There are two types of endpoints involved: **Protecto-hosted endpoints** (which you call to configure the tag) and **customer-hosted endpoints** (which Protecto calls at detection time). The steps below distinguish these clearly.
+</Callout>
+
+## Setup steps
+
+<Steps>
+  <Step title="Register the identification endpoint (Protecto API)" icon="settings" titleType="p">
+    Call the Protecto Metadata API to tell Protecto where to find your custom ID detection logic.
+
+    **Method:** `PUT`
+    **Endpoint:** `https://<BASE_URL>/api/vault/metadata/add-or-update/custom-tag/identification-endpoint`
+
+    <Request tabs="cURL">
+      ```bash
+      curl -X PUT https://<BASE_URL>/api/vault/metadata/add-or-update/custom-tag/identification-endpoint \
+        -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
+        -H "Content-Type: application/json" \
+        -d '{
+          "data": {
+            "tag_type": "CUSTOMER_ID",
+            "identification_endpoint_details": {
+              "url": "https://your-service.example.com/detect-customer-ids",
+              "method": "PUT",
+              "headers": {
+                "Authorization": "Bearer <access_token>"
+              }
+            }
+          }
+        }'
+      ```
+    </Request>
+
+    <Response tabs="200">
+      ```json
+      {
+        "data": {
+          "message": "custom tag CUSTOMER_ID added or updated successfully."
+        },
+        "success": "true",
+        "error": {
+          "message": ""
+        }
+      }
+      ```
+    </Response>
+  </Step>
+
+  <Step title="Register the whitelist endpoint (optional, Protecto API)" icon="check-circle" titleType="p">
+    If you want Protecto to also fetch a known list of valid values for this tag type, register a whitelist endpoint.
+
+    **Method:** `PUT`
+    **Endpoint:** `https://<BASE_URL>/api/vault/metadata/add-or-update/custom-tag/pi-list-endpoint`
+
+    <Request tabs="cURL">
+      ```bash
+      curl -X PUT https://<BASE_URL>/api/vault/metadata/add-or-update/custom-tag/pi-list-endpoint \
+        -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
+        -H "Content-Type: application/json" \
+        -d '{
+          "data": {
+            "tag_type": "CUSTOMER_ID",
+            "pi_elements_list_endpoint_details": {
+              "url": "https://your-service.example.com/customer-id-whitelist",
+              "method": "GET",
+              "headers": {
+                "Authorization": "Bearer <access_token>"
+              }
+            }
+          }
+        }'
+      ```
+    </Request>
+
+    <Response tabs="200">
+      ```json
+      {
+        "data": {
+          "message": "custom tag CUSTOMER_ID added or updated successfully."
+        },
+        "success": "true",
+        "error": {
+          "message": ""
+        }
+      }
+      ```
+    </Response>
+  </Step>
+
+  <Step title="Implement the identification endpoint (customer-hosted)" icon="server" titleType="p">
+    This is **not** a Protecto endpoint — it's a service you host. When Protecto needs to detect `CUSTOMER_ID` in text, it calls your endpoint with the raw text and expects back the character positions of each match.
+
+    **Your endpoint receives:**
+
+    ```json
+    {
+      "input_texts": [
+        "Customer ID 56789, Sarah Johnson, has been a loyal customer for years...",
+        "Hey, meet Customer ID 78901, Alex Turner – our tech guru!"
+      ],
+      "tag_type": "CUSTOMER_ID"
+    }
+    ```
+
+    **Your endpoint must return:**
+
+    ```json
+    {
+      "data": [
+        [
+          {
+            "type": "CUSTOMER_ID",
+            "text": "56789",
+            "start": 12,
+            "end": 17,
+            "input_text": "Customer ID 56789, Sarah Johnson, has been a loyal customer for years..."
+          }
+        ],
+        [
+          {
+            "type": "CUSTOMER_ID",
+            "text": "78901",
+            "start": 23,
+            "end": 28,
+            "input_text": "Hey, meet Customer ID 78901, Alex Turner – our tech guru!"
+          }
+        ]
+      ]
+    }
+    ```
+
+    Each inner array corresponds to one input text. Each object in the array identifies one match, with `start` and `end` as character offsets.
+  </Step>
+
+  <Step title="Implement the whitelist endpoint (optional, customer-hosted)" icon="list" titleType="p">
+    If you registered a whitelist endpoint in Step 2, implement it to return the list of all known values for the tag type.
+
+    **Your endpoint receives:**
+
+    ```json
+    {
+      "tag_type": "CUSTOMER_ID"
+    }
+    ```
+
+    **Your endpoint must return:**
+
+    ```json
+    {
+      "tag_type": "CUSTOMER_ID",
+      "data_list": [
+        "98765",
+        "78901",
+        "65432",
+        "56789"
+      ]
+    }
+    ```
+  </Step>
+
+  <Step title="Verify the tag configuration" icon="check-square" titleType="p">
+    Confirm that Protecto has stored your configuration correctly.
+
+    **Method:** `PUT`
+    **Endpoint:** `https://<BASE_URL>/api/vault/metadata/custom-tag/details`
+
+    <Request tabs="cURL">
+      ```bash
+      curl -X PUT https://<BASE_URL>/api/vault/metadata/custom-tag/details \
+        -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
+        -H "Content-Type: application/json" \
+        -d '{ "data": { "tag_type": "CUSTOMER_ID" } }'
+      ```
+    </Request>
+
+    <Response tabs="200">
+      ```json
+      {
+        "data": {
+          "token_name": "Default Token",
+          "format_name": "Default Format",
+          "tag_type": "CUSTOMER_ID",
+          "prefix": "<CUSTOMER_ID>",
+          "suffix": "</CUSTOMER_ID>",
+          "description": "CUSTOMER_ID",
+          "pi_elements_list_endpoint_details": {
+            "headers": { "Authorization": "<AUTH TOKEN>" },
+            "method": "GET",
+            "url": "<url>"
+          }
+        },
+        "success": true,
+        "error": { "message": "" }
+      }
+      ```
+    </Response>
+  </Step>
+</Steps>
+
+## API quick reference
+
+### Protecto-hosted endpoints (you call these)
+
+| Purpose | Method | Endpoint |
+|---------|--------|----------|
+| Register identification endpoint | PUT | `/api/vault/metadata/add-or-update/custom-tag/identification-endpoint` |
+| Register whitelist endpoint | PUT | `/api/vault/metadata/add-or-update/custom-tag/pi-list-endpoint` |
+| Retrieve tag details | PUT | `/api/vault/metadata/custom-tag/details` |
+| Delete custom tag | PUT | `/api/vault/metadata/delete/custom-tag` |
+
+### Customer-hosted endpoints (Protecto calls these)
+
+| Purpose | Method | What it returns |
+|---------|--------|----------------|
+| Identify `CUSTOMER_ID` positions in text | PUT | Array of matches with `type`, `text`, `start`, `end`, `input_text` |
+| Return whitelist values for `CUSTOMER_ID` | GET | `data_list` of known IDs for the tag type |
+
+## Cleanup: delete the custom tag
+
+If you need to remove the tag configuration:
+
+```bash
+curl -X PUT https://<BASE_URL>/api/vault/metadata/delete/custom-tag \
+  -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{ "data": { "tag_type": "CUSTOMER_ID" } }'
+```
+
+Response:
+
+```json
+{
+  "data": {
+    "message": "custom tag CUSTOMER_ID deleted successfully."
+  },
+  "success": "true",
+  "error": { "message": "" }
+}
+```

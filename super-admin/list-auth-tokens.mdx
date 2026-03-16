@@ -1,0 +1,40 @@
+---
+title: "List Auth Tokens"
+description: "List all namespace user tokens across the system, with optional filtering by namespace."
+---
+
+Lists all namespace user tokens. You can optionally filter by namespace.
+
+## Endpoint
+
+| Method | Endpoint |
+|--------|----------|
+| `GET` | `https://<domain>/api/vault/super-admin/namespace/auth-token/list` |
+
+## Query parameters
+
+<ParamField query="namespace" param-type="string" required="false">
+  Filter tokens by namespace. If omitted, returns all tokens across all namespaces.
+</ParamField>
+
+<Request tabs="cURL">
+```bash
+curl -X GET "https://<domain>/api/vault/super-admin/namespace/auth-token/list?namespace=customer_ns_1" \
+  -H "Authorization: Bearer <MASTER_API_KEY>"
+```
+</Request>
+
+<Response tabs="200">
+```json
+{
+  "data": [
+    {
+      "namespace": "customer_ns_1",
+      "auth_tokens": ["<TOKEN_1>", "<TOKEN_2>"]
+    }
+  ],
+  "success": true,
+  "error": { "message": "" }
+}
+```
+</Response>

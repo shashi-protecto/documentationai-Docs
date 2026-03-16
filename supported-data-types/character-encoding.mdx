@@ -1,0 +1,48 @@
+---
+title: "Character Encoding"
+description: "UTF-8 encoding requirements for Protecto API requests and how to handle international characters and Unicode text."
+---
+
+Protecto APIs use **UTF-8 encoded JSON** for all requests and responses.
+
+## Requirements
+
+| Item | Value |
+|------|-------|
+| Encoding | UTF-8 |
+| Content-Type header | `application/json; charset=utf-8` |
+| Input text | Arbitrary Unicode strings |
+
+Always set the `Content-Type` header explicitly:
+
+```
+Content-Type: application/json; charset=utf-8
+```
+
+## Sending international text
+
+Protecto can process text in any language supported by UTF-8. This includes:
+
+- Latin scripts (English, French, Spanish, German)
+- Non-Latin scripts (Arabic, Chinese, Japanese, Korean, Hindi)
+- Mixed-language text within a single value
+
+The detection engine works on semantic content, so detection accuracy may vary by language for built-in entities.
+
+## String values only
+
+All masking inputs must be **strings**, even for numeric data:
+
+```json
+{
+  "mask": [
+    { "value": "9876543210", "token_name": "Numeric Token" }
+  ]
+}
+```
+
+Sending a JSON number (`9876543210`) instead of a string (`"9876543210"`) may cause leading zeros, spacing, and punctuation to be lost or rejected.
+
+<Callout kind="info">
+  If your system stores numeric identifiers as integers, convert them to strings before sending to the Mask API.
+</Callout>

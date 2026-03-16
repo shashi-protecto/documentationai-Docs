@@ -1,0 +1,52 @@
+---
+title: "Scoring System"
+description: "How Protecto's toxicity scores are calculated, what the scale means, and how to set thresholds for your application."
+---
+
+Toxicity scores are **floating-point values from 0.0 to 1.0**, returned per-category for every analyzed text.
+
+## Score scale
+
+| Score range | Interpretation |
+|-------------|---------------|
+| `0.0 – 0.1` | Very low likelihood — content is generally safe |
+| `0.1 – 0.3` | Low likelihood — minor signals, likely benign |
+| `0.3 – 0.6` | Moderate — worth logging or reviewing |
+| `0.6 – 0.8` | High — strong signal, consider flagging |
+| `0.8 – 1.0` | Very high — strong presence of the category |
+
+These ranges are guidelines. Protecto enforces no thresholds — you define what score triggers which action.
+
+## Recommended threshold patterns
+
+```json
+{
+  "toxicity": 0.9648129,
+  "severe_toxicity": 0.011925396,
+  "obscene": 0.39630863,
+  "threat": 0.0010725626,
+  "insult": 0.9019991,
+  "identity_attack": 0.0001435065
+}
+```
+
+Common patterns for using these scores in application logic:
+
+| Use case | Example threshold |
+|----------|------------------|
+| Audit logging | `toxicity > 0.3` |
+| User warning | `toxicity > 0.6` |
+| Block submission | `toxicity > 0.85` |
+| Escalate to human review | `insult > 0.7 OR identity_attack > 0.5` |
+
+## Scores reflect full context
+
+Toxicity scores reflect the **entire sentence**, not just individual tokens. This means:
+
+- Entity masking does not affect the score — it runs on original content
+- Scores account for context, not just keywords
+- The same word in different sentences may score differently
+
+<Callout kind="info">
+  Scores are probabilistic signals, not definitive judgments. A high `threat` score doesn't always mean a literal threat — it means the language pattern resembles threatening language with a given probability.
+</Callout>

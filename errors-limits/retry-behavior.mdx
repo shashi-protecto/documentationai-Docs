@@ -1,0 +1,52 @@
+---
+title: "Retry Behavior"
+description: "How Protecto handles internal retries, and recommended client retry strategies for each error type."
+---
+
+## Server-side retry behavior
+
+Protecto retries transient internal failures automatically before returning an error.
+
+| Condition | Retry policy |
+|-----------|-------------|
+| Internal processing errors | Up to **3 internal retries** |
+| Client errors (4xx) | No retry — client must fix the request |
+| Rate limit (429) | No retry — client must implement backoff |
+| Async failures | Exposed as `FAILED` status — client decides |
+
+## Recommended client retry strategy
+
+| Error type | Client action |
+|------------|--------------|
+| `400 Bad Request` | Fix the request payload — do not retry as-is |
+| `401 Unauthorized` | Refresh or replace the auth token, then retry |
+| `429 Too Many Requests` | Retry with exponential backoff |
+| `500 Internal Server Error` | Safe to retry once after a short delay |
+| Async `FAILED` | Inspect `error_message` before deciding to retry |
+
+## Exponential backoff example
+
+```python
+import time
+
+def mask_with_retry(payload, max_retries=3):
+    for attempt in range(max_retries):
+        response = protecto.mask(payload)
+        if response.status_code == 429:
+            wait = 2 ** attempt  # 1s, 2s, 4s
+            time.sleep(wait)
+            continue
+        return response
+    raise Exception("Rate limit exceeded after retries")
+```
+
+## Reliability guarantees
+
+- Async APIs expose clear lifecycle states: `PENDING`, `IN-PROGRESS`, `SUCCESS`, `FAILED`, `PURGED`
+- All failures include actionable error messages
+- No partial success responses — requests either succeed fully or fail entirely
+- Token determinism ensures the same input produces the same token if retried (safe to retry masking)
+
+<Callout kind="tip">
+  Because masking is deterministic, it is always safe to retry a failed mask request with the same payload. You will get the same token even if the first request partly succeeded before failing.
+</Callout>

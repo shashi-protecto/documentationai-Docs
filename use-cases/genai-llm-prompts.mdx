@@ -1,0 +1,197 @@
+---
+title: "Protect PII in GenAI / LLM Prompts"
+description: "Auto-detect and mask sensitive data before sending text to an LLM, then optionally restore original values after the model responds."
+---
+
+## What this solves
+
+When users enter text, it often contains sensitive data like names, emails, or dates. Sending raw text to an LLM exposes private information and creates compliance risks.
+
+This pattern shows you how to:
+
+- Automatically detect and mask PII before sending text to an LLM
+- Send only masked text outside your system
+- Optionally restore the original text when required
+
+## How it works
+
+| Step | What happens | API |
+|------|-------------|-----|
+| 1 | Detect and mask sensitive data | Mask API (Auto-Detect) |
+| 2 | Send masked text to LLM | External (your LLM provider) |
+| 3 | Restore original text (optional) | Unmask API |
+
+<Steps>
+  <Step title="Auto-detect and mask user input" icon="scan" titleType="p">
+    Send the raw user input to Protecto. The active policy determines which entities are detected and how they are tokenized — no entity types or token names required in the request.
+
+    <Request tabs="cURL,Python,JavaScript">
+      ```bash
+      curl -X PUT https://protecto-trial.protecto.ai/api/vault/mask \
+        -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
+        -H "Content-Type: application/json" \
+        -d '{
+          "mask": [
+            {
+              "value": "My name is John Doe and my email is john.doe@example.com"
+            }
+          ]
+        }'
+      ```
+
+      ```python
+      import requests
+
+      response = requests.put(
+          "https://protecto-trial.protecto.ai/api/vault/mask",
+          headers={
+              "Authorization": "Bearer YOUR_AUTH_TOKEN",
+              "Content-Type": "application/json"
+          },
+          json={
+              "mask": [
+                  {"value": "My name is John Doe and my email is john.doe@example.com"}
+              ]
+          }
+      )
+      data = response.json()
+      ```
+
+      ```javascript
+      const response = await fetch(
+        "https://protecto-trial.protecto.ai/api/vault/mask",
+        {
+          method: "PUT",
+          headers: {
+            Authorization: "Bearer YOUR_AUTH_TOKEN",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            mask: [
+              { value: "My name is John Doe and my email is john.doe@example.com" },
+            ],
+          }),
+        }
+      );
+      const data = await response.json();
+      ```
+    </Request>
+
+    <Response tabs="200">
+      ```json
+      {
+        "data": [
+          {
+            "value": "My name is John Doe and my email is john.doe@example.com",
+            "token_value": "My name is <PERSON>VJYe 03W</PERSON> and my email is <EMAIL>0gN3SkjL@0ffM3CDS</EMAIL>"
+          }
+        ],
+        "success": true,
+        "error": {
+          "message": ""
+        }
+      }
+      ```
+    </Response>
+
+    <Callout kind="tip">
+      Send the `token_value` string to the LLM — not the original `value`. No raw PII leaves your system.
+    </Callout>
+  </Step>
+
+  <Step title="Send masked text to the LLM" icon="bot" titleType="p">
+    Pass the `token_value` from the previous step as the prompt to your LLM provider. The text still reads naturally, sensitive values are replaced with tokens, and entity tags provide type context if needed.
+
+    Protecto is not involved in this step.
+  </Step>
+
+  <Step title="Unmask the response (optional)" icon="unlock" titleType="p">
+    If your application needs to restore original values from the LLM's response, submit the masked text back to Protecto.
+
+    <Request tabs="cURL,Python,JavaScript">
+      ```bash
+      curl -X PUT https://protecto-trial.protecto.ai/api/vault/unmask \
+        -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
+        -H "Content-Type: application/json" \
+        -d '{
+          "unmask": [
+            {
+              "token_value": "My name is <PERSON>VJYe 03W</PERSON> and my email is <EMAIL>0gN3SkjL@0ffM3CDS</EMAIL>"
+            }
+          ]
+        }'
+      ```
+
+      ```python
+      response = requests.put(
+          "https://protecto-trial.protecto.ai/api/vault/unmask",
+          headers={
+              "Authorization": "Bearer YOUR_AUTH_TOKEN",
+              "Content-Type": "application/json"
+          },
+          json={
+              "unmask": [
+                  {"token_value": "My name is <PERSON>VJYe 03W</PERSON> and my email is <EMAIL>0gN3SkjL@0ffM3CDS</EMAIL>"}
+              ]
+          }
+      )
+      ```
+
+      ```javascript
+      const response = await fetch(
+        "https://protecto-trial.protecto.ai/api/vault/unmask",
+        {
+          method: "PUT",
+          headers: {
+            Authorization: "Bearer YOUR_AUTH_TOKEN",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            unmask: [
+              {
+                token_value:
+                  "My name is <PERSON>VJYe 03W</PERSON> and my email is <EMAIL>0gN3SkjL@0ffM3CDS</EMAIL>",
+              },
+            ],
+          }),
+        }
+      );
+      ```
+    </Request>
+
+    <Response tabs="200">
+      ```json
+      {
+        "data": [
+          {
+            "value": "My name is John Doe and my email is john.doe@example.com",
+            "token_value": "My name is <PERSON>VJYe 03W</PERSON> and my email is <EMAIL>0gN3SkjL@0ffM3CDS</EMAIL>"
+          }
+        ],
+        "success": true,
+        "error": {
+          "message": ""
+        }
+      }
+      ```
+    </Response>
+  </Step>
+</Steps>
+
+## When to use which approach
+
+| Scenario | Recommended |
+|----------|-------------|
+| LLM prompts | Auto-Detect and Mask |
+| Logs and messages | Auto-Detect and Mask |
+| Known sensitive fields | Mask with Token |
+| Structured identifiers | Mask with Format |
+| Central governance | Policy-based masking |
+
+<Callout kind="tip">
+  **Key takeaways:**
+  - Auto-detect masking is the fastest way to protect LLM prompts
+  - Tokens are wrapped with entity tags that preserve semantic meaning
+  - Masked text remains readable and usable by the LLM
+  - Unmasking is optional and permission-controlled
+</Callout>

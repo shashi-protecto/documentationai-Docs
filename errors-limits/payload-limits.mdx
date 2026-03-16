@@ -1,0 +1,32 @@
+---
+title: "Payload Limits"
+description: "Size and content constraints on Protecto API requests and how to work within them."
+---
+
+## Limits reference
+
+| Constraint | Limit |
+|------------|-------|
+| Maximum masked value length | 600 characters |
+| Empty arrays | Rejected |
+| Async payload size | Larger than sync but still bounded |
+
+## Working within limits
+
+**For values exceeding 600 characters:**
+Split the input into shorter segments and mask each one separately. Reassemble after masking.
+
+```python
+# Instead of:
+mask([{"value": very_long_string}])
+
+# Do this:
+chunks = [very_long_string[i:i+500] for i in range(0, len(very_long_string), 500)]
+masked_chunks = [mask([{"value": chunk}]) for chunk in chunks]
+```
+
+**For empty arrays:**
+Always validate your payload before sending. An empty `mask` array returns `Payload is empty`.
+
+**For large batch operations:**
+Use the async masking API for large volumes. Async processing supports larger payloads than synchronous calls.

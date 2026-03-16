@@ -1,0 +1,160 @@
+---
+title: "Redact Sensitive Data in Logs"
+description: "Mask log lines before writing them so sensitive data is never stored in application logs, with optional unmasking for authorized debugging."
+---
+
+## What this solves
+
+Application logs often contain sensitive data without anyone intending to put it there. Typical examples include:
+
+- Authentication logs
+- Error messages with user context
+- Audit events
+- Debug statements
+
+Once written, logs are hard to clean up. This pattern shows you how to **mask sensitive data before it is ever written to logs**.
+
+## How it works
+
+| Step | What happens | API |
+|------|-------------|-----|
+| 1 | Detect and mask sensitive data in log message | Mask API (Auto-Detect) |
+| 2 | Write masked log message | Your logging system |
+| 3 | Unmask for authorized investigation (optional) | Unmask API |
+
+<Steps>
+  <Step title="Auto-detect and mask the log line" icon="scan" titleType="p">
+    Before writing to your logging system, send the raw log line to Protecto. Auto-Detect and Mask handles free-form log messages without requiring you to specify entity types.
+
+    <Request tabs="cURL,Python">
+      ```bash
+      curl -X PUT https://protecto-trial.protecto.ai/api/vault/mask \
+        -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
+        -H "Content-Type: application/json" \
+        -d '{
+          "mask": [
+            {
+              "value": "[AUTH] User John Doe (john.doe@example.com) failed login on 15/8/2010 from IP 10.2.4.9"
+            }
+          ]
+        }'
+      ```
+
+      ```python
+      import requests
+
+      log_line = "[AUTH] User John Doe (john.doe@example.com) failed login on 15/8/2010 from IP 10.2.4.9"
+
+      response = requests.put(
+          "https://protecto-trial.protecto.ai/api/vault/mask",
+          headers={
+              "Authorization": "Bearer YOUR_AUTH_TOKEN",
+              "Content-Type": "application/json"
+          },
+          json={"mask": [{"value": log_line}]}
+      )
+      masked = response.json()["data"][0]["token_value"]
+      ```
+    </Request>
+
+    <Response tabs="200">
+      ```json
+      {
+        "data": [
+          {
+            "value": "[AUTH] User John Doe (john.doe@example.com) failed login on 15/8/2010 from IP 10.2.4.9",
+            "token_value": "[AUTH] User <PERSON>VJYe 03W</PERSON> (<EMAIL>0gN3SkjL@0ffM3CDS</EMAIL>) failed login on <DATE>5Fd890</DATE> from IP 10.2.4.9"
+          }
+        ],
+        "success": true,
+        "error": {
+          "message": ""
+        }
+      }
+      ```
+    </Response>
+
+    <Callout kind="alert">
+      Write only the `token_value` to your logging system — never the original `value`.
+    </Callout>
+  </Step>
+
+  <Step title="Write the masked log entry" icon="file-text" titleType="p">
+    Write the `token_value` string to your logging system exactly as returned.
+
+    **Benefits:**
+    - Logs remain readable — entity tags preserve context
+    - Sensitive values are never stored in plain text
+    - Tokens are deterministic, so the same person produces the same token across all log entries
+
+    Protecto is not involved after this step.
+  </Step>
+
+  <Step title="Unmask logs for debugging (optional)" icon="unlock" titleType="p">
+    If an authorized user needs to inspect original values during an investigation, unmask the stored log entry on demand.
+
+    <Request tabs="cURL,Python">
+      ```bash
+      curl -X PUT https://protecto-trial.protecto.ai/api/vault/unmask \
+        -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
+        -H "Content-Type: application/json" \
+        -d '{
+          "unmask": [
+            {
+              "token_value": "[AUTH] User <PERSON>VJYe 03W</PERSON> (<EMAIL>0gN3SkjL@0ffM3CDS</EMAIL>) failed login on <DATE>5Fd890</DATE> from IP 10.2.4.9"
+            }
+          ]
+        }'
+      ```
+
+      ```python
+      response = requests.put(
+          "https://protecto-trial.protecto.ai/api/vault/unmask",
+          headers={
+              "Authorization": "Bearer YOUR_AUTH_TOKEN",
+              "Content-Type": "application/json"
+          },
+          json={
+              "unmask": [
+                  {"token_value": "[AUTH] User <PERSON>VJYe 03W</PERSON> (<EMAIL>0gN3SkjL@0ffM3CDS</EMAIL>) failed login on <DATE>5Fd890</DATE> from IP 10.2.4.9"}
+              ]
+          }
+      )
+      ```
+    </Request>
+
+    <Response tabs="200">
+      ```json
+      {
+        "data": [
+          {
+            "value": "[AUTH] User John Doe (john.doe@example.com) failed login on 15/8/2010 from IP 10.2.4.9",
+            "token_value": "[AUTH] User <PERSON>VJYe 03W</PERSON> (<EMAIL>0gN3SkjL@0ffM3CDS</EMAIL>) failed login on <DATE>5Fd890</DATE> from IP 10.2.4.9"
+          }
+        ],
+        "success": true,
+        "error": {
+          "message": ""
+        }
+      }
+      ```
+    </Response>
+  </Step>
+</Steps>
+
+## When to use this pattern
+
+Use this approach when:
+
+- Writing authentication or access logs
+- Emitting audit or compliance logs
+- Logging errors or failures that include user context
+- Storing application events with personal data
+
+<Callout kind="tip">
+  **Key takeaways:**
+  - Mask **before** writing logs — retrofit is far harder
+  - Auto-detect works best for free-form log lines
+  - Masked logs remain readable and useful for operations
+  - Restrict unmasking to authorized personnel only
+</Callout>

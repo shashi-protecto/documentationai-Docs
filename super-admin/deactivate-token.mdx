@@ -1,0 +1,39 @@
+---
+title: "Deactivate Auth Token"
+description: "Immediately revoke a namespace user token — use when credentials are compromised or a user's access should be removed."
+---
+
+Immediately revokes a namespace user token. Use this when credentials are compromised, a user leaves, or access needs to be removed.
+
+## Endpoint
+
+| Method | Endpoint |
+|--------|----------|
+| `PUT` | `https://<domain>/api/vault/super-admin/namespace/auth-token/deactivate` |
+
+<Request tabs="cURL">
+```bash
+curl -X PUT https://<domain>/api/vault/super-admin/namespace/auth-token/deactivate \
+  -H "Authorization: Bearer <MASTER_API_KEY>" \
+  -H "Content-Type: application/json; charset=utf-8" \
+  -d '{
+    "auth_token": "<TOKEN_TO_DEACTIVATE>"
+  }'
+```
+</Request>
+
+<Response tabs="200">
+```json
+{
+  "data": {
+    "message": "Given Auth token deactivated successfully."
+  },
+  "success": true,
+  "error": { "message": "" }
+}
+```
+</Response>
+
+<Callout kind="alert">
+  Deactivation takes effect immediately. Any in-flight requests using this token will fail. Update affected services with a new token before deactivating.
+</Callout>

@@ -1,0 +1,60 @@
+---
+title: "Super Admin APIs"
+description: "Manage namespaces, namespace user tokens, and high-impact administrative jobs using the Master API Key."
+---
+
+Super Admin APIs are used to manage **namespaces**, **namespace user tokens**, and **high-impact administrative jobs** such as namespace creation and deletion.
+
+<Callout kind="alert">
+  Super Admin APIs require the **Master API Key** and are not available to regular namespace users or trial accounts.
+</Callout>
+
+## Authentication
+
+All Super Admin APIs require the Master API Key:
+
+```
+Authorization: Bearer <MASTER_API_KEY>
+```
+
+## Capabilities
+
+| Capability | Description |
+|------------|-------------|
+| Namespace user token management | Create, list, inspect, and deactivate user tokens |
+| Namespace lifecycle management | Create and delete entire namespaces |
+| Background job tracking | Track async namespace creation and deletion |
+| Centralized control | Operate across all namespaces |
+
+## Available permissions
+
+When creating namespace user tokens, you assign one or more permissions:
+
+| Permission | Meaning |
+|------------|---------|
+| `mask` | Can call masking APIs |
+| `unmask` | Can unmask and view clear text |
+| `metadata_change` | Can modify metadata and view audits |
+
+## API reference
+
+<Columns cols="2">
+  <Card title="Create Namespace Token" href="/super-admin/create-namespace-token" icon="key" horizontal={false}>
+    Create an authentication token for a user within a namespace.
+  </Card>
+  <Card title="Fetch Token Details" href="/super-admin/fetch-token-details" icon="info" horizontal={false}>
+    Retrieve metadata for a specific user token.
+  </Card>
+  <Card title="List Auth Tokens" href="/super-admin/list-auth-tokens" icon="list" horizontal={false}>
+    List all namespace user tokens, optionally filtered by namespace.
+  </Card>
+  <Card title="Deactivate Token" href="/super-admin/deactivate-token" icon="x-circle" horizontal={false}>
+    Immediately revoke a namespace user token.
+  </Card>
+  <Card title="Delete Namespace" href="/super-admin/delete-namespace" icon="trash-2" horizontal={false}>
+    Delete an entire namespace and all its data.
+  </Card>
+  <Card title="Track Namespace Jobs" href="/super-admin/track-namespace-jobs" icon="activity" horizontal={false}>
+    Monitor namespace creation and deletion job status.
+  </Card>
+</Columns>

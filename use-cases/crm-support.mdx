@@ -1,0 +1,185 @@
+---
+title: "AI Agent for CRM Support With PII Protection"
+description: "Mask CRM fields before your AI support agent processes them, then unmask only in explicitly authorized workflows."
+---
+
+## What this solves
+
+You want an AI agent to help support reps using CRM data — tickets, notes, and customer profile fields — but CRM records often include sensitive data: names, emails, dates, addresses.
+
+This pattern shows you how to:
+
+- Mask CRM fields before sending them to the AI agent
+- Keep the AI agent working with useful context, without raw PII
+- Allow restricted, policy-based unmasking only when needed
+
+## How it works
+
+| Step | What happens | API |
+|------|-------------|-----|
+| 1 | Mask CRM fields used as agent context | Mask API (token-based) |
+| 2 | Send masked CRM context to the AI agent | External |
+| 3 | Unmask only for authorized workflows (optional) | Unmask API (policy-based) |
+
+<Steps>
+  <Step title="Mask CRM fields before the agent sees them" icon="eye-off" titleType="p">
+    CRM data is typically structured — you know which fields are sensitive. Use **token-based masking** for known fields rather than auto-detection.
+
+    <Request tabs="cURL,Python">
+      ```bash
+      curl -X PUT https://protecto-trial.protecto.ai/api/vault/mask \
+        -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
+        -H "Content-Type: application/json" \
+        -d '{
+          "mask": [
+            { "value": "Jane Smith", "token_name": "Text Token" },
+            { "value": "jane.smith@company.com", "token_name": "Text Token" },
+            { "value": "15/8/2010", "token_name": "Numeric Token" }
+          ]
+        }'
+      ```
+
+      ```python
+      import requests
+
+      response = requests.put(
+          "https://protecto-trial.protecto.ai/api/vault/mask",
+          headers={
+              "Authorization": "Bearer YOUR_AUTH_TOKEN",
+              "Content-Type": "application/json"
+          },
+          json={
+              "mask": [
+                  {"value": "Jane Smith", "token_name": "Text Token"},
+                  {"value": "jane.smith@company.com", "token_name": "Text Token"},
+                  {"value": "15/8/2010", "token_name": "Numeric Token"}
+              ]
+          }
+      )
+      tokens = {item["value"]: item["token_value"] for item in response.json()["data"]}
+      ```
+    </Request>
+
+    <Response tabs="200">
+      ```json
+      {
+        "data": [
+          {
+            "value": "Jane Smith",
+            "token_name": "Text Token",
+            "token_value": "t9Eyj"
+          },
+          {
+            "value": "jane.smith@company.com",
+            "token_name": "Text Token",
+            "token_value": "874890078"
+          },
+          {
+            "value": "15/8/2010",
+            "token_name": "Numeric Token",
+            "token_value": "fuot3"
+          }
+        ],
+        "success": true,
+        "error": {
+          "message": ""
+        }
+      }
+      ```
+    </Response>
+
+    <Callout kind="tip">
+      Use only the `token_value` outputs when constructing the agent's CRM context. The agent never sees the raw field values.
+    </Callout>
+  </Step>
+
+  <Step title="The AI agent works on masked CRM context" icon="bot" titleType="p">
+    Pass the tokenized values to the AI agent. With masked context, the agent can:
+
+    - Draft responses and replies
+    - Suggest next actions
+    - Summarize the customer's issue
+    - Recommend knowledge base articles
+
+    The agent never has access to raw customer PII. Protecto is not involved in this step.
+  </Step>
+
+  <Step title="Policy-based unmasking for authorized workflows (optional)" icon="unlock" titleType="p">
+    If you need to reveal original values — for example, final email sending, identity verification, or escalation workflows — use **policy-based unmasking**.
+
+    <Callout kind="alert">
+      Only unmask in explicitly authorized final steps. Do not unmask speculatively or as part of the agent's normal flow.
+    </Callout>
+
+    <Request tabs="cURL,Python">
+      ```bash
+      curl -X PUT https://protecto-trial.protecto.ai/api/vault/unmask \
+        -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
+        -H "Content-Type: application/json" \
+        -d '{
+          "policy_name": "Anonymization-policy-1",
+          "unmask": [
+            {
+              "token_value": "<PER>hSw8kAEB10 ITItAd8FsN</PER> lives in <ADDRESS>748785848000</ADDRESS>"
+            }
+          ]
+        }'
+      ```
+
+      ```python
+      response = requests.put(
+          "https://protecto-trial.protecto.ai/api/vault/unmask",
+          headers={
+              "Authorization": "Bearer YOUR_AUTH_TOKEN",
+              "Content-Type": "application/json"
+          },
+          json={
+              "policy_name": "Anonymization-policy-1",
+              "unmask": [
+                  {"token_value": "<PER>hSw8kAEB10 ITItAd8FsN</PER> lives in <ADDRESS>748785848000</ADDRESS>"}
+              ]
+          }
+      )
+      ```
+    </Request>
+
+    <Response tabs="200">
+      ```json
+      {
+        "data": [
+          {
+            "token_value": "<PER>hSw8kAEB10 ITItAd8FsN</PER> lives in <ADDRESS>748785848000</ADDRESS>",
+            "value": "George Williams lives in Washington",
+            "toxicity_analysis": {
+              "toxicity": 0.00088834815,
+              "severe_toxicity": 0.000104515464,
+              "obscene": 0.00018257574,
+              "threat": 0.0001108902,
+              "insult": 0.00017547917,
+              "identity_attack": 0.00013806517
+            }
+          }
+        ],
+        "success": true,
+        "error": {
+          "message": ""
+        }
+      }
+      ```
+    </Response>
+  </Step>
+</Steps>
+
+## Decision guide for CRM AI agent tasks
+
+| CRM agent task | Recommended approach |
+|---------------|---------------------|
+| Draft responses, summarize tickets | Mask CRM fields first, send masked context to agent |
+| Search similar tickets by customer | Store tokens in CRM — joins and lookups work without raw PII |
+| Send email or complete identity verification | Unmask with `policy_name` only in the final, authorized step |
+
+<Callout kind="tip">
+  **Key takeaways:**
+  - Use **token-based masking** for known CRM fields before the AI agent sees them
+  - Use **policy-based unmasking** only when needed, and only for authorized workflows
+</Callout>

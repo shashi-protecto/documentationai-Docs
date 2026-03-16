@@ -1,0 +1,57 @@
+---
+title: "Unmasking Errors"
+description: "Common error messages from the Unmask API, what causes them, and how to fix them."
+---
+
+The Unmask API returns structured error messages for invalid or unauthorized requests.
+
+**Endpoint:** `PUT https://protecto-trial.protecto.ai/api/vault/unmask`
+
+## Common errors
+
+| Scenario | Error message |
+|----------|---------------|
+| Empty payload | `Payload is empty` |
+| Missing `unmask` key | `unmask data missing` |
+| Missing `token_value` field | `Missing token value field` |
+| Empty `token_value` | `Missing token value` |
+| Unmask failure | `Unmasking of given token values failed.` |
+
+## Example: Missing `token_value`
+
+**Request:**
+```json
+{
+  "unmask": [
+    { "token_value": " " }
+  ]
+}
+```
+
+**Response:**
+```json
+{
+  "data": null,
+  "success": false,
+  "error": {
+    "message": "Missing token value field"
+  }
+}
+```
+
+## Fixes
+
+<ExpandableGroup>
+  <Expandable title="Unmask failure (token not found)" default-open="false">
+    The token does not exist in the namespace. This can happen if:
+    - The token was created under a different namespace
+    - The personal data mapping was deleted (data retention policy)
+    - The token value was modified or truncated
+  </Expandable>
+  <Expandable title="Permission denied on unmask" default-open="false">
+    The auth token used does not have `unmask` permission. Check with your admin to obtain a token with the correct permissions.
+  </Expandable>
+  <Expandable title="Anonymized token cannot be unmasked" default-open="false">
+    If the policy used during masking was an anonymization policy, the token is permanently irreversible. No permissions can override this.
+  </Expandable>
+</ExpandableGroup>

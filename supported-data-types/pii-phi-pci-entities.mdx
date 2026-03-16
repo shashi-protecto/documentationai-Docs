@@ -1,0 +1,117 @@
+---
+title: "PII, PHI & PCI Entities"
+description: "Complete mapping of built-in entity names to format names across identity, government, financial, and healthcare data categories."
+---
+
+Protecto detects sensitive data across four built-in categories. Each entity has a canonical **entity name** (used by the detection engine) and a corresponding **format name** (used when you need to override detection or preserve structure).
+
+## Identity and contact data
+
+| Entity Name | Format Name |
+|-------------|-------------|
+| `PERSON` | `Person Name` |
+| `EMAIL_ADDRESS` | `Email Address` |
+| `PHONE_NUMBER` | `Phone Number` |
+| `ADDRESS` | `Address` |
+| `USERNAME` | `Username` |
+| `URL` | `URL` |
+| `IP_ADDRESS` | `IP Address` |
+| `MAC_NUMBER` | `Mac Address` |
+| `FAX_NUMBER` | `Fax Number` |
+
+## Government and legal identifiers
+
+| Entity Name | Format Name |
+|-------------|-------------|
+| `US_SSN` | `Social Identification Numbers` |
+| `PASSPORT_NUMBER` | `Passport Number` |
+| `DRIVING_LICENSE_NUMBER` | `Driving License Number` |
+| `LICENCE_NUMBER` | `Licence Number` |
+| `NATIONALITY` | `Nationality` |
+| `VEHICLE_IDENTIFICATION_NUMBER` | `Vehicle Identification Number` |
+| `VEHICLE_REGISTRATION_NUMBER` | `Registration Number` |
+
+## Financial and PCI data
+
+| Entity Name | Format Name |
+|-------------|-------------|
+| `CREDIT_CARD` | `Credit Card` |
+| `CARD_EXPIRY_DATE` | `Credit Card Expiration Date` |
+| `CVV` | `CVV` |
+| `BANK_ACCOUNT_NUMBER` | `Bank Account Number` |
+| `ROUTING_NUMBER` | `Routing Number` |
+| `SWIFT` | `Swift` |
+| `TAN` | `TAN` |
+| `POLICY_NUMBER` | `Policy No` |
+| `PAN` | `PAN` |
+
+## Healthcare (PHI)
+
+| Entity Name | Format Name |
+|-------------|-------------|
+| `MRN` | `Medical Record Number` |
+| `HEALTH_BENEFICIARY_NUMBER` | `Insurance Number` |
+| `DISCHARGE_DATE` | `Date` |
+| `DEATH_DATE` | `Date` |
+| `START_DATE_OF_HOSPITALIZATION` | `Date` |
+
+<Callout kind="tip">
+  Entity names are used by the detection engine and in `individual_tokens` responses. Format names are used in request `format` fields when you want to override auto-detection or preserve structure.
+</Callout>
+
+## Usage examples
+
+**Email with explicit format:**
+
+```json
+{
+  "mask": [
+    {
+      "value": "jane.doe@company.com",
+      "format": "Email Address",
+      "token_name": "Text Token"
+    }
+  ]
+}
+```
+
+**Phone number with numeric token:**
+
+```json
+{
+  "mask": [
+    {
+      "value": "(408) 426-9989",
+      "format": "Phone Number",
+      "token_name": "Numeric Token"
+    }
+  ]
+}
+```
+
+**Credit card using auto-detection:**
+
+```json
+{
+  "mask": [
+    {
+      "value": "4111 1111 1111 1111",
+      "token_name": "Numeric Token"
+    }
+  ]
+}
+```
+
+**Forcing format when detection is ambiguous:**
+
+```json
+{
+  "mask": [
+    {
+      "value": "A98372XZ19",
+      "format": "Passport Number",
+      "token_name": "Special Token"
+    }
+  ]
+}
+```

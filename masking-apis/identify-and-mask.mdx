@@ -1,0 +1,152 @@
+---
+title: "Identify and Mask (Auto-Detect)"
+description: "Automatically detect and mask all PII in free-form text. Entity types, tokens, and detection rules are all driven by your active policy."
+---
+
+Use this for **free-form text** where entity types are unknown in advance. Protecto scans the text, detects sensitive entities based on the active policy, and returns a masked version with entity tags.
+
+## Endpoint
+
+| Method | URL |
+|--------|-----|
+| PUT | `https://protecto-trial.protecto.ai/api/vault/mask` |
+
+## Request body
+
+<ParamField body="mask" param-type="array" required="true">
+  List of free-form text inputs to analyze and mask.
+</ParamField>
+
+<ParamField body="mask[].value" param-type="string" required="true">
+  Free-form text containing potentially sensitive data.
+</ParamField>
+
+## Example
+
+<Request tabs="cURL,Python,JavaScript">
+  ```bash
+  curl -X PUT https://protecto-trial.protecto.ai/api/vault/mask \
+    -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "mask": [
+        {
+          "value": "Sarah Connors can be reached at 217-555-2020 or sarah.connors88@example.com"
+        }
+      ]
+    }'
+  ```
+
+  ```python
+  import requests
+
+  response = requests.put(
+      "https://protecto-trial.protecto.ai/api/vault/mask",
+      headers={
+          "Authorization": "Bearer YOUR_AUTH_TOKEN",
+          "Content-Type": "application/json"
+      },
+      json={
+          "mask": [
+              {"value": "Sarah Connors can be reached at 217-555-2020 or sarah.connors88@example.com"}
+          ]
+      }
+  )
+  ```
+
+  ```javascript
+  const response = await fetch(
+    "https://protecto-trial.protecto.ai/api/vault/mask",
+    {
+      method: "PUT",
+      headers: {
+        Authorization: "Bearer YOUR_AUTH_TOKEN",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        mask: [
+          {
+            value: "Sarah Connors can be reached at 217-555-2020 or sarah.connors88@example.com",
+          },
+        ],
+      }),
+    }
+  );
+  ```
+</Request>
+
+<Response tabs="200">
+  ```json
+  {
+    "data": [
+      {
+        "value": "Sarah Connors can be reached at 217-555-2020 or sarah.connors88@example.com",
+        "token_value": "<PERSON>VJYe 03W</PERSON> can be reached at <PHONE>874890078</PHONE> or <EMAIL>0gN3SkjL@0ffM3CDS</EMAIL>",
+        "individual_tokens": [
+          { "value": "Sarah Connors", "token_value": "VJYe 03W", "prefix": "<PERSON>", "suffix": "</PERSON>" },
+          { "value": "217-555-2020", "token_value": "874890078", "prefix": "<PHONE>", "suffix": "</PHONE>" },
+          { "value": "sarah.connors88@example.com", "token_value": "0gN3SkjL@0ffM3CDS", "prefix": "<EMAIL>", "suffix": "</EMAIL>" }
+        ],
+        "toxicity_analysis": {
+          "toxicity": 0.00088,
+          "severe_toxicity": 0.000104,
+          "obscene": 0.000182,
+          "threat": 0.000110,
+          "insult": 0.000175,
+          "identity_attack": 0.000138
+        }
+      }
+    ],
+    "success": true,
+    "error": { "message": "" }
+  }
+  ```
+</Response>
+
+## Response fields
+
+<ResponseField name="token_value" field-type="string" required="true">
+  The full input text with all detected entities replaced by tokens wrapped in entity tags.
+</ResponseField>
+
+<ResponseField name="individual_tokens" field-type="array" required="false">
+  Array of each individual entity detected and masked.
+
+  <Expandable title="individual_tokens fields" default-open="false">
+    <ResponseField name="value" field-type="string" required="true">
+      The original sensitive value.
+    </ResponseField>
+    <ResponseField name="token_value" field-type="string" required="true">
+      The token replacing the original value.
+    </ResponseField>
+    <ResponseField name="prefix" field-type="string" required="true">
+      The opening entity tag (e.g., `<PERSON>`).
+    </ResponseField>
+    <ResponseField name="suffix" field-type="string" required="true">
+      The closing entity tag (e.g., `</PERSON>`).
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="toxicity_analysis" field-type="object" required="false">
+  Toxicity scores for the input text. Returned when enabled by policy.
+
+  <Expandable title="Toxicity score categories" default-open="false">
+    | Category | Score range | Description |
+    |----------|-------------|-------------|
+    | `toxicity` | 0–1 | Overall likelihood of toxic content |
+    | `severe_toxicity` | 0–1 | Probability of severe toxic language |
+    | `obscene` | 0–1 | Likelihood of obscene content |
+    | `threat` | 0–1 | Likelihood of threats |
+    | `insult` | 0–1 | Likelihood of insults |
+    | `identity_attack` | 0–1 | Likelihood of identity-based attacks |
+
+    Scores closer to `0` indicate low likelihood. Scores closer to `1` indicate high likelihood.
+  </Expandable>
+</ResponseField>
+
+## Notes
+
+- Detection and masking behavior are entirely **policy-driven** — no entity types or token names are required in the request.
+- The exact tokenized output depends on the active policy.
+- This mode is available on the **trial** environment.

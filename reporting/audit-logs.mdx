@@ -1,0 +1,107 @@
+---
+title: "Audit Logs"
+description: "Full audit-level detail for every API request in a namespace — used for compliance audits, security investigations, and forensic analysis."
+---
+
+Provides **full audit-level detail** for every API request made in a namespace. This is the most detailed reporting endpoint and is typically used for compliance audits, security investigations, and forensic analysis.
+
+## Endpoint
+
+| Method | Endpoint |
+|--------|----------|
+| `GET` | `https://<domain>/api/vault/namespace/reports/audit-details` |
+
+## Query parameters
+
+<ParamField query="start_date" param-type="string" required="true">
+  Start of the audit window. Format: `YYYY-MM-DD HH:MM:SS`.
+</ParamField>
+
+<ParamField query="end_date" param-type="string" required="true">
+  End of the audit window. Format: `YYYY-MM-DD HH:MM:SS`.
+</ParamField>
+
+<ParamField query="next_page_token" param-type="string" required="false">
+  Pagination token for large result sets.
+</ParamField>
+
+<Request tabs="cURL">
+```bash
+curl -X GET "https://<domain>/api/vault/namespace/reports/audit-details?start_date=2024-06-01+00:00:00&end_date=2024-06-01+23:59:59" \
+  -H "Authorization: Bearer <ADMIN_USER_AUTH_KEY>"
+```
+</Request>
+
+<Response tabs="200">
+```json
+{
+  "data": [
+    {
+      "requested_method": "/unmask",
+      "requested_user": "bob@company.com",
+      "requested_time": "2024-06-01 02:14:09",
+      "status": "success",
+      "input_payload": { "unmask": [{ "value": "<PER>hSw8kAEB10</PER>" }] },
+      "response": { "data": [{ "value": "George Williams" }] },
+      "error_log": ""
+    }
+  ],
+  "next_page_token": null,
+  "success": true,
+  "error": { "message": "" }
+}
+```
+</Response>
+
+## Response fields
+
+<ResponseField name="requested_method" field-type="string" required="true">
+  API called — `/mask`, `/unmask`, etc.
+</ResponseField>
+
+<ResponseField name="requested_user" field-type="string" required="true">
+  User ID or email of the caller.
+</ResponseField>
+
+<ResponseField name="requested_time" field-type="string" required="true">
+  Timestamp of the request.
+</ResponseField>
+
+<ResponseField name="status" field-type="string" required="true">
+  `success` or `failure`.
+</ResponseField>
+
+<ResponseField name="input_payload" field-type="object" required="true">
+  Full request payload submitted by the caller.
+</ResponseField>
+
+<ResponseField name="response" field-type="object" required="true">
+  Full API response returned by Protecto.
+</ResponseField>
+
+<ResponseField name="error_log" field-type="string" required="false">
+  Error details if the request failed.
+</ResponseField>
+
+## Use cases
+
+| Use case | What to look for |
+|----------|-----------------|
+| Security investigation | `requested_user`, `requested_method`, `status` |
+| Compliance audit | `requested_time`, `input_payload`, `response` |
+| Incident forensics | Full request and response payloads |
+| Unmask access review | `/unmask` calls filtered by user |
+| Error root cause analysis | `status=failure`, `error_log` |
+| Insider threat detection | Frequency of sensitive calls by a single user |
+
+## Access notes
+
+| Role | Access |
+|------|--------|
+| Namespace Admin | Full reporting and audit access |
+| Regular User | No access |
+| Trial User | No access |
+
+<Callout kind="alert">
+  Audit logs include full request and response payloads, which may contain sensitive data. Always use pagination for large date ranges and avoid pulling large windows repeatedly.
+</Callout>

@@ -1,0 +1,65 @@
+---
+title: "Token Types"
+description: "How token types control the shape and structure of masked output — choosing the right token type for your data and downstream requirements."
+---
+
+Token types control **how masked values are generated**, independent of entity or format. The same input can produce different output shapes depending on which `token_name` you specify.
+
+## Available token types
+
+| Token Type | Intended Use | Example Input | Example Output |
+|------------|-------------|---------------|----------------|
+| `Default Token` | General text | `George` | `FreTdf` |
+| `Text Token` | Emails, usernames | `kumar@ss.fss.com` | `LEFQS@cTdqGVB2Ay` |
+| `Numeric Token` | Numeric-like values | `(408)-426-9989` | `(07432)-29915-56713` |
+| `Special Token` | Random-length output | `john.doe@example.com` | `xuLDKEM4bAXh8yIEY1L9` |
+| `Person Token` | Names | `Williams` | `Cynthia` |
+| `Date Token` | Dates | `6/12/1967` | `0001-06-22` |
+| `State Token` | US state codes | `TN` | `IL` |
+
+## Choosing a token type
+
+| Scenario | Recommended token type |
+|----------|----------------------|
+| Masking a name | `Person Token` (output is a realistic name) |
+| Masking a phone or account number | `Numeric Token` (output preserves numeric shape) |
+| Masking an email | `Text Token` (output preserves email-like structure) |
+| Masking a date | `Date Token` (output is a valid date) |
+| Masking a US state | `State Token` (output is a valid state code) |
+| General string with no format requirements | `Default Token` |
+| Variable-length output | `Special Token` |
+
+## Token determinism
+
+Masking is **deterministic** — the same input value with the same token type produces the same token within a namespace and policy. This means:
+
+- The same value always maps to the same token
+- Tokens can be used as stable pseudonymous identifiers
+- Joins and lookups on tokenized data work correctly
+
+<Callout kind="tip">
+  Token determinism is scoped to your namespace and policy. The same value masked under different namespaces or policies will produce different tokens.
+</Callout>
+
+## Using the same input with different token types
+
+Different token types produce different outputs for the same input:
+
+```json
+{
+  "mask": [
+    {
+      "value": "Williams",
+      "format": "Person Name",
+      "token_name": "Person Token"
+    },
+    {
+      "value": "Williams",
+      "format": "Person Name",
+      "token_name": "Default Token"
+    }
+  ]
+}
+```
+
+The first produces a realistic name. The second produces a random string. Both are deterministic for their respective token types.

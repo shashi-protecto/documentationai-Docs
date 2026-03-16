@@ -1,0 +1,69 @@
+---
+title: "Mask with Policy"
+description: "Apply a named policy to masking requests to control entity detection scope, anonymization vs pseudonymization, and custom entity wrappers."
+---
+
+Use this when masking behavior must follow **policy-defined metadata** — such as which entities to detect, anonymization vs pseudonymization rules, or custom prefix/suffix wrappers.
+
+## Endpoint
+
+| Method | URL |
+|--------|-----|
+| PUT | `https://protecto-trial.protecto.ai/api/vault/mask` |
+
+## Request body
+
+<ParamField body="policy_name" param-type="string" required="true">
+  The name of the policy to apply. The policy must exist in your namespace. If omitted, the default namespace policy applies.
+</ParamField>
+
+<ParamField body="mask" param-type="array" required="true">
+  List of free-form text inputs to mask under the specified policy.
+</ParamField>
+
+<ParamField body="mask[].value" param-type="string" required="true">
+  Free-form text to mask.
+</ParamField>
+
+## Example
+
+<Request tabs="cURL,Python">
+  ```bash
+  curl -X PUT https://protecto-trial.protecto.ai/api/vault/mask \
+    -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "policy_name": "Anonymization-policy-1",
+      "mask": [
+        {
+          "value": "John Doe lives at 123 Maple Street"
+        }
+      ]
+    }'
+  ```
+
+  ```python
+  import requests
+
+  response = requests.put(
+      "https://protecto-trial.protecto.ai/api/vault/mask",
+      headers={
+          "Authorization": "Bearer YOUR_AUTH_TOKEN",
+          "Content-Type": "application/json"
+      },
+      json={
+          "policy_name": "Anonymization-policy-1",
+          "mask": [
+              {"value": "John Doe lives at 123 Maple Street"}
+          ]
+      }
+  )
+  ```
+</Request>
+
+## Notes
+
+- `policy_name` is explicitly supported for auto-detect masking.
+- Policies control which entity types are detected, how values are tokenized, and whether unmasking is permitted.
+- Changing a policy updates behavior for all future requests using that policy name — without changing client code.
+- See [Policies](/core-concepts/policies) for a conceptual overview, and [Policy Management](/policy-management/overview) for admin operations.

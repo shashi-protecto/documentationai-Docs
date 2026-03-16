@@ -1,0 +1,85 @@
+---
+title: "Namespace Summary"
+description: "Aggregated API usage counts for a single namespace, grouped by API type and status."
+---
+
+Returns **aggregated API usage counts** for a namespace, grouped by API type and status. Use this for high-level monitoring and usage trends.
+
+## Endpoint
+
+| Method | Endpoint |
+|--------|----------|
+| `GET` | `https://<domain>/api/vault/reports/namespace-summary` |
+
+## Query parameters
+
+<ParamField query="namespace" param-type="string" required="true">
+  Namespace name to report on.
+</ParamField>
+
+<ParamField query="start_date" param-type="string" required="true">
+  Start of the reporting window. Format: `YYYY-MM-DD HH:MM:SS`.
+</ParamField>
+
+<ParamField query="end_date" param-type="string" required="true">
+  End of the reporting window. Format: `YYYY-MM-DD HH:MM:SS`.
+</ParamField>
+
+<ParamField query="next_page_token" param-type="string" required="false">
+  Pagination token for large result sets.
+</ParamField>
+
+<Request tabs="cURL">
+```bash
+curl -X GET "https://<domain>/api/vault/reports/namespace-summary?namespace=production&start_date=2024-05-01+00:00:00&end_date=2024-05-31+23:59:59" \
+  -H "Authorization: Bearer <ADMIN_USER_AUTH_KEY>"
+```
+</Request>
+
+<Response tabs="200">
+```json
+{
+  "data": [
+    {
+      "date": "2024-05-21",
+      "api_type": "/mask",
+      "status": "success",
+      "count": 14832
+    },
+    {
+      "date": "2024-05-21",
+      "api_type": "/unmask",
+      "status": "success",
+      "count": 1247
+    },
+    {
+      "date": "2024-05-21",
+      "api_type": "/unmask",
+      "status": "failure",
+      "count": 12
+    }
+  ],
+  "next_page_token": null,
+  "success": true,
+  "error": { "message": "" }
+}
+```
+</Response>
+
+## Response fields
+
+<ResponseField name="date" field-type="string" required="true">
+  Date of the aggregated activity.
+</ResponseField>
+
+<ResponseField name="api_type" field-type="string" required="true">
+  API name — `/mask`, `/unmask`, etc.
+</ResponseField>
+
+<ResponseField name="status" field-type="string" required="true">
+  `success` or `failure`.
+</ResponseField>
+
+<ResponseField name="count" field-type="integer" required="true">
+  Number of API calls matching this date/type/status combination.
+</ResponseField>

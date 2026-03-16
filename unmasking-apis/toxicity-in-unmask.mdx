@@ -1,0 +1,50 @@
+---
+title: "Toxicity in Unmask API"
+description: "Toxicity scores are returned alongside unmasked values when the unmask API runs toxicity analysis on the restored content."
+---
+
+When unmasking tokenized text, the API returns toxicity scores for the **fully unmasked content** — the scores evaluate the original text after restoration, not the tokens.
+
+## Toxicity score categories
+
+| Category | Score range | Description |
+|----------|-------------|-------------|
+| `toxicity` | 0–1 | Overall likelihood of toxic content |
+| `severe_toxicity` | 0–1 | Probability of severe toxic language |
+| `obscene` | 0–1 | Likelihood of obscene content |
+| `threat` | 0–1 | Likelihood of threatening language |
+| `insult` | 0–1 | Likelihood of insulting language |
+| `identity_attack` | 0–1 | Likelihood of identity-based attacks |
+
+Scores closer to `0` indicate low likelihood. Scores closer to `1` indicate high likelihood.
+
+## Example toxicity response
+
+```json
+{
+  "toxicity_analysis": {
+    "toxicity": 0.000597277597989887,
+    "severe_toxicity": 0.00012354821956250817,
+    "obscene": 0.00019149390573147684,
+    "threat": 0.00012092456745449454,
+    "insult": 0.0001770917879184708,
+    "identity_attack": 0.00014092971105128527
+  }
+}
+```
+
+## How toxicity analysis works in unmasking
+
+- Toxicity is evaluated on the **restored original values**, not on the token strings
+- Toxicity scores are returned as part of each item in the `data` array
+- Scores are always returned when toxicity analysis is enabled by the active policy
+
+<Callout kind="info">
+  Toxicity scoring during unmasking is particularly useful in GenAI workflows — you can check whether the original user input was toxic before deciding whether to use the unmasked value in a response or escalation path.
+</Callout>
+
+## Use cases for toxicity in unmasking
+
+- **Content moderation**: Flag high-toxicity unmask requests before displaying or acting on the original content
+- **Compliance logging**: Log toxicity scores alongside unmask audit records
+- **GenAI safety**: Evaluate original prompt content before routing to downstream systems

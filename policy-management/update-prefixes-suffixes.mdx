@@ -1,0 +1,65 @@
+---
+title: "Update Prefixes & Suffixes"
+description: "Customize the prefix and suffix used to wrap masked entity values in auto-detect masking output."
+---
+
+Updates the prefix and suffix used when auto-detect masking finds an entity. This applies to parent entities and automatically affects child formats.
+
+## Endpoint
+
+| Method | Endpoint |
+|--------|----------|
+| `PUT` | `https://<domain>/api/vault/metadata/update-auto-detect` |
+
+## Request body
+
+<ParamField body="policy_name" param-type="string" required="true">
+  Target policy to update.
+</ParamField>
+
+<ParamField body="metadata" param-type="array" required="true">
+  Array of entity prefix/suffix configurations.
+</ParamField>
+
+<Request tabs="cURL">
+```bash
+curl -X PUT https://<domain>/api/vault/metadata/update-auto-detect \
+  -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>" \
+  -H "Content-Type: application/json; charset=utf-8" \
+  -d '{
+    "data": {
+      "policy_name": "custom-format-policy",
+      "metadata": [
+        {
+          "entity_name": "PERSON",
+          "format_prefix": "{Person ",
+          "format_suffix": "}"
+        },
+        {
+          "entity_name": "PHONE_NUMBER",
+          "format_prefix": "{Phone ",
+          "format_suffix": "}"
+        }
+      ]
+    }
+  }'
+```
+</Request>
+
+With these settings, a masked output would look like:
+
+```
+{Person VJYe 03W} can be reached at {Phone 397-481-2948}
+```
+
+Instead of the default:
+
+```
+<PER>VJYe 03W</PER> can be reached at <PHONE_NUMBER>397-481-2948</PHONE_NUMBER>
+```
+
+## Notes
+
+- This is effective only when `policy_name` is passed to Mask or Unmask API calls
+- Does not affect token values themselves — only the output formatting wrapper
+- Changes are applied immediately to all requests using this policy

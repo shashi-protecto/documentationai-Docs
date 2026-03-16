@@ -1,0 +1,70 @@
+---
+title: "Supported Formats"
+description: "Complete list of format names for structure-preserving masking — use these exact strings in the format field of masking requests."
+---
+
+Formats are used to **preserve the structure of the original value** while masking the actual data, or to **override auto-detection** when the entity type is known.
+
+## Using formats
+
+Provide the `format` field in your masking request to specify which format to apply:
+
+```json
+{
+  "mask": [
+    {
+      "value": "(408) 426-9989",
+      "format": "Phone Number",
+      "token_name": "Numeric Token"
+    }
+  ]
+}
+```
+
+<Callout kind="alert">
+  Format names are **case- and spelling-sensitive**. Use the exact strings listed below. Invalid format names return errors such as `format name not defined`.
+</Callout>
+
+## Complete format list
+
+| Format Name |
+|-------------|
+| `Person Name` |
+| `Email Address` |
+| `Phone Number` |
+| `Address` |
+| `Username` |
+| `URL` |
+| `IP Address` |
+| `Mac Address` |
+| `Fax Number` |
+| `Social Identification Numbers` |
+| `Passport Number` |
+| `Driving License Number` |
+| `Licence Number` |
+| `Credit Card` |
+| `Credit Card Expiration Date` |
+| `CVV` |
+| `Bank Account Number` |
+| `Routing Number` |
+| `Swift` |
+| `TAN` |
+| `Policy No` |
+| `PAN` |
+| `Medical Record Number` |
+| `Insurance Number` |
+| `Date` |
+| `Vehicle Identification Number` |
+| `Registration Number` |
+| `Nationality` |
+
+## When to use formats
+
+| Situation | Use format? |
+|-----------|------------|
+| Auto-detection is sufficient | Not required |
+| Downstream system requires specific structure | Yes |
+| Detection is ambiguous (value could be multiple types) | Yes |
+| You want to override what auto-detection would pick | Yes |
+
+When both `format` and auto-detection are possible, **format always wins**.

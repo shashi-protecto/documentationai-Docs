@@ -1,0 +1,49 @@
+---
+title: "Prefix & Suffix Behavior"
+description: "How Protecto wraps masked values in entity tags, and how to customize prefix and suffix strings through policy metadata."
+---
+
+## What prefixes and suffixes are
+
+For auto-detect masking, each detected entity is wrapped with a **prefix** and **suffix** that indicate the entity type.
+
+| Entity type | Example output |
+|-------------|---------------|
+| Person | `<PER>VJYe 03W</PER>` |
+| Email | `<EMAIL>0gN3SkjL@0ffM3CDS</EMAIL>` |
+| Phone | `<PHONE>874890078</PHONE>` |
+| Address | `<ADDRESS>06N 00E1 00003b</ADDRESS>` |
+
+These tags appear in:
+
+- `token_value` — the full masked text string
+- `individual_tokens[].prefix` — the opening tag
+- `individual_tokens[].suffix` — the closing tag
+
+## How prefixes and suffixes are controlled
+
+Prefixes and suffixes are defined in **policy metadata**. To apply custom wrappers:
+
+1. Update the metadata for your policy using the [Update Prefixes and Suffixes](/policy-management/update-prefixes-suffixes) endpoint.
+2. Call the Mask API with `policy_name` to use the updated metadata.
+
+### Metadata update endpoint
+
+| Method | URL |
+|--------|-----|
+| PUT | `https://api.protecto.ai/metadata/update-auto-detect` |
+
+<Callout kind="alert">
+  This endpoint is available only in subscribed (production) environments. It is not available on the trial.
+</Callout>
+
+## Important implications
+
+- **Prefix and suffix changes are a breaking change** for any downstream consumer that parses entity tags.
+- Treat your prefix/suffix format as a **contract** between Protecto and your consuming systems.
+- Changes apply only when the matching `policy_name` is provided in the mask request.
+- If you change prefixes/suffixes, update all systems that parse or process `token_value` strings before deploying the policy change.
+
+<Callout kind="tip">
+  If multiple teams consume masked output, coordinate prefix/suffix changes carefully. Consider maintaining a stable default policy while testing changes on a non-production policy.
+</Callout>
