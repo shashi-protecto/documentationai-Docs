@@ -1,0 +1,36 @@
+---
+title: "Key Capabilities"
+description: "Complete overview of Protecto's APIs — from core tokenization and masking to async processing, data discovery, and governance."
+---
+
+## Core tokenization & masking
+
+| Capability | Description | Endpoint |
+|-----------|-------------|----------|
+| Mask with token | Mask values when you already know the data type | `PUT /api/vault/mask` |
+| Mask with format | Preserve structure like email, phone, URL | `PUT /api/vault/mask` |
+| Identify & mask | Auto-detect and mask all PII in text | `PUT /api/vault/mask` |
+| Unmask | Retrieve original values with authorization | `PUT /api/vault/unmask` |
+
+## Asynchronous processing
+
+| Capability | Description | Endpoint |
+|-----------|-------------|----------|
+| Async mask | Mask large payloads without blocking | `PUT /api/vault/mask/async` |
+| Async unmask | Bulk unmasking | `PUT /api/vault/umask/async` |
+| Status tracking | Track async job lifecycle | `PUT /api/vault/async-status` |
+
+## Data discovery & governance
+
+<Callout kind="info">
+  The following capabilities require a paid subscription and are not available on the trial.
+</Callout>
+
+| Capability | Description |
+|-----------|-------------|
+| Data scan | Discover PII across databases and tables |
+| Policies | Control anonymization vs pseudonymization behavior |
+| Custom PII | Define company-specific identifiers as first-class entity types |
+| Audit & reports | Track usage, access, and compliance across namespaces |
+| Data deletion | Enforce retention and cleanup rules for tokenized data |
+| On-prem / private cloud | Deploy Protecto entirely within your own infrastructure |

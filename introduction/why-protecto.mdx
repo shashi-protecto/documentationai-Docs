@@ -1,0 +1,48 @@
+---
+title: "Trial vs Paid Features"
+description: "What's available on the Protecto trial and what requires a paid subscription."
+---
+
+The trial is intentionally limited but sufficient to validate the API and your integration flow.
+
+## Feature availability
+
+| Feature | Trial | Paid |
+|---------|:-----:|:----:|
+| Mask with token | ❌ | ✅ |
+| Mask with format | ❌ | ✅ |
+| Identify & mask (auto-detect) | ✅ | ✅ |
+| Unmask | ✅ | ✅ |
+| Async mask / unmask | ❌ | ✅ |
+| Toxicity detection | ✅ | ✅ |
+| Data scan APIs | ❌ | ✅ |
+| Policy & metadata APIs | ❌ | ✅ |
+| Custom PII tags | ❌ | ✅ |
+| Audit & usage reports | ❌ | ✅ |
+| Data deletion APIs | ❌ | ✅ |
+| On-prem / private cloud | ❌ | ✅ |
+
+## Trial limits
+
+| Limit | Value |
+|-------|-------|
+| Trial duration | 14 days |
+| Max masked entries | 1,000 values |
+| Rate limits | Enforced |
+| Subscription APIs | Disabled |
+
+<Callout kind="info">
+  If you hit a hard limit during evaluation, the API returns explicit error messages so you know exactly why a request failed.
+</Callout>
+
+## What you can validate on the trial
+
+The trial gives you enough access to confirm:
+
+- Auto-detect PII detection works on your data
+- Token consistency (same input → same token)
+- Unmask flow with permissions
+- Toxicity scoring for GenAI use cases
+- Your integration pattern with real API calls
+
+To access token-based masking, format masking, async APIs, and governance features, [contact Protecto](mailto:help@protecto.ai) to upgrade.
