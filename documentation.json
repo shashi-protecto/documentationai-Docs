@@ -713,7 +713,7 @@
   "ai": {
     "ai-assistant:enabled": false
   },
-  "logo-dark": "https://blob-cdn.documentation.ai/org-7f073ce5-7e81-4e49-96e9-dbba0540fab1/doc-052c9762-21e3-4735-bf48-8e3bdd0cb69c/1773385463241-jue0q1zk0ho-Protecto-LOGO-horizontal_white.png?q=85&fm=auto&auto=compress%2Cformat",
+  "logo-dark": "https://blob-cdn.documentation.ai/org-7f073ce5-7e81-4e49-96e9-dbba0540fab1/doc-052c9762-21e3-4735-bf48-8e3bdd0cb69c/1773651998892-14tpkgpcyc4-Protecto-LOGO-horizontal_white-1.png?q=85&fm=auto&auto=compress%2Cformat",
   "logo-light": "https://blob-cdn.documentation.ai/org-7f073ce5-7e81-4e49-96e9-dbba0540fab1/doc-052c9762-21e3-4735-bf48-8e3bdd0cb69c/1773385478597-fdyun5z3khp-Protecto-LOGO-horizontal--1-.webp?q=85&fm=auto&auto=compress%2Cformat",
   "favicon": "https://blob-cdn.documentation.ai/org-7f073ce5-7e81-4e49-96e9-dbba0540fab1/doc-052c9762-21e3-4735-bf48-8e3bdd0cb69c/1773385490933-hux6ylnbzf7-Protecto-Symbol.png?q=85&fm=auto&auto=compress%2Cformat",
   "navbar": {
@@ -730,5 +730,5 @@
       ]
     }
   },
-  "template": "atlas"
+  "template": "classic"
 }
