@@ -1,20 +1,21 @@
 ---
-title: "Toxicity Detection"
-description: "How Protecto automatically analyzes text for harmful content during masking and unmasking, returning structured safety scores."
+title: Toxicity Detection
+description: >-
+  How Protecto automatically analyzes text for harmful content during masking
+  and unmasking, returning structured safety scores.
 ---
-
 Protecto automatically analyzes text for toxic or harmful language while processing **mask** and **unmask** requests.
 
 Toxicity detection is **passive and additive**. It does not block masking or unmasking. Instead, it returns structured scores that let you decide how to handle content downstream.
 
 ## Where toxicity detection is available
 
-| API | Toxicity detection supported |
-|-----|---------------------------|
-| Identify and Mask (Auto-detect) | Yes |
-| Unmask API | Yes |
-| Mask with Token | No |
-| Mask with Format | No |
+| API                             | Toxicity detection supported |
+| ------------------------------- | ---------------------------- |
+| Identify and Mask (Auto-detect) | Yes                          |
+| Unmask API                      | Yes                          |
+| Mask with Token                 | No                           |
+| Mask with Format                | No                           |
 
 The analysis runs on the **original semantic content** of the text, even when PII is masked or unmasked alongside it.
 
@@ -23,12 +24,15 @@ The analysis runs on the **original semantic content** of the text, even when PI
 Each input text is scored on a continuous scale from **0.0 to 1.0**:
 
 - `0.0` means the category is not present
+
 - `1.0` means extremely strong presence of that category
 
 Protecto enforces no hard thresholds. You apply your own rules — for example:
 
 - Log content above `0.3`
+
 - Warn users above `0.6`
+
 - Block content above `0.8`
 
 Returned scores are floating-point values.
@@ -36,19 +40,24 @@ Returned scores are floating-point values.
 ## Next steps
 
 <Columns cols="2">
-  <Card title="Scoring System" href="/toxicity-detection/scoring-system" icon="bar-chart" horizontal={false}>
+  <Card title="Scoring System" href="/toxicity-detection/scoring-system" icon="bar-chart" horizontal="false">
     How scores are calculated and how to interpret them.
   </Card>
-  <Card title="Categories" href="/toxicity-detection/categories" icon="list" horizontal={false}>
+
+  <Card title="Categories" href="/toxicity-detection/categories" icon="list" horizontal="false">
     All six toxicity categories and what they detect.
   </Card>
-  <Card title="Examples" href="/toxicity-detection/examples" icon="flask" horizontal={false}>
+
+  <Card title="Examples" href="/toxicity-detection/examples" icon="layout-template" horizontal="false" target="_self">
     Real-world score examples across different types of language.
   </Card>
-  <Card title="In Mask API" href="/toxicity-detection/in-mask-api" icon="shield" horizontal={false}>
+
+  <Card title="In Mask API" href="/toxicity-detection/in-mask-api" icon="shield" horizontal="false">
     How toxicity data appears in auto-detect masking responses.
   </Card>
-  <Card title="In Unmask API" href="/toxicity-detection/in-unmask-api" icon="lock-open" horizontal={false}>
+
+  <Card title="In Unmask API" href="/toxicity-detection/in-unmask-api" icon="lock-open" horizontal="false">
     How toxicity data appears in unmask responses.
   </Card>
 </Columns>
+
