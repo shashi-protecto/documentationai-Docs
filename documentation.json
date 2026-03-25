@@ -1,6 +1,6 @@
 {
   "name": "Protecto Docs",
-  "openapi": "openapi.json",
+  "openapi": "api-reference/openapi.json",
   "initialRoute": "introduction/overview",
   "colors": {
     "light": {
@@ -624,7 +624,7 @@
       {
         "tab": "API Playground",
         "icon": "terminal",
-        "openapi": "openapi.json",
+        "openapi": "api-reference/openapi.json",
         "groups": [
           {
             "group": "Masking",
@@ -949,6 +949,5 @@
         ]
       }
     ]
-  },
-  "title": "Protecto Documentation"
+  }
 }
