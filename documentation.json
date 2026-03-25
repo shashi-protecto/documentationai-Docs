@@ -473,7 +473,7 @@
         ]
       },
       {
-        "tab": "Admin",
+        "tab": "Admin APIs",
         "icon": "settings",
         "groups": [
           {
@@ -622,7 +622,7 @@
         ]
       },
       {
-        "tab": "More",
+        "tab": "Others",
         "icon": "more-horizontal",
         "groups": [
           {
