@@ -722,5 +722,14 @@
         }
       ]
     }
+  },
+  "seo": {
+    "robots:index": false,
+    "robots:follow": false,
+    "sitemap:enabled": false,
+    "llms-txt:enabled": false
+  },
+  "ai": {
+    "ai-assistant:enabled": false
   }
 }
