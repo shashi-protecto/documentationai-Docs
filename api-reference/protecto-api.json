@@ -1,0 +1,2722 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Protecto API",
+    "description": "Protecto is a data privacy and security platform providing PII/PHI/PCI detection, tokenization-based masking, unmasking, policy management, and data scanning. Use this API to protect sensitive data in AI/LLM pipelines, application logs, analytics, and more.\n\n## Authentication\n\nAll endpoints require a Bearer token in the `Authorization` header:\n\n```\nAuthorization: Bearer YOUR_AUTH_TOKEN\n```\n\nObtain your token from the [Protecto Portal](https://portal.protecto.ai/).\n\n## Environments\n\n| Environment | Base URL |\n|-------------|----------|\n| Trial       | `https://protecto-trial.protecto.ai` |\n| Production  | `https://api.protecto.ai` |",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Protecto Support",
+      "url": "https://portal.protecto.ai/"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://protecto-trial.protecto.ai",
+      "description": "Trial environment"
+    },
+    {
+      "url": "https://api.protecto.ai",
+      "description": "Production environment"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Masking",
+      "description": "Mask sensitive values using tokens, formats, auto-detection, or policies"
+    },
+    {
+      "name": "Unmasking",
+      "description": "Restore original values from tokenized text"
+    },
+    {
+      "name": "Async",
+      "description": "Submit and track asynchronous masking and unmasking jobs"
+    },
+    {
+      "name": "Data Scanning",
+      "description": "Scan data sources for PII/PHI/PCI entities"
+    },
+    {
+      "name": "Custom PII",
+      "description": "Define and manage custom PII entity types using your own detection endpoints"
+    },
+    {
+      "name": "Policy Management",
+      "description": "Create and manage detection and masking policies"
+    },
+    {
+      "name": "Super Admin",
+      "description": "Manage namespaces, auth tokens, and user permissions (requires Master API Key)"
+    },
+    {
+      "name": "Reporting & Auditing",
+      "description": "View API usage summaries and audit logs"
+    },
+    {
+      "name": "Data Deletion",
+      "description": "Delete personal data mappings or audit records"
+    }
+  ],
+  "paths": {
+    "/api/vault/mask": {
+      "put": {
+        "tags": [
+          "Masking"
+        ],
+        "operationId": "maskValues",
+        "summary": "Mask sensitive values",
+        "description": "Masks one or more sensitive values. Supports four modes depending on the fields provided in each item:\n\n- **Mask with Token** – provide `value` + `token_name`. Explicit token type, no structure preservation.\n- **Mask with Format** – provide `value` + `format` + `token_name`. Structure-preserving masking.\n- **Identify and Mask (Auto-Detect)** – provide `value` only. Automatically detects and masks all PII entities in free-form text using the active policy.\n- **Mask with Policy** – provide `policy_name` at request level + `value` per item. Detection and tokenization driven by a named policy.\n- **Mask with Attributes** – provide `value` + optional `format`, `token_name`, and `attributes` metadata.\n\nMasking is **deterministic**: the same value with the same token type always produces the same token.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaskRequest"
+              },
+              "examples": {
+                "maskWithToken": {
+                  "summary": "Mask with Token",
+                  "value": {
+                    "mask": [
+                      {
+                        "value": "John",
+                        "token_name": "Text Token"
+                      },
+                      {
+                        "value": "217-555-2020",
+                        "token_name": "Numeric Token"
+                      },
+                      {
+                        "value": "john.doe@example.com",
+                        "token_name": "Special Token"
+                      }
+                    ]
+                  }
+                },
+                "maskWithFormat": {
+                  "summary": "Mask with Format",
+                  "value": {
+                    "mask": [
+                      {
+                        "value": "john.doe@example.com",
+                        "format": "email",
+                        "token_name": "Text Token"
+                      }
+                    ]
+                  }
+                },
+                "identifyAndMask": {
+                  "summary": "Identify and Mask (Auto-Detect)",
+                  "value": {
+                    "mask": [
+                      {
+                        "value": "Sarah Connors can be reached at 217-555-2020 or sarah.connors88@example.com"
+                      }
+                    ]
+                  }
+                },
+                "maskWithPolicy": {
+                  "summary": "Mask with Policy",
+                  "value": {
+                    "policy_name": "my-pii-policy",
+                    "mask": [
+                      {
+                        "value": "Call me at +1-800-555-0100 or email me at alice@example.com"
+                      }
+                    ]
+                  }
+                },
+                "maskWithAttributes": {
+                  "summary": "Mask with Attributes",
+                  "value": {
+                    "mask": [
+                      {
+                        "value": "John Doe",
+                        "token_name": "Person Token",
+                        "attributes": {
+                          "source": "crm",
+                          "record_id": "12345"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Values masked successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MaskResponse"
+                },
+                "examples": {
+                  "maskWithTokenResponse": {
+                    "summary": "Mask with Token response",
+                    "value": {
+                      "data": [
+                        {
+                          "value": "John",
+                          "token_name": "Text Token",
+                          "token_value": "t9Eyj"
+                        },
+                        {
+                          "value": "217-555-2020",
+                          "token_name": "Numeric Token",
+                          "token_value": "874890078"
+                        },
+                        {
+                          "value": "john.doe@example.com",
+                          "token_name": "Special Token",
+                          "token_value": "fuot3"
+                        }
+                      ],
+                      "success": true,
+                      "error": {
+                        "message": ""
+                      }
+                    }
+                  },
+                  "identifyAndMaskResponse": {
+                    "summary": "Identify and Mask response",
+                    "value": {
+                      "data": [
+                        {
+                          "value": "Sarah Connors can be reached at 217-555-2020 or sarah.connors88@example.com",
+                          "token_value": "<PERSON>VJYe 03W</PERSON> can be reached at <PHONE>874890078</PHONE> or <EMAIL>0gN3SkjL@0ffM3CDS</EMAIL>",
+                          "individual_tokens": [
+                            {
+                              "value": "Sarah Connors",
+                              "token_value": "VJYe 03W",
+                              "prefix": "<PERSON>",
+                              "suffix": "</PERSON>"
+                            },
+                            {
+                              "value": "217-555-2020",
+                              "token_value": "874890078",
+                              "prefix": "<PHONE>",
+                              "suffix": "</PHONE>"
+                            },
+                            {
+                              "value": "sarah.connors88@example.com",
+                              "token_value": "0gN3SkjL@0ffM3CDS",
+                              "prefix": "<EMAIL>",
+                              "suffix": "</EMAIL>"
+                            }
+                          ],
+                          "toxicity_analysis": {
+                            "toxicity": 0.00088,
+                            "severe_toxicity": 0.000104,
+                            "obscene": 0.000182,
+                            "threat": 0.00011,
+                            "insult": 0.000175,
+                            "identity_attack": 0.000138
+                          }
+                        }
+                      ],
+                      "success": true,
+                      "error": {
+                        "message": ""
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimitExceeded"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/unmask": {
+      "put": {
+        "tags": [
+          "Unmasking"
+        ],
+        "operationId": "unmaskValues",
+        "summary": "Unmask tokenized values",
+        "description": "Restores the original sensitive values from tokenized text. Resolves all embedded entity tokens automatically — no `token_name` is required. Optionally applies a named policy.\n\n> **Security note:** Restrict unmasking to trusted services and users. Audit all unmask operations and enforce role-based access control.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnmaskRequest"
+              },
+              "examples": {
+                "unmaskBasic": {
+                  "summary": "Unmask tokenized text",
+                  "value": {
+                    "unmask": [
+                      {
+                        "token_value": "<PER>VJYe 03W</PER>, an <NATIONALITY>Q534kH4v</NATIONALITY>, can be reached via email at <EMAIL>1AI0s@Uzm3a</EMAIL> or phone at <PHN>+8-065-029-0616</PHN>"
+                      }
+                    ]
+                  }
+                },
+                "unmaskWithPolicy": {
+                  "summary": "Unmask with Policy",
+                  "value": {
+                    "policy_name": "my-pii-policy",
+                    "unmask": [
+                      {
+                        "token_value": "<PERSON>VJYe 03W</PERSON>"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Values unmasked successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnmaskResponse"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "value": "John Doe, an American, can be reached via email at johndoe@example.com or phone at +1-123-456-7890",
+                      "token_value": "<PER>VJYe 03W</PER>, an <NATIONALITY>Q534kH4v</NATIONALITY>, can be reached via email at <EMAIL>1AI0s@Uzm3a</EMAIL> or phone at <PHN>+8-065-029-0616</PHN>",
+                      "toxicity_analysis": {
+                        "toxicity": 0.000597,
+                        "severe_toxicity": 0.000123,
+                        "obscene": 0.000191,
+                        "threat": 0.00012,
+                        "insult": 0.000177,
+                        "identity_attack": 0.00014
+                      }
+                    }
+                  ],
+                  "success": true,
+                  "error": {
+                    "message": ""
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimitExceeded"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/mask/async": {
+      "put": {
+        "tags": [
+          "Async"
+        ],
+        "operationId": "maskAsync",
+        "summary": "Submit async mask job",
+        "description": "Submits a masking job for asynchronous processing. Returns a `tracking_id` immediately. Poll `/api/vault/async-status` with the tracking ID to retrieve results.\n\nAccepts the same request body as the synchronous mask endpoint. Recommended for large payloads that exceed synchronous limits.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaskRequest"
+              },
+              "example": {
+                "mask": [
+                  {
+                    "value": "John",
+                    "token_name": "Person Token"
+                  },
+                  {
+                    "value": "john.doe@example.com",
+                    "token_name": "Text Token"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Async job submitted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AsyncSubmitResponse"
+                },
+                "example": {
+                  "data": {
+                    "tracking_id": "747027ff-5ce7-4780-8cca-000f908edae721052025073644"
+                  },
+                  "success": true,
+                  "error": {
+                    "message": ""
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/unmask/async": {
+      "put": {
+        "tags": [
+          "Async"
+        ],
+        "operationId": "unmaskAsync",
+        "summary": "Submit async unmask job",
+        "description": "Submits an unmasking job for asynchronous processing. Returns a `tracking_id` immediately. Poll `/api/vault/async-status` to retrieve results when complete.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnmaskRequest"
+              },
+              "example": {
+                "unmask": [
+                  {
+                    "token_value": "<PERSON>VJYe 03W</PERSON> can be reached at <EMAIL>0gN3SkjL@0ffM3CDS</EMAIL>"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Async unmask job submitted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AsyncSubmitResponse"
+                },
+                "example": {
+                  "data": {
+                    "tracking_id": "b6b7ef0e-86f6-4490-b0f8-4962a43656f929042024083721"
+                  },
+                  "success": true,
+                  "error": {
+                    "message": ""
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/async-status": {
+      "put": {
+        "tags": [
+          "Async"
+        ],
+        "operationId": "getAsyncStatus",
+        "summary": "Poll async job status",
+        "description": "Retrieves the current status of one or more async jobs by tracking ID. Poll this endpoint every 30–60 seconds until `status` is `SUCCESS`, `FAILED`, or `PURGED`.\n\n**Status lifecycle:** `PENDING` → `IN-PROGRESS` → `SUCCESS` | `FAILED` | `PURGED`",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AsyncStatusRequest"
+              },
+              "example": {
+                "status": [
+                  {
+                    "tracking_id": "747027ff-5ce7-4780-8cca-000f908edae721052025073644"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Job status retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AsyncStatusResponse"
+                },
+                "examples": {
+                  "success": {
+                    "summary": "Job SUCCESS",
+                    "value": {
+                      "data": [
+                        {
+                          "tracking_id": "747027ff-5ce7-4780-8cca-000f908edae721052025073644",
+                          "call_type": "mask",
+                          "input_payload": {
+                            "mask": [
+                              {
+                                "token_name": "Person token",
+                                "value": "jackson"
+                              }
+                            ]
+                          },
+                          "result": [
+                            {
+                              "token_name": "Person token",
+                              "token_value": "Chidi",
+                              "value": "jackson"
+                            }
+                          ],
+                          "error_msg": null,
+                          "submitted_time": "2025-05-21 07:36:44",
+                          "process_start_time": "2025-05-21 07:36:47",
+                          "completed_time": "2025-05-21 07:36:48",
+                          "status": "SUCCESS"
+                        }
+                      ],
+                      "success": true,
+                      "error": {
+                        "message": ""
+                      }
+                    }
+                  },
+                  "inProgress": {
+                    "summary": "Job IN-PROGRESS",
+                    "value": {
+                      "data": [
+                        {
+                          "tracking_id": "b6b7ef0e-86f6-4490-b0f8-4962a43656f929042024083721",
+                          "call_type": "unmask",
+                          "input_payload": {
+                            "unmask": [
+                              {
+                                "token_value": "n3dVs6D0Ni"
+                              }
+                            ]
+                          },
+                          "result": "None",
+                          "error_msg": "None",
+                          "submitted_time": "2024-04-29 08:37:21",
+                          "completed_time": "None",
+                          "status": "IN-PROGRESS"
+                        }
+                      ],
+                      "success": true,
+                      "error": {
+                        "message": ""
+                      }
+                    }
+                  },
+                  "failed": {
+                    "summary": "Job FAILED",
+                    "value": {
+                      "data": [
+                        {
+                          "tracking_id": "43318680-9515-432c-a152-1b9b9ebc1ba629042024114022",
+                          "call_type": "unmask",
+                          "input_payload": {
+                            "unmask": []
+                          },
+                          "result": null,
+                          "error_msg": "Processing Async request failed: Payload is empty",
+                          "submitted_time": "2024-04-29 11:40:22",
+                          "completed_time": "2024-04-29 11:40:23",
+                          "status": "FAILED"
+                        }
+                      ],
+                      "success": true,
+                      "error": {
+                        "message": ""
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/data-scan/data-scan-async": {
+      "put": {
+        "tags": [
+          "Data Scanning"
+        ],
+        "operationId": "submitDataScan",
+        "summary": "Submit data scan job",
+        "description": "Submits an asynchronous job to scan a data source for PII/PHI/PCI entities. Returns a `tracking_id` to poll for results.\n\n> **Requires:** Paid subscription.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataScanRequest"
+              },
+              "example": [
+                {
+                  "data_source_name": "salesforce",
+                  "object_name": [
+                    "DatabaseName",
+                    "SchemaName",
+                    "TableName"
+                  ],
+                  "data_samples": [
+                    {
+                      "column_name": "email",
+                      "samples": [
+                        "john@example.com",
+                        "jane@example.com"
+                      ]
+                    },
+                    {
+                      "column_name": "phone",
+                      "samples": [
+                        "555-1234",
+                        "555-5678"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Scan job submitted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AsyncSubmitResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/data-scan/status": {
+      "put": {
+        "tags": [
+          "Data Scanning"
+        ],
+        "operationId": "getDataScanStatus",
+        "summary": "Get data scan status",
+        "description": "Checks the status of a previously submitted data scan job using its tracking ID.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AsyncStatusRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Scan status retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AsyncStatusResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/data-scan/list-scan-objects": {
+      "get": {
+        "tags": [
+          "Data Scanning"
+        ],
+        "operationId": "listScanObjects",
+        "summary": "List scanned objects",
+        "description": "Returns a list of all objects (tables, files, etc.) that have been submitted for scanning.",
+        "responses": {
+          "200": {
+            "description": "List of scanned objects",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericSuccessResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/data-scan/scan-details": {
+      "get": {
+        "tags": [
+          "Data Scanning"
+        ],
+        "operationId": "getScanDetails",
+        "summary": "Get scan details",
+        "description": "Returns column-level PII detection results for a specific scanned object.",
+        "parameters": [
+          {
+            "name": "object_name",
+            "in": "query",
+            "description": "The name of the scanned object to retrieve details for",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Scan details retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericSuccessResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/data-scan/update-conclusions": {
+      "put": {
+        "tags": [
+          "Data Scanning"
+        ],
+        "operationId": "updateScanConclusions",
+        "summary": "Update scan conclusions",
+        "description": "Adjusts confidence thresholds or accepts/rejects detected entity conclusions for a scanned object.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Conclusions updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericSuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/data-scan/update-delete-entities": {
+      "put": {
+        "tags": [
+          "Data Scanning"
+        ],
+        "operationId": "updateDeleteScanEntities",
+        "summary": "Update or delete detected entities",
+        "description": "Corrects or removes ML-detected PII entities in a scanned object.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Entities updated or deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericSuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/pii-identification/custom": {
+      "put": {
+        "tags": [
+          "Custom PII"
+        ],
+        "operationId": "identifyCustomPII",
+        "summary": "Identify custom PII in text",
+        "description": "Runs custom PII detection against provided text using your registered custom tag endpoints.\n\n> **Requires:** Paid subscription.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericRequestBody"
+              },
+              "example": {
+                "text": "Customer ID: CUST-98765 placed an order today."
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Custom PII identified",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericSuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/metadata/add-or-update/custom-tag/identification-endpoint": {
+      "put": {
+        "tags": [
+          "Custom PII"
+        ],
+        "operationId": "createOrUpdateCustomTag",
+        "summary": "Create or update a custom tag",
+        "description": "Creates or updates a custom PII entity tag with an identification endpoint configuration.\n\n> **Requires:** Paid subscription and `metadata_change` permission.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomTagRequest"
+              },
+              "example": {
+                "data": {
+                  "tag_type": "CUSTOMER_ID",
+                  "identification_endpoint_details": {
+                    "url": "https://example.com/custom-pii/identify",
+                    "method": "PUT",
+                    "headers": {
+                      "Authorization": "Bearer <token>"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Custom tag created or updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericSuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/metadata/add-or-update/custom-tag/whitelist-endpoint": {
+      "put": {
+        "tags": [
+          "Custom PII"
+        ],
+        "operationId": "configureWhitelistEndpoint",
+        "summary": "Configure whitelist endpoint for a custom tag",
+        "description": "Sets or updates the whitelist endpoint used to exclude known-safe values from custom PII detection.\n\n> **Requires:** Paid subscription and `metadata_change` permission.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Whitelist endpoint configured",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericSuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/metadata/custom-tag/retrieve-tag-details": {
+      "get": {
+        "tags": [
+          "Custom PII"
+        ],
+        "operationId": "retrieveCustomTagDetails",
+        "summary": "Retrieve custom tag details",
+        "description": "Fetches the configuration of a custom PII tag including its identification endpoint.",
+        "parameters": [
+          {
+            "name": "tag_type",
+            "in": "query",
+            "description": "The custom tag type name to retrieve",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Custom tag details retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericSuccessResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/metadata/custom-tag/delete": {
+      "delete": {
+        "tags": [
+          "Custom PII"
+        ],
+        "operationId": "deleteCustomTag",
+        "summary": "Delete a custom tag",
+        "description": "Permanently deletes a custom PII entity tag and its configuration.\n\n> **Requires:** `metadata_change` permission.",
+        "parameters": [
+          {
+            "name": "tag_type",
+            "in": "query",
+            "description": "The custom tag type name to delete",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Custom tag deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericSuccessResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/metadata/policy/create": {
+      "put": {
+        "tags": [
+          "Policy Management"
+        ],
+        "operationId": "createPolicy",
+        "summary": "Create a policy",
+        "description": "Creates a named policy that controls which entity types are detected and how they are tokenized. All entities default to pseudonymizable upon creation.\n\n> **Requires:** Paid subscription and `metadata_change` permission.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PolicyCreateRequest"
+              },
+              "example": {
+                "data": {
+                  "policy_name": "my-pii-policy",
+                  "description": "Policy for masking PII in customer support tickets"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Policy created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericSuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/metadata/policy/list": {
+      "get": {
+        "tags": [
+          "Policy Management"
+        ],
+        "operationId": "listPolicies",
+        "summary": "List all policies",
+        "description": "Returns a list of all policies defined in the namespace.",
+        "responses": {
+          "200": {
+            "description": "Policies retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericSuccessResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/metadata/policy/retrieve": {
+      "get": {
+        "tags": [
+          "Policy Management"
+        ],
+        "operationId": "retrievePolicy",
+        "summary": "Retrieve policy metadata",
+        "description": "Fetches the full configuration of a named policy.",
+        "parameters": [
+          {
+            "name": "policy_name",
+            "in": "query",
+            "description": "The policy name to retrieve",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Policy metadata retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericSuccessResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/metadata/policy/update-entity-categories": {
+      "put": {
+        "tags": [
+          "Policy Management"
+        ],
+        "operationId": "updatePolicyEntityCategories",
+        "summary": "Update policy entity categories",
+        "description": "Configures which entity categories are enabled or disabled in a policy, and whether they are anonymized or pseudonymized.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Entity categories updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericSuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/metadata/policy/update-prefixes-suffixes": {
+      "put": {
+        "tags": [
+          "Policy Management"
+        ],
+        "operationId": "updatePolicyPrefixesSuffixes",
+        "summary": "Update policy prefix and suffix tags",
+        "description": "Customizes the entity tag wrappers (e.g., `<PERSON>`, `</PERSON>`) used in tokenized output for a policy.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Prefixes and suffixes updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericSuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/metadata/policy/delete": {
+      "delete": {
+        "tags": [
+          "Policy Management"
+        ],
+        "operationId": "deletePolicy",
+        "summary": "Delete a policy",
+        "description": "Permanently deletes a named policy.\n\n> **Requires:** `metadata_change` permission.",
+        "parameters": [
+          {
+            "name": "policy_name",
+            "in": "query",
+            "description": "The name of the policy to delete",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Policy deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericSuccessResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/super-admin/namespace/auth-token/generate": {
+      "put": {
+        "tags": [
+          "Super Admin"
+        ],
+        "operationId": "generateNamespaceToken",
+        "summary": "Create namespace user token",
+        "description": "Creates an authentication token for a user within a specific namespace. If the namespace does not already exist, it is created asynchronously.\n\n> **Requires:** Master API Key in the `Authorization` header.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateNamespaceTokenRequest"
+              },
+              "example": {
+                "data": {
+                  "namespace_name": "customer_ns_1",
+                  "_id": "alice@company.com",
+                  "permissions": [
+                    "mask",
+                    "unmask"
+                  ],
+                  "start_date": "2024-07-11",
+                  "end_date": "2025-07-10"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token generated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenerateNamespaceTokenResponse"
+                },
+                "examples": {
+                  "existingNamespace": {
+                    "summary": "Token for existing namespace",
+                    "value": {
+                      "data": {
+                        "auth_key": "<NAMESPACE_USER_AUTH_TOKEN>"
+                      },
+                      "success": true,
+                      "error": {
+                        "message": ""
+                      }
+                    }
+                  },
+                  "newNamespace": {
+                    "summary": "Token for new namespace (async creation)",
+                    "value": {
+                      "data": {
+                        "auth_key": "<NAMESPACE_USER_AUTH_TOKEN>",
+                        "namespace_creation": {
+                          "tracking_id": "9f799cb6-5315-4199-8d47-3a7ced21dd1d",
+                          "status": "PENDING",
+                          "job_type": "namespace-creation"
+                        }
+                      },
+                      "success": true,
+                      "error": {
+                        "message": ""
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/super-admin/namespace/auth-token/retrieve": {
+      "get": {
+        "tags": [
+          "Super Admin"
+        ],
+        "operationId": "retrieveNamespaceToken",
+        "summary": "Retrieve token details",
+        "description": "Fetches details of a specific auth token in a namespace.\n\n> **Requires:** Master API Key.",
+        "parameters": [
+          {
+            "name": "namespace_name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "_id",
+            "in": "query",
+            "description": "User ID or email associated with the token",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Token details retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericSuccessResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/super-admin/namespace/auth-token/list": {
+      "get": {
+        "tags": [
+          "Super Admin"
+        ],
+        "operationId": "listNamespaceTokens",
+        "summary": "List auth tokens",
+        "description": "Returns all auth tokens defined within a namespace.\n\n> **Requires:** Master API Key.",
+        "parameters": [
+          {
+            "name": "namespace_name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Token list retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericSuccessResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/super-admin/namespace/auth-token/deactivate": {
+      "put": {
+        "tags": [
+          "Super Admin"
+        ],
+        "operationId": "deactivateNamespaceToken",
+        "summary": "Deactivate an auth token",
+        "description": "Revokes an auth token, immediately preventing further API access for the associated user.\n\n> **Requires:** Master API Key.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericRequestBody"
+              },
+              "example": {
+                "data": {
+                  "namespace_name": "customer_ns_1",
+                  "_id": "alice@company.com"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token deactivated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericSuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/super-admin/namespace/delete": {
+      "delete": {
+        "tags": [
+          "Super Admin"
+        ],
+        "operationId": "deleteNamespace",
+        "summary": "Delete a namespace",
+        "description": "Permanently deletes an entire namespace and all its associated data.\n\n> **Requires:** Master API Key. This action is irreversible.",
+        "parameters": [
+          {
+            "name": "namespace_name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Namespace deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericSuccessResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/super-admin/namespace/jobs/status": {
+      "get": {
+        "tags": [
+          "Super Admin"
+        ],
+        "operationId": "getNamespaceJobStatus",
+        "summary": "Track namespace jobs",
+        "description": "Returns the current status of namespace-level background jobs (e.g., namespace creation).\n\n> **Requires:** Master API Key.",
+        "parameters": [
+          {
+            "name": "tracking_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Job status retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericSuccessResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/namespace/reports/user-namespace-summary": {
+      "get": {
+        "tags": [
+          "Reporting & Auditing"
+        ],
+        "operationId": "getUserNamespaceSummary",
+        "summary": "User namespace usage summary",
+        "description": "Returns API usage statistics broken down by user within the namespace.\n\n> **Requires:** Paid subscription and Admin token.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/StartDate"
+          },
+          {
+            "$ref": "#/components/parameters/EndDate"
+          },
+          {
+            "$ref": "#/components/parameters/NextPageToken"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Summary retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericSuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/namespace/reports/namespace-summary": {
+      "get": {
+        "tags": [
+          "Reporting & Auditing"
+        ],
+        "operationId": "getNamespaceSummary",
+        "summary": "Namespace usage summary",
+        "description": "Returns aggregated API usage statistics for the current namespace.\n\n> **Requires:** Paid subscription and Admin token.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/StartDate"
+          },
+          {
+            "$ref": "#/components/parameters/EndDate"
+          },
+          {
+            "$ref": "#/components/parameters/NextPageToken"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Namespace summary retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericSuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/namespace/reports/all-namespace-summary": {
+      "get": {
+        "tags": [
+          "Reporting & Auditing"
+        ],
+        "operationId": "getAllNamespaceSummary",
+        "summary": "All namespaces usage summary",
+        "description": "Returns aggregated API usage statistics across all namespaces. Only available to super admin tokens.\n\n> **Requires:** Paid subscription and Master API Key.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/StartDate"
+          },
+          {
+            "$ref": "#/components/parameters/EndDate"
+          },
+          {
+            "$ref": "#/components/parameters/NextPageToken"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All-namespace summary retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericSuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/namespace/reports/audit-details": {
+      "get": {
+        "tags": [
+          "Reporting & Auditing"
+        ],
+        "operationId": "getAuditDetails",
+        "summary": "Retrieve audit logs",
+        "description": "Returns detailed audit logs for API calls made within the namespace, including caller identity, operation type, and timestamps.\n\n> **Requires:** Paid subscription and Admin token.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/StartDate"
+          },
+          {
+            "$ref": "#/components/parameters/EndDate"
+          },
+          {
+            "$ref": "#/components/parameters/NextPageToken"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Audit logs retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericSuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/data-deletion/personal-data": {
+      "put": {
+        "tags": [
+          "Data Deletion"
+        ],
+        "operationId": "deletePersonalData",
+        "summary": "Delete personal data mappings",
+        "description": "Submits a job to delete the token-to-value mappings for specified individuals, fulfilling right-to-erasure requests.\n\n> **Requires:** Paid subscription and `metadata_change` permission.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Deletion job submitted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AsyncSubmitResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/data-deletion/audit-records": {
+      "put": {
+        "tags": [
+          "Data Deletion"
+        ],
+        "operationId": "deleteAuditRecords",
+        "summary": "Delete audit records",
+        "description": "Submits a job to delete audit log entries for a specified date range or entity.\n\n> **Requires:** Paid subscription and `metadata_change` permission.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Audit record deletion job submitted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AsyncSubmitResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/vault/data-deletion/status": {
+      "get": {
+        "tags": [
+          "Data Deletion"
+        ],
+        "operationId": "getDataDeletionStatus",
+        "summary": "Track data deletion job status",
+        "description": "Returns the current status of a data deletion job.",
+        "parameters": [
+          {
+            "name": "tracking_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deletion job status retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericSuccessResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Bearer token obtained from the Protecto Portal (https://portal.protecto.ai/). Include as `Authorization: Bearer YOUR_AUTH_TOKEN`."
+      }
+    },
+    "parameters": {
+      "StartDate": {
+        "name": "start_date",
+        "in": "query",
+        "description": "Start of the reporting period. Format: `YYYY-MM-DD HH:MM:SS`",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "2024-01-01 00:00:00"
+        }
+      },
+      "EndDate": {
+        "name": "end_date",
+        "in": "query",
+        "description": "End of the reporting period. Format: `YYYY-MM-DD HH:MM:SS`",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "2024-01-31 23:59:59"
+        }
+      },
+      "NextPageToken": {
+        "name": "next_page_token",
+        "in": "query",
+        "description": "Pagination cursor. Pass the value from the previous response to retrieve the next page.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    "schemas": {
+      "MaskItem": {
+        "type": "object",
+        "required": [
+          "value"
+        ],
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "The raw sensitive value to mask, or free-form text to auto-detect and mask.",
+            "example": "john.doe@example.com",
+            "maxLength": 600
+          },
+          "token_name": {
+            "type": "string",
+            "description": "Token type to apply. Required for Mask with Token and Mask with Format modes. Case- and spelling-sensitive.",
+            "enum": [
+              "Default Token",
+              "Text Token",
+              "Numeric Token",
+              "Special Token",
+              "Person Token",
+              "Date Token",
+              "State Token"
+            ],
+            "example": "Text Token"
+          },
+          "format": {
+            "type": "string",
+            "description": "Structure-preserving format to apply. Used in Mask with Format mode.",
+            "example": "email"
+          },
+          "attributes": {
+            "type": "object",
+            "description": "Optional custom metadata key-value pairs associated with this masking operation.",
+            "additionalProperties": true,
+            "example": {
+              "source": "crm",
+              "record_id": "12345"
+            }
+          }
+        }
+      },
+      "MaskRequest": {
+        "type": "object",
+        "required": [
+          "mask"
+        ],
+        "properties": {
+          "mask": {
+            "type": "array",
+            "description": "List of values to mask. Each item must include at minimum a `value` field.",
+            "items": {
+              "$ref": "#/components/schemas/MaskItem"
+            },
+            "minItems": 1
+          },
+          "policy_name": {
+            "type": "string",
+            "description": "Name of a saved policy to apply for detection and tokenization. When provided, all items in `mask` are processed using the policy settings.",
+            "example": "my-pii-policy"
+          }
+        }
+      },
+      "IndividualToken": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "The original sensitive value that was detected.",
+            "example": "Sarah Connors"
+          },
+          "token_value": {
+            "type": "string",
+            "description": "The token replacing the original value.",
+            "example": "VJYe 03W"
+          },
+          "prefix": {
+            "type": "string",
+            "description": "Opening entity tag wrapping the token.",
+            "example": "<PERSON>"
+          },
+          "suffix": {
+            "type": "string",
+            "description": "Closing entity tag wrapping the token.",
+            "example": "</PERSON>"
+          }
+        }
+      },
+      "ToxicityAnalysis": {
+        "type": "object",
+        "description": "Toxicity scores for the input text on a 0.0–1.0 scale. Scores near 0 indicate low likelihood; scores near 1 indicate high likelihood.",
+        "properties": {
+          "toxicity": {
+            "type": "number",
+            "format": "float",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Overall likelihood of toxic content.",
+            "example": 0.00088
+          },
+          "severe_toxicity": {
+            "type": "number",
+            "format": "float",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Probability of severe toxic language.",
+            "example": 0.000104
+          },
+          "obscene": {
+            "type": "number",
+            "format": "float",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Likelihood of obscene content.",
+            "example": 0.000182
+          },
+          "threat": {
+            "type": "number",
+            "format": "float",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Likelihood of threatening content.",
+            "example": 0.00011
+          },
+          "insult": {
+            "type": "number",
+            "format": "float",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Likelihood of insults.",
+            "example": 0.000175
+          },
+          "identity_attack": {
+            "type": "number",
+            "format": "float",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Likelihood of identity-based attacks.",
+            "example": 0.000138
+          }
+        }
+      },
+      "MaskResponseItem": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "The original input value.",
+            "example": "john.doe@example.com"
+          },
+          "token_name": {
+            "type": "string",
+            "description": "The token type applied.",
+            "example": "Text Token"
+          },
+          "token_value": {
+            "type": "string",
+            "description": "The masked/tokenized output. For auto-detect mode, this is the full text with all entities replaced and wrapped in entity tags.",
+            "example": "<PERSON>VJYe 03W</PERSON> can be reached at <EMAIL>0gN3SkjL@0ffM3CDS</EMAIL>"
+          },
+          "individual_tokens": {
+            "type": "array",
+            "description": "Array of each individual entity detected and masked. Present in auto-detect mode only.",
+            "items": {
+              "$ref": "#/components/schemas/IndividualToken"
+            }
+          },
+          "toxicity_analysis": {
+            "$ref": "#/components/schemas/ToxicityAnalysis"
+          }
+        }
+      },
+      "ApiError": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Human-readable description of the error.",
+            "example": "token_name not defined"
+          }
+        }
+      },
+      "MaskResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MaskResponseItem"
+            }
+          },
+          "success": {
+            "type": "boolean",
+            "description": "`true` when the request was processed without errors.",
+            "example": true
+          },
+          "error": {
+            "$ref": "#/components/schemas/ApiError"
+          }
+        }
+      },
+      "UnmaskItem": {
+        "type": "object",
+        "required": [
+          "token_value"
+        ],
+        "properties": {
+          "token_value": {
+            "type": "string",
+            "description": "Tokenized text containing one or more embedded entity tokens (e.g., `<PERSON>VJYe 03W</PERSON>`). All tokens are resolved automatically.",
+            "example": "<PERSON>VJYe 03W</PERSON>, can be reached at <EMAIL>1AI0s@Uzm3a</EMAIL>"
+          }
+        }
+      },
+      "UnmaskRequest": {
+        "type": "object",
+        "required": [
+          "unmask"
+        ],
+        "properties": {
+          "unmask": {
+            "type": "array",
+            "description": "List of tokenized values to unmask.",
+            "items": {
+              "$ref": "#/components/schemas/UnmaskItem"
+            },
+            "minItems": 1
+          },
+          "policy_name": {
+            "type": "string",
+            "description": "Optional named policy to apply during unmasking.",
+            "example": "my-pii-policy"
+          }
+        }
+      },
+      "UnmaskResponseItem": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "The fully unmasked original text with all tokens resolved.",
+            "example": "John Doe, can be reached at johndoe@example.com"
+          },
+          "token_value": {
+            "type": "string",
+            "description": "The original tokenized input, echoed back.",
+            "example": "<PERSON>VJYe 03W</PERSON>, can be reached at <EMAIL>1AI0s@Uzm3a</EMAIL>"
+          },
+          "toxicity_analysis": {
+            "$ref": "#/components/schemas/ToxicityAnalysis"
+          }
+        }
+      },
+      "UnmaskResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UnmaskResponseItem"
+            }
+          },
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "error": {
+            "$ref": "#/components/schemas/ApiError"
+          }
+        }
+      },
+      "AsyncSubmitResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "tracking_id": {
+                "type": "string",
+                "description": "Unique identifier for the async job. Use with `/api/vault/async-status` to poll for results.",
+                "example": "747027ff-5ce7-4780-8cca-000f908edae721052025073644"
+              }
+            }
+          },
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "error": {
+            "$ref": "#/components/schemas/ApiError"
+          }
+        }
+      },
+      "AsyncStatusRequest": {
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "properties": {
+          "status": {
+            "type": "array",
+            "description": "List of tracking IDs to check.",
+            "items": {
+              "type": "object",
+              "required": [
+                "tracking_id"
+              ],
+              "properties": {
+                "tracking_id": {
+                  "type": "string",
+                  "description": "The tracking ID returned by the async submit endpoint.",
+                  "example": "747027ff-5ce7-4780-8cca-000f908edae721052025073644"
+                }
+              }
+            }
+          }
+        }
+      },
+      "AsyncStatusItem": {
+        "type": "object",
+        "properties": {
+          "tracking_id": {
+            "type": "string",
+            "description": "The job identifier.",
+            "example": "747027ff-5ce7-4780-8cca-000f908edae721052025073644"
+          },
+          "call_type": {
+            "type": "string",
+            "description": "The type of async operation.",
+            "enum": [
+              "mask",
+              "unmask"
+            ],
+            "example": "mask"
+          },
+          "status": {
+            "type": "string",
+            "description": "Current state of the async job.",
+            "enum": [
+              "PENDING",
+              "IN-PROGRESS",
+              "SUCCESS",
+              "FAILED",
+              "PURGED"
+            ],
+            "example": "SUCCESS"
+          },
+          "input_payload": {
+            "type": "object",
+            "description": "The original request payload submitted for processing.",
+            "additionalProperties": true
+          },
+          "result": {
+            "description": "The masking or unmasking output. Only present when `status` is `SUCCESS`. `\"None\"` when still processing.",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {}
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "error_msg": {
+            "type": "string",
+            "nullable": true,
+            "description": "Error description. Present only when `status` is `FAILED`.",
+            "example": null
+          },
+          "submitted_time": {
+            "type": "string",
+            "description": "Timestamp when the job was submitted. Format: `YYYY-MM-DD HH:MM:SS`",
+            "example": "2025-05-21 07:36:44"
+          },
+          "process_start_time": {
+            "type": "string",
+            "nullable": true,
+            "description": "Timestamp when processing began.",
+            "example": "2025-05-21 07:36:47"
+          },
+          "completed_time": {
+            "type": "string",
+            "nullable": true,
+            "description": "Timestamp when the job finished. `\"None\"` if still in progress.",
+            "example": "2025-05-21 07:36:48"
+          }
+        }
+      },
+      "AsyncStatusResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AsyncStatusItem"
+            }
+          },
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "error": {
+            "$ref": "#/components/schemas/ApiError"
+          }
+        }
+      },
+      "DataScanSample": {
+        "type": "object",
+        "required": [
+          "column_name",
+          "samples"
+        ],
+        "properties": {
+          "column_name": {
+            "type": "string",
+            "description": "Name of the column being scanned.",
+            "example": "email"
+          },
+          "samples": {
+            "type": "array",
+            "description": "Sample values from the column for PII detection.",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "john@example.com",
+              "jane@example.com"
+            ]
+          }
+        }
+      },
+      "DataScanObject": {
+        "type": "object",
+        "required": [
+          "data_source_name",
+          "object_name",
+          "data_samples"
+        ],
+        "properties": {
+          "data_source_name": {
+            "type": "string",
+            "description": "Identifier for the data source being scanned (e.g., `salesforce`, `snowflake`).",
+            "example": "salesforce"
+          },
+          "object_name": {
+            "type": "array",
+            "description": "Hierarchical path to the object: `[DatabaseName, SchemaName, TableName]`.",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "MyDatabase",
+              "public",
+              "customers"
+            ]
+          },
+          "data_samples": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataScanSample"
+            }
+          }
+        }
+      },
+      "DataScanRequest": {
+        "type": "array",
+        "description": "List of objects to scan.",
+        "items": {
+          "$ref": "#/components/schemas/DataScanObject"
+        }
+      },
+      "CustomTagRequest": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "tag_type": {
+                "type": "string",
+                "description": "Unique name for the custom PII entity type (uppercase recommended).",
+                "example": "CUSTOMER_ID"
+              },
+              "identification_endpoint_details": {
+                "type": "object",
+                "description": "Configuration for the external endpoint used to detect this entity type.",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "URL of the identification endpoint.",
+                    "example": "https://example.com/custom-pii/identify"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "HTTP method to use when calling the identification endpoint.",
+                    "enum": [
+                      "GET",
+                      "POST",
+                      "PUT"
+                    ],
+                    "example": "PUT"
+                  },
+                  "headers": {
+                    "type": "object",
+                    "description": "Custom HTTP headers to include in identification endpoint requests.",
+                    "additionalProperties": {
+                      "type": "string"
+                    },
+                    "example": {
+                      "Authorization": "Bearer <token>"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "PolicyCreateRequest": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "policy_name"
+            ],
+            "properties": {
+              "policy_name": {
+                "type": "string",
+                "description": "Unique name for the policy.",
+                "example": "my-pii-policy"
+              },
+              "description": {
+                "type": "string",
+                "description": "Human-readable description of the policy purpose.",
+                "example": "Policy for masking PII in customer support tickets"
+              }
+            }
+          }
+        }
+      },
+      "GenerateNamespaceTokenRequest": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "namespace_name",
+              "_id",
+              "permissions"
+            ],
+            "properties": {
+              "namespace_name": {
+                "type": "string",
+                "description": "Target namespace name. Created automatically if it does not exist.",
+                "example": "customer_ns_1"
+              },
+              "_id": {
+                "type": "string",
+                "description": "User ID or email address to associate with the token.",
+                "example": "alice@company.com"
+              },
+              "permissions": {
+                "type": "array",
+                "description": "List of permissions granted to this token.",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "mask",
+                    "unmask",
+                    "metadata_change"
+                  ]
+                },
+                "example": [
+                  "mask",
+                  "unmask"
+                ]
+              },
+              "start_date": {
+                "type": "string",
+                "description": "Token validity start date. Format: `YYYY-MM-DD`.",
+                "example": "2024-07-11"
+              },
+              "end_date": {
+                "type": "string",
+                "description": "Token validity end date. Format: `YYYY-MM-DD`.",
+                "example": "2025-07-10"
+              }
+            }
+          }
+        }
+      },
+      "GenerateNamespaceTokenResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "auth_key": {
+                "type": "string",
+                "description": "The generated authentication token for the namespace user.",
+                "example": "<NAMESPACE_USER_AUTH_TOKEN>"
+              },
+              "namespace_creation": {
+                "type": "object",
+                "description": "Present only when the namespace was newly created as part of this request.",
+                "properties": {
+                  "tracking_id": {
+                    "type": "string",
+                    "example": "9f799cb6-5315-4199-8d47-3a7ced21dd1d"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "PENDING",
+                      "IN-PROGRESS",
+                      "SUCCESS",
+                      "FAILED"
+                    ],
+                    "example": "PENDING"
+                  },
+                  "job_type": {
+                    "type": "string",
+                    "example": "namespace-creation"
+                  }
+                }
+              }
+            }
+          },
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "error": {
+            "$ref": "#/components/schemas/ApiError"
+          }
+        }
+      },
+      "GenericSuccessResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "Response payload. Structure varies by endpoint.",
+            "oneOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "array",
+                "items": {}
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "success": {
+            "type": "boolean",
+            "description": "`true` when the request was processed without errors.",
+            "example": true
+          },
+          "error": {
+            "$ref": "#/components/schemas/ApiError"
+          }
+        }
+      },
+      "GenericRequestBody": {
+        "type": "object",
+        "description": "Request body. Structure varies by endpoint — refer to individual endpoint descriptions.",
+        "additionalProperties": true
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "nullable": true,
+            "example": null
+          },
+          "success": {
+            "type": "boolean",
+            "example": false
+          },
+          "error": {
+            "$ref": "#/components/schemas/ApiError"
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Bad Request — Invalid or incomplete payload. Fix the request body and retry.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "data": null,
+              "success": false,
+              "error": {
+                "message": "Payload is empty"
+              }
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Unauthorized — Missing, invalid, or expired auth token. Refresh or replace the token.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "data": null,
+              "success": false,
+              "error": {
+                "message": "Invalid authentication token"
+              }
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Not Found — The requested resource does not exist. Verify the endpoint URL and parameters.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "data": null,
+              "success": false,
+              "error": {
+                "message": "Resource not found"
+              }
+            }
+          }
+        }
+      },
+      "RateLimitExceeded": {
+        "description": "Too Many Requests — Rate limit exceeded. Retry using exponential backoff.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "data": null,
+              "success": false,
+              "error": {
+                "message": "Rate limit exceeded. Please retry after a few seconds."
+              }
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "Internal Server Error — A processing failure occurred. Safe to retry once. Contact support if the issue persists.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "data": null,
+              "success": false,
+              "error": {
+                "message": "An internal error occurred"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
