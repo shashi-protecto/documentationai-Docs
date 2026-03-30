@@ -1,29 +1,36 @@
 ---
-title: "Identify and Mask (Auto-Detect)"
-description: "Automatically detect and mask all PII in free-form text. Entity types, tokens, and detection rules are all driven by your active policy."
+title: Identify and Mask (Auto-Detect)
+description: >-
+  Automatically detect and mask all PII in free-form text. Entity types, tokens,
+  and detection rules are all driven by your active policy.
 ---
-
 Use this for **free-form text** where entity types are unknown in advance. Protecto scans the text, detects sensitive entities based on the active policy, and returns a masked version with entity tags.
 
 ## Endpoint
 
-| Method | URL |
-|--------|-----|
-| PUT | `https://protecto-trial.protecto.ai/api/vault/mask` |
+| Method | URL                                                 |
+| ------ | --------------------------------------------------- |
+| PUT    | `https://protecto-trial.protecto.ai/api/vault/mask` |
 
 ## Request body
 
-<ParamField body="mask" param-type="array" required="true">
+<ParamField body="mask" param-type="array" required="true" deprecated="false">
   List of free-form text inputs to analyze and mask.
 </ParamField>
 
-<ParamField body="mask[].value" param-type="string" required="true">
+<ParamField body="mask[].value" param-type="string" required="true" deprecated="false">
   Free-form text containing potentially sensitive data.
 </ParamField>
 
+For authentication, include the following token in the request headers:
+
+**Headers:** `{“Authorization”: “Bearer <AUTH_TOKEN>”}`
+
+***Note:*** To obtain the `<auth token>`, please refer to the <a href="https://developer.protecto.ai/docs/step-by-step-guide-to-obtain-your-auth-token/" target="_blank" rel="noopener noreferrer">Step-by-Step Guide to Obtain Your Auth Token</a>.
+
 ## Example
 
-<Request tabs="cURL,Python,JavaScript">
+<Request show-lines="true" tabs={[]}>
   ```bash
   curl -X PUT https://protecto-trial.protecto.ai/api/vault/mask \
     -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
@@ -75,7 +82,7 @@ Use this for **free-form text** where entity types are unknown in advance. Prote
   ```
 </Request>
 
-<Response tabs="200">
+<Response show-lines="true" tabs={[]}>
   ```json
   {
     "data": [
@@ -105,41 +112,44 @@ Use this for **free-form text** where entity types are unknown in advance. Prote
 
 ## Response fields
 
-<ResponseField name="token_value" field-type="string" required="true">
+<ResponseField name="token_value" field-type="string" required="true" deprecated="false">
   The full input text with all detected entities replaced by tokens wrapped in entity tags.
 </ResponseField>
 
-<ResponseField name="individual_tokens" field-type="array" required="false">
+<ResponseField name="individual_tokens" field-type="array" required="false" deprecated="false">
   Array of each individual entity detected and masked.
 
   <Expandable title="individual_tokens fields" default-open="false">
-    <ResponseField name="value" field-type="string" required="true">
+    <ResponseField name="value" field-type="string" required="true" deprecated="false">
       The original sensitive value.
     </ResponseField>
-    <ResponseField name="token_value" field-type="string" required="true">
+
+    <ResponseField name="token_value" field-type="string" required="true" deprecated="false">
       The token replacing the original value.
     </ResponseField>
-    <ResponseField name="prefix" field-type="string" required="true">
+
+    <ResponseField name="prefix" field-type="string" required="true" deprecated="false">
       The opening entity tag (e.g., `<PERSON>`).
     </ResponseField>
-    <ResponseField name="suffix" field-type="string" required="true">
+
+    <ResponseField name="suffix" field-type="string" required="true" deprecated="false">
       The closing entity tag (e.g., `</PERSON>`).
     </ResponseField>
   </Expandable>
 </ResponseField>
 
-<ResponseField name="toxicity_analysis" field-type="object" required="false">
+<ResponseField name="toxicity_analysis" field-type="object" required="false" deprecated="false">
   Toxicity scores for the input text. Returned when enabled by policy.
 
   <Expandable title="Toxicity score categories" default-open="false">
-    | Category | Score range | Description |
-    |----------|-------------|-------------|
-    | `toxicity` | 0–1 | Overall likelihood of toxic content |
-    | `severe_toxicity` | 0–1 | Probability of severe toxic language |
-    | `obscene` | 0–1 | Likelihood of obscene content |
-    | `threat` | 0–1 | Likelihood of threats |
-    | `insult` | 0–1 | Likelihood of insults |
-    | `identity_attack` | 0–1 | Likelihood of identity-based attacks |
+    | Category          | Score range | Description                          |
+    | ----------------- | ----------- | ------------------------------------ |
+    | `toxicity`        | 0–1         | Overall likelihood of toxic content  |
+    | `severe_toxicity` | 0–1         | Probability of severe toxic language |
+    | `obscene`         | 0–1         | Likelihood of obscene content        |
+    | `threat`          | 0–1         | Likelihood of threats                |
+    | `insult`          | 0–1         | Likelihood of insults                |
+    | `identity_attack` | 0–1         | Likelihood of identity-based attacks |
 
     Scores closer to `0` indicate low likelihood. Scores closer to `1` indicate high likelihood.
   </Expandable>
@@ -148,5 +158,8 @@ Use this for **free-form text** where entity types are unknown in advance. Prote
 ## Notes
 
 - Detection and masking behavior are entirely **policy-driven** — no entity types or token names are required in the request.
+
 - The exact tokenized output depends on the active policy.
+
 - This mode is available on the **trial** environment.
+
