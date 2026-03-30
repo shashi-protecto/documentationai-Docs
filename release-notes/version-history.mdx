@@ -1,132 +1,152 @@
 ---
-title: "Release Notes"
-description: "Version history for the Protecto API platform — new features, improvements, and changes by release."
+title: Release Notes
+description: >-
+  Version history for the Protecto API platform — new features, improvements,
+  and changes by release.
 ---
-
 <Update label="Late 2025" description="v8.0.0" tags={["Major Release"]}>
-### Vault & Tokenization
+  ### Vault & Tokenization
 
-- Prefix and suffix support fully generalized across **all entities**, including custom and auto-detected PII
-- Policy-driven masking behavior made consistent across sync mask, async mask, and unmask
-- Improved token consistency guarantees across retries and async jobs
+  - Prefix and suffix support fully generalized across **all entities**, including custom and auto-detected PII
 
-### Policies & Metadata
+  - Policy-driven masking behavior made consistent across sync mask, async mask, and unmask
 
-- Metadata updates now propagate immediately to all new masking operations
-- Clear separation between anonymizable entities, pseudonymizable entities, and excluded entities
+  - Improved token consistency guarantees across retries and async jobs
 
-### Security & Admin
+  ### Policies & Metadata
 
-- Stronger validation on namespace deletion and background job tracking
-- Improved error messages for expired or invalid admin tokens
+  - Metadata updates now propagate immediately to all new masking operations
+
+  - Clear separation between anonymizable entities, pseudonymizable entities, and excluded entities
+
+  ### Security & Admin
+
+  - Stronger validation on namespace deletion and background job tracking
+
+  - Improved error messages for expired or invalid admin tokens
 </Update>
 
 <Update label="Mid 2025" description="v7.0.8" tags={["Enhancement"]}>
-### Vault & Tokenization
+  ### Vault & Tokenization
 
-- `attributes` object added to Mask and Unmask APIs — enables tracking of page number, source ID, or custom metadata
-- Attribute values preserved through async workflows
+  - `attributes` object added to Mask and Unmask APIs — enables tracking of page number, source ID, or custom metadata
 
-### Reporting & Compliance
+  - Attribute values preserved through async workflows
 
-- Audit logs enhanced to include attributes when present
-- Better pagination stability for large audit datasets
+  ### Reporting & Compliance
+
+  - Audit logs enhanced to include attributes when present
+
+  - Better pagination stability for large audit datasets
 </Update>
 
 <Update label="Mid 2025" description="v7.0.6" tags={["Enhancement"]}>
-### Data Scan & Discovery
+  ### Data Scan & Discovery
 
-- Scan Details API now returns identified percentage per entity and ML-identified vs user-defined PII separation
-- Pagination support added for large schema scans
+  - Scan Details API now returns identified percentage per entity and ML-identified vs user-defined PII separation
 
-### Policies & Metadata
+  - Pagination support added for large schema scans
 
-- PI conclusion percentage now configurable globally or per object
+  ### Policies & Metadata
+
+  - PI conclusion percentage is now configurable globally or per object
 </Update>
 
 <Update label="June 2025" description="v7.0.4 / v7.0.5" tags={["Enhancement"]}>
-### Vault & Tokenization
+  ### Vault & Tokenization
 
-- Identify-and-mask enhanced with individual token position tracking and expanded toxicity analysis
-- Unmask API now consistently returns toxicity scores
+  - Identify-and-mask enhanced with individual token position tracking and expanded toxicity analysis
 
-### Data Scan
+  - Unmask API now consistently returns toxicity scores
 
-- Async scan status lifecycle stabilized: `PENDING`, `IN-PROGRESS`, `SUCCESS`, `FAILED`
+  ### Data Scan
+
+  - Async scan status lifecycle stabilized: `PENDING`, `IN-PROGRESS`, `SUCCESS`, `FAILED`
 </Update>
 
 <Update label="May 2025" description="v7.0.3" tags={["Security"]}>
-### Security & Admin
+  ### Security & Admin
 
-- Super Admin APIs hardened with auth token lifecycle enforcement and explicit permission checks (`mask`, `unmask`, `metadata_change`)
-- Namespace creation and deletion moved fully to background jobs
+  - Super Admin APIs hardened with auth token lifecycle enforcement and explicit permission checks (`mask`, `unmask`, `metadata_change`)
+
+  - Namespace creation and deletion moved fully to background jobs
 </Update>
 
 <Update label="April 2025" description="v7.0.2" tags={["Enhancement"]}>
-### Policies & Metadata
+  ### Policies & Metadata
 
-- Policy name support added to Mask and Unmask APIs
-- Default policy behavior clarified when `policy_name` is omitted
+  - Policy name support added to Mask and Unmask APIs
 
-### Vault
+  - Default policy behavior clarified when `policy_name` is omitted
 
-- Better handling of mixed-content payloads during auto-detect masking
+  ### Vault
+
+  - Better handling of mixed-content payloads during auto-detect masking
 </Update>
 
 <Update label="February 2025" description="v7.0.1" tags={["New Feature"]}>
-### Vault & Tokenization
+  ### Vault & Tokenization
 
-- Async Mask and Async Unmask introduced
-- Async Status API added with detailed job lifecycle and timestamps
+  - Async Mask and Async Unmask introduced
+
+  - Async Status API added with detailed job lifecycle and timestamps
 </Update>
 
 <Update label="January 2025" description="v7.0.0" tags={["Major Release"]}>
-### Vault
+  ### Vault
 
-- Unified Mask API for mask with token, mask with format, and identify-and-mask (auto-detect)
-- UTF-8 support across all APIs
+  - Unified Mask API for mask with token, mask with format, and identify-and-mask (auto-detect)
 
-### Policies & Metadata
+  - UTF-8 support across all APIs
 
-- Namespace-level policies introduced
-- Support for anonymization vs pseudonymization
+  ### Policies & Metadata
 
-### Data Scan
+  - Namespace-level policies introduced
 
-- Initial release of Data Scan APIs (subscription only)
+  - Support for anonymization vs pseudonymization
+
+  ### Data Scan
+
+  - Initial release of Data Scan APIs (subscription only)
 </Update>
 
 <Update label="December 2024" description="v6.0.2" tags={["Enhancement"]}>
-### Reporting & Compliance
+  ### Reporting & Compliance
 
-- Namespace-level audit summaries introduced
-- Usage summary APIs added for billing visibility
+  - Namespace-level audit summaries introduced
+
+  - Usage summary APIs added for billing visibility
 </Update>
 
 <Update label="October 2024" description="v6.0.1" tags={["Security"]}>
-### Security
+  ### Security
 
-- Improved authentication error handling
-- Clear differentiation between expired token, invalid token, and missing authorization header
+  - Improved authentication error handling
+
+  - Clear differentiation between expired token, invalid token, and missing authorization header
 </Update>
 
 <Update label="September 2024" description="v6.0" tags={["New Feature"]}>
-### Data Scan
+  ### Data Scan
 
-- Object-level scan support (database, schema, table)
-- Scan object listing APIs introduced
+  - Object-level scan support (database, schema, table)
+
+  - Scan object listing APIs introduced
 </Update>
 
 <Update label="July 2024" description="v5" tags={["Enhancement"]}>
-### Vault
+  ### Vault
 
-- Format-preserving masking expanded
-- Additional financial and healthcare entities supported
+  - Format-preserving masking expanded
+
+  - Additional financial and healthcare entities supported
 </Update>
 
 <Update label="June 2024" description="v4" tags={["New Feature"]}>
-### Vault
+  ### Vault
 
-- Toxicity detection introduced
-- Toxicity scoring added to masking responses
+  - Toxicity detection introduced
+
+  - Toxicity scoring added to masking responses
 </Update>
+
