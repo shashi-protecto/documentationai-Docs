@@ -1,35 +1,51 @@
 ---
-title: "Mask with Token"
-description: "Mask known sensitive values by explicitly specifying the token type. Use when you already know the data type and don't need structure preservation."
+title: Mask with Token
+description: >-
+  Mask known sensitive values by explicitly specifying the token type. Use when
+  you already know the data type and don't need structure preservation.
 ---
 
 Use this endpoint when the data type is already known and you want to explicitly choose the token type.
 
 ## Endpoint
 
-| Method | URL |
-|--------|-----|
-| PUT | `https://protecto-trial.protecto.ai/api/vault/mask` |
+| Method | URL                 |
+| ------ | ------------------- |
+| PUT    | `{baseurl}/mask` |
+
+<Callout kind="info">
+To get the Authkey please contact help@protecto.ai
+</Callout>
 
 ## Request body
 
-<ParamField body="mask" param-type="array" required="true">
+<ParamField body="mask" param-type="array" required="true" deprecated="false">
   List of values to mask. Each item must include `value` and `token_name`.
 </ParamField>
 
-<ParamField body="mask[].value" param-type="string" required="true">
+<ParamField body="mask[].value" param-type="string" required="true" deprecated="false">
   The raw sensitive value to mask.
 </ParamField>
 
-<ParamField body="mask[].token_name" param-type="string" required="true">
+<ParamField body="mask[].token_name" param-type="string" required="true" deprecated="false">
   The token type to apply. Must be a supported token name (e.g., `Text Token`, `Numeric Token`, `Special Token`). See [Token Types](/supported-data-types/token-types) for the full list.
 </ParamField>
 
 ## Example
 
-<Request tabs="cURL,Python,JavaScript">
+<Request default-tab="0" show-lines="true" tabs={["JSON", "cURL", "Python"]}>
+  ```json
+  {
+    "mask": [
+      { "value": "John", "token_name": "Text Token" },
+      { "value": "Australia", "token_name": "Numeric Token" },
+      { "value": "john.doe@example.com", "token_name": "Special Token" }
+    ]
+  }
+  ```
+
   ```bash
-  curl -X PUT https://protecto-trial.protecto.ai/api/vault/mask \
+  curl -X PUT "{baseurl}/mask" \
     -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
     -H "Content-Type: application/json" \
     -d '{
@@ -45,7 +61,7 @@ Use this endpoint when the data type is already known and you want to explicitly
   import requests
 
   response = requests.put(
-      "https://protecto-trial.protecto.ai/api/vault/mask",
+      "{baseurl}/mask",
       headers={
           "Authorization": "Bearer YOUR_AUTH_TOKEN",
           "Content-Type": "application/json"
@@ -60,29 +76,9 @@ Use this endpoint when the data type is already known and you want to explicitly
   )
   print(response.json())
   ```
-
-  ```javascript
-  const response = await fetch(
-    "https://protecto-trial.protecto.ai/api/vault/mask",
-    {
-      method: "PUT",
-      headers: {
-        Authorization: "Bearer YOUR_AUTH_TOKEN",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        mask: [
-          { value: "John", token_name: "Text Token" },
-          { value: "Australia", token_name: "Numeric Token" },
-          { value: "john.doe@example.com", token_name: "Special Token" },
-        ],
-      }),
-    }
-  );
-  ```
 </Request>
 
-<Response tabs="200">
+<Response show-lines="true" tabs={[]}>
   ```json
   {
     "data": [
@@ -99,5 +95,7 @@ Use this endpoint when the data type is already known and you want to explicitly
 ## Notes
 
 - Masking is **deterministic** — the same value with the same token type always produces the same token.
+
 - Token names are **case- and spelling-sensitive**. An invalid name returns a `token_name not defined` error.
+
 - See [Errors & Limits](/masking-apis/errors-limits) for the full list of error responses.
