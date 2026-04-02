@@ -1,29 +1,34 @@
 ---
-title: "Unmask with Token"
-description: "Restore original sensitive values from tokenized text. The API resolves all embedded entity tokens automatically — no token_name required."
+title: Unmask
+description: >-
+  Restore original sensitive values from tokenized text. The API resolves all
+  embedded entity tokens automatically — no token_name required.
 ---
-
 Use this to unmask **tokenized free-form text** typically produced by auto-detect masking, where multiple entity tokens are embedded in a single string.
 
-## Endpoint
+## Endpoint details
 
-| Method | URL |
-|--------|-----|
-| PUT | `https://protecto-trial.protecto.ai/api/vault/unmask` |
+METHOD: PUT
+
+| Method | Route               | Headers                              |
+|--------|---------------------|--------------------------------------|
+| PUT    | `/api/vault/unmask` | `Authorization: Bearer YOUR_AUTH_TOKEN` |
+
+To get the Authkey please contact help@protecto.ai
 
 ## Request body
 
-<ParamField body="unmask" param-type="array" required="true">
+<ParamField body="unmask" param-type="array" required="true" deprecated="false">
   List of tokenized values to unmask.
 </ParamField>
 
-<ParamField body="unmask[].token_value" param-type="string" required="true">
+<ParamField body="unmask[].token_value" param-type="string" required="true" deprecated="false">
   Tokenized text containing one or more embedded entity tokens (e.g., `<PERSON>VJYe 03W</PERSON>`). The API resolves all tokens automatically — `token_name` is not required.
 </ParamField>
 
 ## Example
 
-<Request tabs="cURL,Python,JavaScript">
+<Request show-lines="true" tabs={[]}>
   ```bash
   curl -X PUT https://protecto-trial.protecto.ai/api/vault/unmask \
     -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
@@ -79,7 +84,7 @@ Use this to unmask **tokenized free-form text** typically produced by auto-detec
   ```
 </Request>
 
-<Response tabs="200">
+<Response show-lines="true" tabs={[]}>
   ```json
   {
     "data": [
@@ -106,21 +111,24 @@ Use this to unmask **tokenized free-form text** typically produced by auto-detec
 
 ## Response fields
 
-<ResponseField name="value" field-type="string" required="true">
+<ResponseField name="value" field-type="string" required="true" deprecated="false">
   The fully unmasked original text with all tokens resolved.
 </ResponseField>
 
-<ResponseField name="token_value" field-type="string" required="true">
+<ResponseField name="token_value" field-type="string" required="true" deprecated="false">
   The original tokenized input, echoed back.
 </ResponseField>
 
-<ResponseField name="toxicity_analysis" field-type="object" required="false">
+<ResponseField name="toxicity_analysis" field-type="object" required="false" deprecated="false">
   Toxicity scores evaluated on the unmasked content. See [Toxicity in Unmask API](/unmasking-apis/toxicity-in-unmask) for details.
 </ResponseField>
 
 ## Security considerations
 
 - Restrict unmasking to trusted services and users
+
 - Enforce role-based access control and audit all unmask operations
+
 - Use unmasking only when strictly required by the workflow
+
 - Ensure compliance with applicable data protection regulations before unmasking

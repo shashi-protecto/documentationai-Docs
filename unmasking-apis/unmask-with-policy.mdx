@@ -5,11 +5,15 @@ description: "Apply a named policy during unmasking to control re-identification
 
 Include `policy_name` in the unmask request to apply a specific policy's metadata during unmasking. This is used in governance-controlled workflows where re-identification must follow defined rules.
 
-## Endpoint
+## Endpoint details
 
-| Method | URL |
-|--------|-----|
-| PUT | `https://protecto-trial.protecto.ai/api/vault/unmask` |
+METHOD: PUT
+
+| Method | Route | Headers |
+|--------|-------|---------|
+| PUT | `/api/vault/unmask` | `Authorization: Bearer YOUR_AUTH_TOKEN` |
+
+To get the Authkey please contact help@protecto.ai
 
 ## Request body
 
