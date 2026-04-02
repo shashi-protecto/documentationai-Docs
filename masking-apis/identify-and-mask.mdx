@@ -24,17 +24,13 @@ Use this for **free-form text** where entity types are unknown in advance. Prote
 
 <ParamField body="mask[].value" param-type="string" required="true" deprecated="false">
   Free-form text containing potentially sensitive data.
+
+
 </ParamField>
-
-For authentication, include the following token in the request headers:
-
-**Headers:** `{“Authorization”: “Bearer <AUTH_TOKEN>”}`\
-\
-Note: To obtain the `<AUTH_TOKEN>`, please contact [help@protecto.ai](mailto:help@protecto.ai).
 
 **Example**
 
-<Request show-lines="true" tabs={[]}>
+<Request show-lines="true" default-tab="0" tabs={["JSON", "cURL", "Python"]}>
   ```json
   {
   "mask": [
@@ -156,4 +152,3 @@ Note: To obtain the `<AUTH_TOKEN>`, please contact [help@protecto.ai](mailto:hel
 - The exact tokenized output depends on the active policy.
 
 - This mode is available on the **trial** environment.
-
