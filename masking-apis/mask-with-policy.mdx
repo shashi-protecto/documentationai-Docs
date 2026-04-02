@@ -1,37 +1,38 @@
 ---
-title: "Mask with Policy"
-description: "Apply a named policy to masking requests to control entity detection scope, anonymization vs pseudonymization, and custom entity wrappers."
+title: Mask with Policy
+description: >-
+  Apply a named policy to masking requests to control entity detection scope,
+  anonymization vs pseudonymization, and custom entity wrappers.
 ---
-
 Use this when masking behavior must follow **policy-defined metadata** — such as which entities to detect, anonymization vs pseudonymization rules, or custom prefix/suffix wrappers.
 
 ## Endpoint
 
-| Method | Route | Headers |
-|--------|-------|---------|
-| PUT | `/api/vault/mask` | `{"Authorization": "Bearer <AUTH_TOKEN>"}` |
+| Method | Route             | Headers                                    |
+| ------ | ----------------- | ------------------------------------------ |
+| PUT    | `/api/vault/mask` | `{"Authorization": "Bearer <AUTH_TOKEN>"}` |
 
-<Callout kind="info">
-  To get the Authkey please contact help@protecto.ai
+<Callout kind="info" collapsed="false">
+  To get the Authkey please contact [help@protecto.ai](mailto:help@protecto.ai)
 </Callout>
 
 ## Request body
 
-<ParamField body="policy_name" param-type="string" required="true">
+<ParamField body="policy_name" param-type="string" required="true" deprecated="false">
   The name of the policy to apply. The policy must exist in your namespace. If omitted, the default namespace policy applies.
 </ParamField>
 
-<ParamField body="mask" param-type="array" required="true">
+<ParamField body="mask" param-type="array" required="true" deprecated="false">
   List of free-form text inputs to mask under the specified policy.
 </ParamField>
 
-<ParamField body="mask[].value" param-type="string" required="true">
+<ParamField body="mask[].value" param-type="string" required="true" deprecated="false">
   Free-form text to mask.
 </ParamField>
 
 ## Example
 
-<Request show-lines="true" default-tab="0" tabs={["JSON", "cURL", "Python"]}>
+<Request show-lines="true" tabs={[]}>
   ```json
   {
     "policy_name": "Anonymization-policy-1",
@@ -76,9 +77,104 @@ Use this when masking behavior must follow **policy-defined metadata** — such 
   ```
 </Request>
 
+## Response
+
+<Response show-lines="true" tabs={[]}>
+  ```json
+  {
+    "data": [
+      {
+        "value": "John Doe, residing at 123 Maple Street, Apt 456, Springfield, owns a device with MAC address 00:1A:2B:3C:4D:5E, works at Acme Corp, and frequently visits https://www.example.com.",
+        "token_value": "<PER>VJYe 03W</PER>, residing at <ADDRESS>0ht B4P2z D1l7uy</ADDRESS>, <ADDRESS>0XV 0fg</ADDRESS>, <ADDRESS>KfybCji45d</ADDRESS>, owns a device with MAC address <IPA>7CxOK</IPA>, works at <ORG>GlltwgANru VYDveuLcod</ORG>, and frequently visits https://www.example.com.",
+        "toxicity_analysis": {
+          "toxicity": 0.0005806910921819508,
+          "severe_toxicity": 0.0001257194671779871,
+          "obscene": 0.00019038282334804535,
+          "threat": 0.0001222223654622212,
+          "insult": 0.00017815201135817915,
+          "identity_attack": 0.00014199208817444742
+        },
+        "individual_tokens": [
+          {
+            "value": "John Doe",
+            "pii_type": "PERSON",
+            "token": "VJYe 03W",
+            "prefix": "<PER>",
+            "suffix": "</PER>",
+            "start_pos": 0,
+            "end_pos": 8
+          },
+          {
+            "value": "123 Maple Street",
+            "pii_type": "ADDRESS",
+            "token": "0ht B4P2z D1l7uy",
+            "prefix": "<ADDRESS>",
+            "suffix": "</ADDRESS>",
+            "start_pos": 22,
+            "end_pos": 38
+          },
+          {
+            "value": "Apt 456",
+            "pii_type": "ADDRESS",
+            "token": "0XV 0fg",
+            "prefix": "<ADDRESS>",
+            "suffix": "</ADDRESS>",
+            "start_pos": 40,
+            "end_pos": 47
+          },
+          {
+            "value": "Springfield",
+            "pii_type": "ADDRESS",
+            "token": "KfybCji45d",
+            "prefix": "<ADDRESS>",
+            "suffix": "</ADDRESS>",
+            "start_pos": 49,
+            "end_pos": 60
+          },
+          {
+            "value": "00:1A:2B:3C:4D:5E",
+            "pii_type": "IP_ADDRESS",
+            "token": "7CxOK",
+            "prefix": "<IPA>",
+            "suffix": "</IPA>",
+            "start_pos": 93,
+            "end_pos": 110
+          },
+          {
+            "value": "Acme Corp",
+            "pii_type": "ORG",
+            "token": "GlltwgANru VYDveuLcod",
+            "prefix": "<ORG>",
+            "suffix": "</ORG>",
+            "start_pos": 121,
+            "end_pos": 130
+          }
+        ],
+        "excluded_entities": [
+          {
+            "value": "https://www.example.com",
+            "pii_type": "URL",
+            "start_pos": 154,
+            "end_pos": 177
+          }
+        ]
+      }
+    ],
+    "success": true,
+    "error": {
+      "message": ""
+    }
+  }
+  ```
+</Response>
+
 ## Notes
 
 - `policy_name` is explicitly supported for auto-detect masking.
+
 - Policies control which entity types are detected, how values are tokenized, and whether unmasking is permitted.
+
 - Changing a policy updates behavior for all future requests using that policy name — without changing client code.
-- See [Policies](/core-concepts/policies) for a conceptual overview, and [Policy Management](/policy-management/overview) for admin operations.
+
+- See [Policies](/core-concepts/policies) for a conceptual overview, and [Policy Management](/policy-management/overview) for admin operations.\\
+
