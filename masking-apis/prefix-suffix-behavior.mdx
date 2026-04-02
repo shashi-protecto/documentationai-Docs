@@ -1,23 +1,27 @@
 ---
-title: "Prefix & Suffix Behavior"
-description: "How Protecto wraps masked values in entity tags, and how to customize prefix and suffix strings through policy metadata."
+title: Prefix & Suffix Behavior
+description: >-
+  How Protecto wraps masked values in entity tags, and how to customize prefix
+  and suffix strings through policy metadata.
 ---
 
 ## What prefixes and suffixes are
 
 For auto-detect masking, each detected entity is wrapped with a **prefix** and **suffix** that indicate the entity type.
 
-| Entity type | Example output |
-|-------------|---------------|
-| Person | `<PER>VJYe 03W</PER>` |
-| Email | `<EMAIL>0gN3SkjL@0ffM3CDS</EMAIL>` |
-| Phone | `<PHONE>874890078</PHONE>` |
-| Address | `<ADDRESS>06N 00E1 00003b</ADDRESS>` |
+| Entity type | Example output                       |
+| ----------- | ------------------------------------ |
+| Person      | `<PER>VJYe 03W</PER>`                |
+| Email       | `<EMAIL>0gN3SkjL@0ffM3CDS</EMAIL>`   |
+| Phone       | `<PHONE>874890078</PHONE>`           |
+| Address     | `<ADDRESS>06N 00E1 00003b</ADDRESS>` |
 
 These tags appear in:
 
 - `token_value` — the full masked text string
+
 - `individual_tokens[].prefix` — the opening tag
+
 - `individual_tokens[].suffix` — the closing tag
 
 ## How prefixes and suffixes are controlled
@@ -25,25 +29,139 @@ These tags appear in:
 Prefixes and suffixes are defined in **policy metadata**. To apply custom wrappers:
 
 1. Update the metadata for your policy using the [Update Prefixes and Suffixes](/policy-management/update-prefixes-suffixes) endpoint.
+
 2. Call the Mask API with `policy_name` to use the updated metadata.
 
 ### Metadata update endpoint
 
-| Method | URL |
-|--------|-----|
-| PUT | `https://api.protecto.ai/metadata/update-auto-detect` |
+| Method | URL                                     |
+| ------ | --------------------------------------- |
+| PUT    | `{baseurl}/metadata/update-auto-detect` |
 
-<Callout kind="alert">
+<Callout kind="alert" collapsed="false">
   This endpoint is available only in subscribed (production) environments. It is not available on the trial.
 </Callout>
+
+## Example
+
+<Request show-lines="true" default-tab="0" tabs={["JSON", "cURL", "Python"]}>
+
+```json
+{
+  "policy_name": "Add Prefix Suffix Policy",
+  "mask": [
+    {
+      "value": "Sarah Johnson recently moved to 456 Elm Avenue, Boston, and you can reach her at (555) 987-6543"
+    }
+  ]
+}
+```
+
+```bash
+curl -X PUT "{baseurl}/api/vault/mask" \
+  -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "policy_name": "Add Prefix Suffix Policy",
+    "mask": [
+      {
+        "value": "Sarah Johnson recently moved to 456 Elm Avenue, Boston, and you can reach her at (555) 987-6543"
+      }
+    ]
+  }'
+```
+
+```python
+import requests
+
+url = "{baseurl}/api/vault/mask"
+
+headers = {
+    "Authorization": "Bearer YOUR_AUTH_TOKEN",
+    "Content-Type": "application/json",
+}
+
+payload = {
+    "policy_name": "Add Prefix Suffix Policy",
+    "mask": [
+        {
+            "value": "Sarah Johnson recently moved to 456 Elm Avenue, Boston, and you can reach her at (555) 987-6543"
+        }
+    ],
+}
+
+response = requests.put(url, json=payload, headers=headers)
+
+print(response.status_code)
+print(response.json())
+```
+
+</Request>
+
+### Response (200)
+
+```json
+{
+  "data": [
+    {
+      "value": "Sarah Johnson recently moved to 456 Elm Avenue, Boston, and you can reach her at (555) 987-6543",
+      "token_value": "{Person Name cn1AU PevBCff} recently moved to <ADDRESS>YwvEh WZIN6 nES7LM, y8Tdm5</ADDRESS>, and you can reach her at {Personal PhoneNumber (14720) 09570-47785}",
+      "toxicity_analysis": {
+        "toxicity": 0.0006517292349599302,
+        "severe_toxicity": 0.00011591568909352645,
+        "obscene": 0.00017911863687913865,
+        "threat": 0.00012024409079458565,
+        "insult": 0.00017571910575497895,
+        "identity_attack": 0.00013655266957357526
+      },
+      "individual_tokens": [
+        {
+          "value": "Sarah Johnson",
+          "pii_type": "PERSON",
+          "token": "cn1AU PevBCff",
+          "prefix": "{Person Name ",
+          "suffix": "}",
+          "start_pos": 0,
+          "end_pos": 13
+        },
+        {
+          "value": "456 Elm Avenue, Boston",
+          "pii_type": "ADDRESS",
+          "token": "YwvEh WZIN6 nES7LM, y8Tdm5",
+          "prefix": "<ADDRESS>",
+          "suffix": "</ADDRESS>",
+          "start_pos": 32,
+          "end_pos": 54
+        },
+        {
+          "value": "(555) 987-6543",
+          "pii_type": "PHONE_NUMBER",
+          "token": "(14720) 09570-47785",
+          "prefix": "{Personal PhoneNumber ",
+          "suffix": "}",
+          "start_pos": 81,
+          "end_pos": 95
+        }
+      ]
+    }
+  ],
+  "success": true,
+  "error": {
+    "message": ""
+  }
+}
+```
 
 ## Important implications
 
 - **Prefix and suffix changes are a breaking change** for any downstream consumer that parses entity tags.
+
 - Treat your prefix/suffix format as a **contract** between Protecto and your consuming systems.
+
 - Changes apply only when the matching `policy_name` is provided in the mask request.
+
 - If you change prefixes/suffixes, update all systems that parse or process `token_value` strings before deploying the policy change.
 
-<Callout kind="tip">
+<Callout kind="tip" collapsed="false">
   If multiple teams consume masked output, coordinate prefix/suffix changes carefully. Consider maintaining a stable default policy while testing changes on a non-production policy.
 </Callout>
