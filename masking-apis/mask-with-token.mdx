@@ -7,11 +7,13 @@ Use this endpoint when the data type is already known and you want to explicitly
 
 ## Endpoint
 
-To use Protecto.ai's token-based masking, send a PUT request to the endpoint with an authenticated header.
+Endpoint and Authentication:
 
-| Method | Route               | Headers                                       |
-| ------ | ------------------- | --------------------------------------------- |
-| PUT    | `/api/vault/mask` | `{"Authorization": "Bearer <AUTH_TOKEN>"}` |
+To use this API, you need to send a PUT request to the following endpoint:
+
+| Method | Route           | Headers                                                                                                             |
+| ------ | --------------- | ------------------------------------------------------------------------------------------------------------------- |
+| PUT    | `/api/vault/mask` | For authentication, include the following token in the request headers: <br /> {"Authorization": "Bearer <AUTH_TOKEN>"} |
 
 <Callout kind="info">
 To get the Authkey please contact help@protecto.ai
