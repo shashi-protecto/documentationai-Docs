@@ -1,17 +1,17 @@
 ---
 title: Mask with Token
-description: >-
-  Mask known sensitive values by explicitly specifying the token type. Use when
-  you already know the data type and don't need structure preservation.
+description: Mask known sensitive values by explicitly specifying the token type. Use when you already know the data type and don't need structure preservation.
 ---
 
 Use this endpoint when the data type is already known and you want to explicitly choose the token type.
 
 ## Endpoint
 
-| Method | URL                 |
-| ------ | ------------------- |
-| PUT    | `{baseurl}/mask` |
+To use Protecto.ai's token-based masking, send a PUT request to the endpoint with an authenticated header.
+
+| Method | Route               | Headers                                       |
+| ------ | ------------------- | --------------------------------------------- |
+| PUT    | `/api/vault/mask` | `{"Authorization": "Bearer <AUTH_TOKEN>"}` |
 
 <Callout kind="info">
 To get the Authkey please contact help@protecto.ai
@@ -45,7 +45,7 @@ To get the Authkey please contact help@protecto.ai
   ```
 
   ```bash
-  curl -X PUT "{baseurl}/mask" \
+  curl -X PUT "{baseurl}/api/vault/mask" \
     -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
     -H "Content-Type: application/json" \
     -d '{
@@ -61,7 +61,7 @@ To get the Authkey please contact help@protecto.ai
   import requests
 
   response = requests.put(
-      "{baseurl}/mask",
+      "{baseurl}/api/vault/mask",
       headers={
           "Authorization": "Bearer YOUR_AUTH_TOKEN",
           "Content-Type": "application/json"
