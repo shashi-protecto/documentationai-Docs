@@ -74,29 +74,90 @@ Use this for **free-form text** where entity types are unknown in advance. Prote
 
 <Response show-lines="true" tabs={[]}>
   ```json
-  {
+{
     "data": [
-      {
-        "value": "Sarah Connors can be reached at 217-555-2020 or sarah.connors88@example.com",
-        "token_value": "<PERSON>VJYe 03W</PERSON> can be reached at <PHONE>874890078</PHONE> or <EMAIL>0gN3SkjL@0ffM3CDS</EMAIL>",
-        "individual_tokens": [
-          { "value": "Sarah Connors", "token_value": "VJYe 03W", "prefix": "<PERSON>", "suffix": "</PERSON>" },
-          { "value": "217-555-2020", "token_value": "874890078", "prefix": "<PHONE>", "suffix": "</PHONE>" },
-          { "value": "sarah.connors88@example.com", "token_value": "0gN3SkjL@0ffM3CDS", "prefix": "<EMAIL>", "suffix": "</EMAIL>" }
-        ],
-        "toxicity_analysis": {
-          "toxicity": 0.00088,
-          "severe_toxicity": 0.000104,
-          "obscene": 0.000182,
-          "threat": 0.000110,
-          "insult": 0.000175,
-          "identity_attack": 0.000138
+        {
+            "value": "John Doe, residing at 123 Maple Street, Apt 456, Springfield, owns a device with MAC address 00:1A:2B:3C:4D:5E, works at Acme Corp, and frequently visits https://www.example.com.",
+            "token_value": "<PER>VJYe 03W</PER>, residing at <ADDRESS>0ht B4P2z D1l7uy</ADDRESS>, <ADDRESS>0XV 0fg</ADDRESS>, <ADDRESS>KfybCji45d</ADDRESS>, owns a device with MAC address <IPA>7CxOK</IPA>, works at <ORG>GlltwgANru VYDveuLcod</ORG>, and frequently visits https://www.example.com.",
+            "toxicity_analysis": {
+                "toxicity": 0.0005806910921819508,
+                "severe_toxicity": 0.0001257194671779871,
+                "obscene": 0.00019038282334804535,
+                "threat": 0.0001222223654622212,
+                "insult": 0.00017815201135817915,
+                "identity_attack": 0.00014199208817444742
+            },
+            "individual_tokens": [
+                {
+                    "value": "John Doe",
+                    "pii_type": "PERSON",
+                    "token": "VJYe 03W",
+                    "prefix": "<PER>",
+                    "suffix": "</PER>",
+                    "start_pos": 0,
+                    "end_pos": 8
+                },
+                {
+                    "value": "123 Maple Street",
+                    "pii_type": "ADDRESS",
+                    "token": "0ht B4P2z D1l7uy",
+                    "prefix": "<ADDRESS>",
+                    "suffix": "</ADDRESS>",
+                    "start_pos": 22,
+                    "end_pos": 38
+                },
+                {
+                    "value": "Apt 456",
+                    "pii_type": "ADDRESS",
+                    "token": "0XV 0fg",
+                    "prefix": "<ADDRESS>",
+                    "suffix": "</ADDRESS>",
+                    "start_pos": 40,
+                    "end_pos": 47
+                },
+                {
+                    "value": "Springfield",
+                    "pii_type": "ADDRESS",
+                    "token": "KfybCji45d",
+                    "prefix": "<ADDRESS>",
+                    "suffix": "</ADDRESS>",
+                    "start_pos": 49,
+                    "end_pos": 60
+                },
+                {
+                    "value": "00:1A:2B:3C:4D:5E",
+                    "pii_type": "IP_ADDRESS",
+                    "token": "7CxOK",
+                    "prefix": "<IPA>",
+                    "suffix": "</IPA>",
+                    "start_pos": 93,
+                    "end_pos": 110
+                },
+                {
+                    "value": "Acme Corp",
+                    "pii_type": "ORG",
+                    "token": "GlltwgANru VYDveuLcod",
+                    "prefix": "<ORG>",
+                    "suffix": "</ORG>",
+                    "start_pos": 121,
+                    "end_pos": 130
+                }
+            ],
+            "excluded_entities": [
+                {
+                    "value": "https://www.example.com",
+                    "pii_type": "URL",
+                    "start_pos": 154,
+                    "end_pos": 177
+                }
+            ]
         }
-      }
     ],
     "success": true,
-    "error": { "message": "" }
-  }
+    "error": {
+        "message": ""
+    }
+}
   ```
 </Response>
 
