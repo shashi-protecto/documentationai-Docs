@@ -7,9 +7,13 @@ Use this when masking behavior must follow **policy-defined metadata** — such 
 
 ## Endpoint
 
-| Method | URL |
-|--------|-----|
-| PUT | `https://protecto-trial.protecto.ai/api/vault/mask` |
+| Method | Route | Headers |
+|--------|-------|---------|
+| PUT | `/api/vault/mask` | `{"Authorization": "Bearer <AUTH_TOKEN>"}` |
+
+<Callout kind="info">
+  To get the Authkey please contact help@protecto.ai
+</Callout>
 
 ## Request body
 
@@ -27,7 +31,18 @@ Use this when masking behavior must follow **policy-defined metadata** — such 
 
 ## Example
 
-<Request tabs="cURL,Python">
+<Request show-lines="true" default-tab="0" tabs={["JSON", "cURL", "Python"]}>
+  ```json
+  {
+    "policy_name": "Anonymization-policy-1",
+    "mask": [
+      {
+        "value": "John Doe lives at 123 Maple Street"
+      }
+    ]
+  }
+  ```
+
   ```bash
   curl -X PUT https://protecto-trial.protecto.ai/api/vault/mask \
     -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
