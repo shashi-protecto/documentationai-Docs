@@ -4,16 +4,16 @@ description: >-
   Automatically detect and mask all PII in free-form text. Entity types, tokens,
   and detection rules are all driven by your active policy.
 ---
-Use this for **free-form text** where entity types are unknown in advance. Protecto scans the text, detects sensitive entities based on the active policy, and returns a masked version with entity tags.
+Use this for **free-form text** where entity types are unknown in advance. Protecto scans the text, detects sensitive entities based on the active policy, and returns a masked version with entity tags.d
 
 ## Endpoint
 
-| Method | Route | Headers |
-| ------ | ----- | ------- |
-| PUT | `/api/vault/mask` | `{"Authorization": "Bearer <AUTH_TOKEN>"}` |
+| Method | Route             | Headers                                    |
+| ------ | ----------------- | ------------------------------------------ |
+| PUT    | `/api/vault/mask` | `{"Authorization": "Bearer <AUTH_TOKEN>"}` |
 
-<Callout kind="info">
-  To get the Authkey please contact help@protecto.ai
+<Callout kind="info" collapsed="false">
+  To get the Authkey please contact [help@protecto.ai](mailto:help@protecto.ai)
 </Callout>
 
 ## Request body
@@ -34,7 +34,7 @@ Note: To obtain the `<AUTH_TOKEN>`, please contact [help@protecto.ai](mailto:hel
 
 **Example**
 
-<Request show-lines="true" default-tab="0" tabs={["JSON", "cURL", "Python"]}>
+<Request show-lines="true" tabs={[]}>
   ```json
   {
   "mask": [
@@ -74,7 +74,6 @@ Note: To obtain the `<AUTH_TOKEN>`, please contact [help@protecto.ai](mailto:hel
       }
   )
   ```
-
 </Request>
 
 <Response show-lines="true" tabs={[]}>
@@ -157,3 +156,4 @@ Note: To obtain the `<AUTH_TOKEN>`, please contact [help@protecto.ai](mailto:hel
 - The exact tokenized output depends on the active policy.
 
 - This mode is available on the **trial** environment.
+
