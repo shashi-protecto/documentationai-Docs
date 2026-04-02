@@ -32,7 +32,7 @@ Use this when masking behavior must follow **policy-defined metadata** — such 
 
 ## Example
 
-<Request show-lines="true" tabs={[]}>
+<Request default-tab="0" show-lines="true" tabs={["JSON", "cURL", "Python"]}>
   ```json
   {
     "policy_name": "Anonymization-policy-1",
@@ -76,8 +76,6 @@ Use this when masking behavior must follow **policy-defined metadata** — such 
   )
   ```
 </Request>
-
-## Response
 
 <Response show-lines="true" tabs={[]}>
   ```json
@@ -177,4 +175,3 @@ Use this when masking behavior must follow **policy-defined metadata** — such 
 - Changing a policy updates behavior for all future requests using that policy name — without changing client code.
 
 - See [Policies](/core-concepts/policies) for a conceptual overview, and [Policy Management](/policy-management/overview) for admin operations.\\
-
