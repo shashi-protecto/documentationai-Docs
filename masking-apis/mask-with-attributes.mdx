@@ -96,6 +96,30 @@ Attributes allow you to attach custom metadata to masked values. This is useful 
   ```
 </Request>
 
+<Response show-lines="true" tabs={[]}>
+
+  ```json
+  {
+    "data": [
+      {
+        "value": "https://platform.openai.com/playground/chat?models=gpt-4o",
+        "format": "Url",
+        "attributes": {
+          "page_number": "1"
+        },
+        "token_name": "Text Token",
+        "token_value": "ooYxG://yFm3aGfq.AqfYIp.akT2Q/NBEjXBhtqL/HKdhW?Ke2LhD=vfXs1z"
+      }
+    ],
+    "success": true,
+    "error": {
+      "message": ""
+    }
+  }
+  ```
+
+</Response>
+
 ## Notes
 
 - `attributes` is an **object** with string keys and string values.
