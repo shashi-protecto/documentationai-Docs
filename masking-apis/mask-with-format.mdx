@@ -35,7 +35,24 @@ Use this when the **structure of the value must be preserved**, such as punctuat
 
 ## Example
 
-<Request tabs="cURL,Python">
+<Request show-lines="true" default-tab="0" tabs={["JSON", "cURL", "Python"]}>
+  ```json
+  {
+    "mask": [
+      {
+        "value": "(408)- 426 - 9989",
+        "format": "Phone Number",
+        "token_name": "Numeric Token"
+      },
+      {
+        "value": "kumar@fss.com",
+        "format": "Email Address",
+        "token_name": "Text Token"
+      }
+    ]
+  }
+  ```
+
   ```bash
   curl -X PUT https://protecto-trial.protecto.ai/api/vault/mask \
     -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
