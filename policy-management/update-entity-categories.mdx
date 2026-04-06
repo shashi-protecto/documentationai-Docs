@@ -29,7 +29,18 @@ Moves entities between anonymizable, pseudonymizable, and excluded groups within
   Entity names to exclude from detection and masking entirely.
 </ParamField>
 
-<Request tabs="cURL">
+<Request tabs="JSON,cURL">
+```json
+{
+  "data": {
+    "policy_name": "customer-support-policy",
+    "anonymizable_entities": ["CREDIT_CARD", "PHONE_NUMBER"],
+    "pseudonymizable_entities": ["PERSON", "EMAIL_ADDRESS"],
+    "excluded_entities": ["URL"]
+  }
+}
+```
+
 ```bash
 curl -X PUT https://<domain>/api/vault/metadata/personal-data-entities/update-category \
   -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>" \
@@ -44,6 +55,268 @@ curl -X PUT https://<domain>/api/vault/metadata/personal-data-entities/update-ca
   }'
 ```
 </Request>
+
+<Response tabs="200">
+```json
+{
+  "data": [
+    {
+      "policy_name": "Anonymization-policy-1",
+      "metadata": {
+        "anonymizable_entities": [
+          {
+            "entity_name": "PHONE_NUMBER",
+            "entity_type": "PII",
+            "prefix": "<PHN>",
+            "suffix": "</PHN>",
+            "description": "Telephone Number"
+          },
+          {
+            "entity_name": "CREDIT_CARD",
+            "entity_type": "PCI",
+            "prefix": "<CRD>",
+            "suffix": "</CRD>",
+            "description": "Credit Card Number"
+          },
+          {
+            "entity_name": "ORG",
+            "entity_type": "PII",
+            "prefix": "<ORG>",
+            "suffix": "</ORG>",
+            "description": "Organization"
+          }
+        ],
+        "pseudonymizable_entities": [
+          {
+            "entity_name": "SWIFT",
+            "entity_type": "PCI",
+            "prefix": "<SWIFT>",
+            "suffix": "</SWIFT>",
+            "description": "SWIFT code"
+          },
+          {
+            "entity_name": "EMAIL_ADDRESS",
+            "entity_type": "PII",
+            "prefix": "<EMAIL>",
+            "suffix": "</EMAIL>",
+            "description": "Email Address"
+          },
+          {
+            "entity_name": "FAX_NUMBER",
+            "entity_type": "PII",
+            "prefix": "<FAX_NO>",
+            "suffix": "</FAX_NO>",
+            "description": "Facsimile Number"
+          },
+          {
+            "entity_name": "MRN",
+            "entity_type": "PHI",
+            "prefix": "<MRN>",
+            "suffix": "</MRN>",
+            "description": "Medical Record Number"
+          },
+          {
+            "entity_name": "ROUTING_NUMBER",
+            "entity_type": "PII",
+            "prefix": "<ROUTING_NO>",
+            "suffix": "</ROUTING_NO>",
+            "description": "Routing Number"
+          },
+          {
+            "entity_name": "START_DATE_OF_HOSPITALIZATION",
+            "entity_type": "PHI",
+            "prefix": "<ADMIT_DATE>",
+            "suffix": "</ADMIT_DATE>",
+            "description": "Start Date of Hospitalization"
+          },
+          {
+            "entity_name": "POLICY_NO",
+            "entity_type": "PCI",
+            "prefix": "<POLICY_NO>",
+            "suffix": "</POLICY_NO>",
+            "description": "Policy Number"
+          },
+          {
+            "entity_name": "TAN",
+            "entity_type": "PCI",
+            "prefix": "<TAN>",
+            "suffix": "</TAN>",
+            "description": "Transaction Authentication Numbers"
+          },
+          {
+            "entity_name": "PERSON",
+            "entity_type": "PII",
+            "prefix": "<PER>",
+            "suffix": "</PER>",
+            "description": "Person Name"
+          },
+          {
+            "entity_name": "ADDRESS",
+            "entity_type": "PII",
+            "prefix": "<ADDRESS>",
+            "suffix": "</ADDRESS>",
+            "description": "Address"
+          },
+          {
+            "entity_name": "SSN",
+            "entity_type": "PII",
+            "prefix": "<SSN>",
+            "suffix": "</SSN>",
+            "description": "Social Security Number"
+          },
+          {
+            "entity_name": "DATE_OF_BIRTH",
+            "entity_type": "PHI",
+            "prefix": "<DOB>",
+            "suffix": "</DOB>",
+            "description": "Date of Birth"
+          },
+          {
+            "entity_name": "DEATH_DATE",
+            "entity_type": "PHI",
+            "prefix": "<DEATH_DATE>",
+            "suffix": "</DEATH_DATE>",
+            "description": "Date of Death"
+          },
+          {
+            "entity_name": "HEALTH_BENEFICIARY_NUMBER",
+            "entity_type": "PHI",
+            "prefix": "<HEALTH_BENEFICIARY_NO>",
+            "suffix": "</HEALTH_BENEFICIARY_NO>",
+            "description": "Health Beneficiary Number"
+          },
+          {
+            "entity_name": "VEHICLE_REGISTRATION_NUMBER",
+            "entity_type": "PII",
+            "prefix": "<VEHICLE_REG_NO>",
+            "suffix": "</VEHICLE_REG_NO>",
+            "description": "Vehicle Registration Number"
+          },
+          {
+            "entity_name": "CARD_EXPIRY_DATE",
+            "entity_type": "PCI",
+            "prefix": "<CRD_EXP_DATE>",
+            "suffix": "</CRD_EXP_DATE>",
+            "description": "Credit Card Expiration Date"
+          },
+          {
+            "entity_name": "IP_ADDRESS",
+            "entity_type": "PII",
+            "prefix": "<IPA>",
+            "suffix": "</IPA>",
+            "description": "Internet Protocol Address"
+          },
+          {
+            "entity_name": "BANK_ACC_NO",
+            "entity_type": "PCI",
+            "prefix": "<ACC_NO>",
+            "suffix": "</ACC_NO>",
+            "description": "Bank Account Number"
+          },
+          {
+            "entity_name": "PIN_NUMBER",
+            "entity_type": "PCI",
+            "prefix": "<CRD_PIN>",
+            "suffix": "</CRD_PIN>",
+            "description": "Credit Card Pin"
+          },
+          {
+            "entity_name": "DRIVING_LICENSE_NUMBER",
+            "entity_type": "PII",
+            "prefix": "<DL_NO>",
+            "suffix": "</DL_NO>",
+            "description": "Driving License Number"
+          },
+          {
+            "entity_name": "VIN",
+            "entity_type": "PII",
+            "prefix": "<VIN>",
+            "suffix": "</VIN>",
+            "description": "Vehicle Identification Number"
+          },
+          {
+            "entity_name": "NATIONALITY",
+            "entity_type": "PII",
+            "prefix": "<NATIONALITY>",
+            "suffix": "</NATIONALITY>",
+            "description": "Nationality"
+          },
+          {
+            "entity_name": "PASSPORT_NUMBER",
+            "entity_type": "PII",
+            "prefix": "<PASSPORT_NO>",
+            "suffix": "</PASSPORT_NO>",
+            "description": "Passport Number"
+          },
+          {
+            "entity_name": "PAN",
+            "entity_type": "PII",
+            "prefix": "<PAN>",
+            "suffix": "</PAN>",
+            "description": "Permanent Account Number"
+          },
+          {
+            "entity_name": "HEALTH_ACC_NO",
+            "entity_type": "PHI",
+            "prefix": "<ACC_NO>",
+            "suffix": "</ACC_NO>",
+            "description": "Health Account Number"
+          },
+          {
+            "entity_name": "CVV",
+            "entity_type": "PCI",
+            "prefix": "<CVV>",
+            "suffix": "</CVV>",
+            "description": "Card Verification Value"
+          },
+          {
+            "entity_name": "DISCHARGE_DATE",
+            "entity_type": "PHI",
+            "prefix": "<DISCHARGE_DATE>",
+            "suffix": "</DISCHARGE_DATE>",
+            "description": "Discharge Date"
+          },
+          {
+            "entity_name": "INSURANCE_NUMBER",
+            "entity_type": "PHI",
+            "prefix": "<INSURANCE_NO>",
+            "suffix": "</INSURANCE_NO>",
+            "description": "Insurance Policy Number"
+          },
+          {
+            "entity_name": "LICENCE_NUMBER",
+            "entity_type": "PHI",
+            "prefix": "<LICENCE_NO>",
+            "suffix": "</LICENCE_NO>",
+            "description": "License Number"
+          }
+        ],
+        "excluded_entities": [
+          {
+            "entity_name": "URL",
+            "entity_type": "PII",
+            "prefix": "<URL>",
+            "suffix": "</URL>",
+            "description": "Uniform Resource Locator"
+          },
+          {
+            "entity_name": "MAC_NUMBER",
+            "entity_type": "PHI",
+            "prefix": "<DEVICE_ID>",
+            "suffix": "</DEVICE_ID>",
+            "description": "Media Access Control Number"
+          }
+        ]
+      }
+    }
+  ],
+  "success": true,
+  "error": {
+    "message": ""
+  }
+}
+```
+</Response>
 
 ## Behavior notes
 
