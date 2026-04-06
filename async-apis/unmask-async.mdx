@@ -1,29 +1,40 @@
 ---
-title: "Unmask Async"
-description: "Submit an unmask job for background processing and receive a tracking ID to poll for results."
+title: Unmask Async
+description: >-
+  Submit an unmask job for background processing and receive a tracking ID to
+  poll for results.
 ---
-
 Submits an unmask request for background processing. Returns a `tracking_id` immediately — results are retrieved by polling the [Async Status](/async-apis/async-status) endpoint.
 
 ## Endpoint
 
-| Method | URL |
-|--------|-----|
-| PUT | `https://protecto-trial.protecto.ai/api/vault/unmask/async` |
+| Method | URL                      |
+| ------ | ------------------------ |
+| PUT    | `{baseurl}/unmask/async` |
 
 ## Request body
 
-<ParamField body="unmask" param-type="array" required="true">
+<ParamField body="unmask" param-type="array" required="true" deprecated="false">
   List of tokenized values to unmask asynchronously.
 </ParamField>
 
-<ParamField body="unmask[].token_value" param-type="string" required="true">
+<ParamField body="unmask[].token_value" param-type="string" required="true" deprecated="false">
   The tokenized text to unmask.
 </ParamField>
 
 ## Example
 
-<Request tabs="cURL,Python">
+<Request show-lines="true" tabs="JSON,cURL,Python">
+  ```json
+  {
+    "unmask": [
+      {
+        "token_value": "8oGEcGVEkj 700ZSgo1pA"
+      }
+    ]
+  }
+  ```
+
   ```bash
   curl -X PUT https://protecto-trial.protecto.ai/api/vault/unmask/async \
     -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
@@ -52,7 +63,7 @@ Submits an unmask request for background processing. Returns a `tracking_id` imm
   ```
 </Request>
 
-<Response tabs="202">
+<Response show-lines="true" tabs={[]}>
   ```json
   {
     "data": [
