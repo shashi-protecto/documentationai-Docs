@@ -7,7 +7,17 @@ The Unmask API also returns toxicity analysis for the **unmasked text**. This al
 
 ## How it appears in the response
 
-<Request tabs="cURL">
+<Request tabs="JSON,cURL">
+```json
+{
+  "unmask": [
+    {
+      "value": "<PER>hSw8kAEB10</PER> lives in <ADDRESS>748785848000</ADDRESS>"
+    }
+  ]
+}
+```
+
 ```bash
 curl -X PUT https://protecto-trial.protecto.ai/api/vault/unmask \
   -H "Authorization: Bearer <AUTH_TOKEN>" \
@@ -62,5 +72,7 @@ curl -X PUT https://protecto-trial.protecto.ai/api/vault/unmask \
 | Compliance reporting | Record safety signals for regulated workflows |
 
 <Callout kind="tip">
+
   Combining `identity_attack` scores with unmask audit logs is useful for detecting whether sensitive personal data is being accessed in discriminatory contexts.
+
 </Callout>
