@@ -11,7 +11,11 @@ Returns all policies available in the namespace.
 |--------|----------|
 | `GET` | `https://<domain>/api/vault/metadata/policy/list` |
 
-<Request tabs="cURL">
+<Request tabs="JSON,cURL">
+```json
+{}
+```
+
 ```bash
 curl -X GET https://<domain>/api/vault/metadata/policy/list \
   -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>"
