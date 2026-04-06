@@ -1,27 +1,43 @@
 ---
-title: "Mask Async"
-description: "Submit a masking job for background processing and receive a tracking ID to poll for results."
+title: Mask Async
+description: Submit a masking job for background processing and receive a tracking ID to poll for results.
 ---
-
 Submits a masking request for background processing. The request accepts the same payload structure as the synchronous Mask API but returns a `tracking_id` instead of results.
 
 ## Endpoint
 
-| Method | URL |
-|--------|-----|
-| PUT | `https://protecto-trial.protecto.ai/api/vault/mask/async` |
+| Method | URL                    |
+| ------ | ---------------------- |
+| PUT    | `{baseurl}/mask/async` |
 
 ## Request body
 
 The request body uses the same structure as the synchronous [Mask API](/masking-apis/overview). You can use token-based, format-based, or auto-detect masking.
 
-<ParamField body="mask" param-type="array" required="true">
+<ParamField body="mask" param-type="array" required="true" deprecated="false">
   List of values to mask. Same structure as the synchronous mask endpoint.
 </ParamField>
 
 ## Example
 
-<Request tabs="cURL,Python">
+<Request show-lines="true" tabs="JSON,cURL,Python">
+  ```json
+  {
+    "mask": [
+      {
+        "value": "https://platform.openai.com/playground/chat?models=gpt-4o",
+        "format": "URL",
+        "token_name": "Text Token"
+      },
+      {
+        "value": "(408)- 426 - 9989",
+        "format": "Phone Number",
+        "token_name": "Numeric Token"
+      }
+    ]
+  }
+  ```
+
   ```bash
   curl -X PUT https://protecto-trial.protecto.ai/api/vault/mask/async \
     -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
@@ -62,7 +78,7 @@ The request body uses the same structure as the synchronous [Mask API](/masking-
   ```
 </Request>
 
-<Response tabs="202">
+<Response show-lines="true" tabs={[]}>
   ```json
   {
     "data": [
@@ -81,10 +97,10 @@ The request body uses the same structure as the synchronous [Mask API](/masking-
 
 Use the `tracking_id` to poll the [Async Status](/async-apis/async-status) endpoint until the job reaches a terminal state.
 
-<Callout kind="info">
+<Callout kind="info" collapsed="false">
   The submit response does **not** include results. You must poll the status endpoint with the `tracking_id` to retrieve the masked output.
 </Callout>
 
-<Callout kind="alert">
+<Callout kind="alert" collapsed="false">
   Payload validation errors may only surface as a `FAILED` status in the status response — not at submission time.
 </Callout>
