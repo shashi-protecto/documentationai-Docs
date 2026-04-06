@@ -31,7 +31,18 @@ To get the Authkey please contact help@protecto.ai
 
 ## Example
 
-<Request tabs="cURL,Python">
+<Request tabs="JSON,cURL,Python">
+  ```json
+  {
+    "policy_name": "Anonymization-policy-1",
+    "unmask": [
+      {
+        "token_value": "<PER>hSw8kAEB10 ITItAd8FsN</PER> lives in <ADDRESS>748785848000</ADDRESS>"
+      }
+    ]
+  }
+  ```
+
   ```bash
   curl -X PUT https://protecto-trial.protecto.ai/api/vault/unmask \
     -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
