@@ -21,7 +21,27 @@ Updates the prefix and suffix used when auto-detect masking finds an entity. Thi
   Array of entity prefix/suffix configurations.
 </ParamField>
 
-<Request tabs="cURL">
+<Request tabs="JSON,cURL">
+```json
+{
+  "data": {
+    "policy_name": "custom-format-policy",
+    "metadata": [
+      {
+        "entity_name": "PERSON",
+        "format_prefix": "{Person ",
+        "format_suffix": "}"
+      },
+      {
+        "entity_name": "PHONE_NUMBER",
+        "format_prefix": "{Phone ",
+        "format_suffix": "}"
+      }
+    ]
+  }
+}
+```
+
 ```bash
 curl -X PUT https://<domain>/api/vault/metadata/update-auto-detect \
   -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>" \
