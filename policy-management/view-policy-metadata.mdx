@@ -21,7 +21,11 @@ Retrieves entity-level metadata for a specific policy, showing which entities ar
   Pagination token for large result sets.
 </ParamField>
 
-<Request tabs="cURL">
+<Request tabs="JSON,cURL">
+```json
+{}
+```
+
 ```bash
 curl -X GET "https://<domain>/api/vault/metadata/personal-data-entities/list?policy_name=customer-support-policy" \
   -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>"
