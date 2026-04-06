@@ -22,7 +22,15 @@ Creates a new policy in the namespace with default metadata. After creation, upd
   Unique policy name within the namespace.
 </ParamField>
 
-<Request show-lines="true" tabs={[]}>
+<Request show-lines="true" tabs="JSON,cURL">
+  ```json
+  {
+    "data": {
+      "policy_name": "customer-support-policy"
+    }
+  }
+  ```
+
   ```bash
   curl -X PUT https://<domain>/api/vault/metadata/policy/create \
     -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>" \
@@ -56,4 +64,3 @@ Creates a new policy in the namespace with default metadata. After creation, upd
 - All supported entities default to **pseudonymizable** upon creation
 
 - Use `policy_name` in Mask and Unmask API calls to apply this policy
-
