@@ -1,29 +1,38 @@
 ---
-title: "Async Status Tracking"
-description: "Poll the status of an async mask or unmask job using a tracking ID, and retrieve results when the job completes."
+title: Async Status Tracking
+description: >-
+  Poll the status of an async mask or unmask job using a tracking ID, and
+  retrieve results when the job completes.
 ---
-
 Fetches the current status of an async job and returns the original input payload, final output (when ready), timestamps, and error details when applicable.
 
 ## Endpoint
 
-| Method | URL |
-|--------|-----|
-| PUT | `https://protecto-trial.protecto.ai/api/vault/async-status` |
+| Method | URL                      |
+| ------ | ------------------------ |
+| PUT    | `{baseurl}/async-status` |
 
 ## Request body
 
-<ParamField body="status" param-type="array" required="true">
+<ParamField body="status" param-type="array" required="true" deprecated="false">
   List of tracking IDs to check status for.
 </ParamField>
 
-<ParamField body="status[].tracking_id" param-type="string" required="true">
+<ParamField body="status[].tracking_id" param-type="string" required="true" deprecated="false">
   The tracking ID returned by the async submit endpoint.
 </ParamField>
 
 ## Example
 
-<Request tabs="cURL,Python">
+<Request show-lines="true" tabs="JSON,cURL,Python">
+  ```json
+  {
+    "status": [
+      { "tracking_id": "747027ff-5ce7-4780-8cca-000f908edae721052025073644" }
+    ]
+  }
+  ```
+
   ```bash
   curl -X PUT https://protecto-trial.protecto.ai/api/vault/async-status \
     -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
@@ -151,30 +160,30 @@ Fetches the current status of an async job and returns the original input payloa
 
 ## Response fields
 
-<ResponseField name="tracking_id" field-type="string" required="true">
+<ResponseField name="tracking_id" field-type="string" required="true" deprecated="false">
   The job identifier.
 </ResponseField>
 
-<ResponseField name="call_type" field-type="string" required="true">
+<ResponseField name="call_type" field-type="string" required="true" deprecated="false">
   Either `mask` or `unmask`.
 </ResponseField>
 
-<ResponseField name="status" field-type="string" required="true">
+<ResponseField name="status" field-type="string" required="true" deprecated="false">
   Current job state: `PENDING`, `IN-PROGRESS`, `SUCCESS`, `FAILED`, or `PURGED`.
 </ResponseField>
 
-<ResponseField name="result" field-type="array" required="false">
+<ResponseField name="result" field-type="array" required="false" deprecated="false">
   The masking or unmasking output. Only present when `status` is `SUCCESS`.
 </ResponseField>
 
-<ResponseField name="error_msg" field-type="string" required="false">
+<ResponseField name="error_msg" field-type="string" required="false" deprecated="false">
   Error description. Only present when `status` is `FAILED`.
 </ResponseField>
 
-<ResponseField name="submitted_time" field-type="string" required="true">
+<ResponseField name="submitted_time" field-type="string" required="true" deprecated="false">
   Timestamp when the job was submitted.
 </ResponseField>
 
-<ResponseField name="completed_time" field-type="string" required="false">
+<ResponseField name="completed_time" field-type="string" required="false" deprecated="false">
   Timestamp when the job finished. `"None"` if still in progress.
 </ResponseField>
