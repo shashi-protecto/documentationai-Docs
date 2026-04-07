@@ -21,7 +21,17 @@ This endpoint identifies occurrences of a **custom PII tag** inside one or more 
   Name of the custom tag to detect (e.g., `"CUSTOMER_ID"`).
 </ParamField>
 
-<Request tabs="cURL">
+<Request tabs="JSON,cURL">
+```json
+{
+  "input_texts": [
+    "Customer ID 56789 placed an order",
+    "Customer ID 98765 updated profile"
+  ],
+  "tag_type": "CUSTOMER_ID"
+}
+```
+
 ```bash
 curl -X PUT https://<domain>/api/vault/pii-identification/custom \
   -H "Authorization: Bearer <AUTH_TOKEN>" \

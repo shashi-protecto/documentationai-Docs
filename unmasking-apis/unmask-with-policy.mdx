@@ -1,37 +1,36 @@
 ---
-title: "Unmask with Policy"
-description: "Apply a named policy during unmasking to control re-identification behavior and enforce governance rules."
+title: Unmask with Policy
+description: >-
+  Apply a named policy during unmasking to control re-identification behavior
+  and enforce governance rules.
 ---
-
 Include `policy_name` in the unmask request to apply a specific policy's metadata during unmasking. This is used in governance-controlled workflows where re-identification must follow defined rules.
 
 ## Endpoint details
 
 METHOD: PUT
 
-| Method | Route | Headers |
-|--------|-------|---------|
-| PUT | `/api/vault/unmask` | `Authorization: Bearer YOUR_AUTH_TOKEN` |
+| Method | Route               | Headers                                 |
+| ------ | ------------------- | --------------------------------------- |
+| PUT    | `/api/vault/unmask` | `Authorization: Bearer YOUR_AUTH_TOKEN` |
 
-To get the Authkey please contact help@protecto.ai
+To get the Authkey please contact [help@protecto.ai](mailto:help@protecto.ai)
 
 ## Request body
 
-<ParamField body="policy_name" param-type="string" required="false">
+<ParamField body="policy_name" param-type="string" required="false" deprecated="false">
   The name of the policy to apply during unmasking. If omitted, the default namespace policy applies.
 </ParamField>
 
-<ParamField body="unmask" param-type="array" required="true">
+<ParamField body="unmask" param-type="array" required="true" deprecated="false">
   List of tokenized values to unmask.
 </ParamField>
 
-<ParamField body="unmask[].token_value" param-type="string" required="true">
+<ParamField body="unmask[].token_value" param-type="string" required="true" deprecated="false">
   The tokenized text to unmask.
 </ParamField>
 
-## Example
-
-<Request tabs="JSON,cURL,Python">
+<Request show-lines="true" tabs={[]}>
   ```json
   {
     "policy_name": "Anonymization-policy-1",
@@ -76,7 +75,7 @@ To get the Authkey please contact help@protecto.ai
   ```
 </Request>
 
-<Response tabs="200">
+<Response show-lines="true" tabs={[]}>
   ```json
   {
     "data": [
@@ -104,5 +103,8 @@ To get the Authkey please contact help@protecto.ai
 ## Notes
 
 - `policy_name` is **optional**. If provided, unmasking uses that policy's metadata and permission rules. If omitted, the default namespace policy applies.
+
 - The policy must exist in your namespace. A missing policy name results in an authorization error.
+
 - See [Policies](/core-concepts/policies) for a conceptual overview of how policies govern unmasking behavior.
+

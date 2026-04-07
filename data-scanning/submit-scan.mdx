@@ -31,7 +31,26 @@ Submits a data scan request for one or more objects. The scan runs asynchronousl
   Sample values to improve ML detection accuracy. Each element requires `column_name` and `samples`.
 </ParamField>
 
-<Request tabs="cURL">
+<Request tabs="JSON,cURL">
+```json
+[
+  {
+    "data_source_name": "salesforce",
+    "object_name": ["CustomerDB", "MarketingSchema", "CustomersTable"],
+    "data_samples": [
+      {
+        "column_name": "CustomerID",
+        "samples": ["CID32", "CID34", "CID56", "CID58"]
+      },
+      {
+        "column_name": "email",
+        "samples": ["John@gmail.com", "Williams.hary@yahoo.com"]
+      }
+    ]
+  }
+]
+```
+
 ```bash
 curl -X PUT https://<domain>/api/vault/data-scan/data-scan-async \
   -H "Authorization: Bearer <AUTH_TOKEN>" \

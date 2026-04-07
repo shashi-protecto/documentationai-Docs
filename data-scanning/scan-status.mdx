@@ -15,7 +15,13 @@ Checks the execution status of one or more submitted scans.
 
 An array of tracking IDs returned from the [Submit Data Scan](/data-scanning/submit-scan) endpoint.
 
-<Request tabs="cURL">
+<Request tabs="JSON,cURL">
+```json
+[
+  "354d2d30-178a-4220-9ce5-97908aa5713015052025072328"
+]
+```
+
 ```bash
 curl -X PUT https://<domain>/api/vault/data-scan/status \
   -H "Authorization: Bearer <AUTH_TOKEN>" \

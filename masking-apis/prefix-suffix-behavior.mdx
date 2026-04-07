@@ -4,7 +4,6 @@ description: >-
   How Protecto wraps masked values in entity tags, and how to customize prefix
   and suffix strings through policy metadata.
 ---
-
 ## What prefixes and suffixes are
 
 For auto-detect masking, each detected entity is wrapped with a **prefix** and **suffix** that indicate the entity type.
@@ -40,118 +39,114 @@ Prefixes and suffixes are defined in **policy metadata**. To apply custom wrappe
 
 <Callout kind="alert" collapsed="false">
   This endpoint is available only in subscribed (production) environments. It is not available on the trial.
+
+  ##
 </Callout>
 
-## Example
-
-<Request show-lines="true" default-tab="0" tabs={["JSON", "cURL", "Python"]}>
-
-```json
-{
-  "policy_name": "Add Prefix Suffix Policy",
-  "mask": [
-    {
-      "value": "Sarah Johnson recently moved to 456 Elm Avenue, Boston, and you can reach her at (555) 987-6543"
-    }
-  ]
-}
-```
-
-```bash
-curl -X PUT "{baseurl}/api/vault/mask" \
-  -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
+<Request show-lines="true" tabs={[]}>
+  ```json
+  {
     "policy_name": "Add Prefix Suffix Policy",
     "mask": [
       {
         "value": "Sarah Johnson recently moved to 456 Elm Avenue, Boston, and you can reach her at (555) 987-6543"
       }
     ]
-  }'
-```
+  }
+  ```
 
-```python
-import requests
-
-url = "{baseurl}/api/vault/mask"
-
-headers = {
-    "Authorization": "Bearer YOUR_AUTH_TOKEN",
-    "Content-Type": "application/json",
-}
-
-payload = {
-    "policy_name": "Add Prefix Suffix Policy",
-    "mask": [
+  ```bash
+  curl -X PUT "{baseurl}/api/vault/mask" \
+    -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "policy_name": "Add Prefix Suffix Policy",
+      "mask": [
         {
-            "value": "Sarah Johnson recently moved to 456 Elm Avenue, Boston, and you can reach her at (555) 987-6543"
-        }
-    ],
-}
-
-response = requests.put(url, json=payload, headers=headers)
-
-print(response.status_code)
-print(response.json())
-```
-
-</Request>
-
-<Response show-lines="true" tabs="200">
-
-```json
-{
-  "data": [
-    {
-      "value": "Sarah Johnson recently moved to 456 Elm Avenue, Boston, and you can reach her at (555) 987-6543",
-      "token_value": "{Person Name cn1AU PevBCff} recently moved to <ADDRESS>YwvEh WZIN6 nES7LM, y8Tdm5</ADDRESS>, and you can reach her at {Personal PhoneNumber (14720) 09570-47785}",
-      "toxicity_analysis": {
-        "toxicity": 0.0006517292349599302,
-        "severe_toxicity": 0.00011591568909352645,
-        "obscene": 0.00017911863687913865,
-        "threat": 0.00012024409079458565,
-        "insult": 0.00017571910575497895,
-        "identity_attack": 0.00013655266957357526
-      },
-      "individual_tokens": [
-        {
-          "value": "Sarah Johnson",
-          "pii_type": "PERSON",
-          "token": "cn1AU PevBCff",
-          "prefix": "{Person Name ",
-          "suffix": "}",
-          "start_pos": 0,
-          "end_pos": 13
-        },
-        {
-          "value": "456 Elm Avenue, Boston",
-          "pii_type": "ADDRESS",
-          "token": "YwvEh WZIN6 nES7LM, y8Tdm5",
-          "prefix": "<ADDRESS>",
-          "suffix": "</ADDRESS>",
-          "start_pos": 32,
-          "end_pos": 54
-        },
-        {
-          "value": "(555) 987-6543",
-          "pii_type": "PHONE_NUMBER",
-          "token": "(14720) 09570-47785",
-          "prefix": "{Personal PhoneNumber ",
-          "suffix": "}",
-          "start_pos": 81,
-          "end_pos": 95
+          "value": "Sarah Johnson recently moved to 456 Elm Avenue, Boston, and you can reach her at (555) 987-6543"
         }
       ]
-    }
-  ],
-  "success": true,
-  "error": {
-    "message": ""
-  }
-}
-```
+    }'
+  ```
 
+  ```python
+  import requests
+
+  url = "{baseurl}/api/vault/mask"
+
+  headers = {
+      "Authorization": "Bearer YOUR_AUTH_TOKEN",
+      "Content-Type": "application/json",
+  }
+
+  payload = {
+      "policy_name": "Add Prefix Suffix Policy",
+      "mask": [
+          {
+              "value": "Sarah Johnson recently moved to 456 Elm Avenue, Boston, and you can reach her at (555) 987-6543"
+          }
+      ],
+  }
+
+  response = requests.put(url, json=payload, headers=headers)
+
+  print(response.status_code)
+  print(response.json())
+  ```
+</Request>
+
+<Response show-lines="true" tabs={[]}>
+  ```json
+  {
+    "data": [
+      {
+        "value": "Sarah Johnson recently moved to 456 Elm Avenue, Boston, and you can reach her at (555) 987-6543",
+        "token_value": "{Person Name cn1AU PevBCff} recently moved to <ADDRESS>YwvEh WZIN6 nES7LM, y8Tdm5</ADDRESS>, and you can reach her at {Personal PhoneNumber (14720) 09570-47785}",
+        "toxicity_analysis": {
+          "toxicity": 0.0006517292349599302,
+          "severe_toxicity": 0.00011591568909352645,
+          "obscene": 0.00017911863687913865,
+          "threat": 0.00012024409079458565,
+          "insult": 0.00017571910575497895,
+          "identity_attack": 0.00013655266957357526
+        },
+        "individual_tokens": [
+          {
+            "value": "Sarah Johnson",
+            "pii_type": "PERSON",
+            "token": "cn1AU PevBCff",
+            "prefix": "{Person Name ",
+            "suffix": "}",
+            "start_pos": 0,
+            "end_pos": 13
+          },
+          {
+            "value": "456 Elm Avenue, Boston",
+            "pii_type": "ADDRESS",
+            "token": "YwvEh WZIN6 nES7LM, y8Tdm5",
+            "prefix": "<ADDRESS>",
+            "suffix": "</ADDRESS>",
+            "start_pos": 32,
+            "end_pos": 54
+          },
+          {
+            "value": "(555) 987-6543",
+            "pii_type": "PHONE_NUMBER",
+            "token": "(14720) 09570-47785",
+            "prefix": "{Personal PhoneNumber ",
+            "suffix": "}",
+            "start_pos": 81,
+            "end_pos": 95
+          }
+        ]
+      }
+    ],
+    "success": true,
+    "error": {
+      "message": ""
+    }
+  }
+  ```
 </Response>
 
 ## Important implications
@@ -167,3 +162,4 @@ print(response.json())
 <Callout kind="tip" collapsed="false">
   If multiple teams consume masked output, coordinate prefix/suffix changes carefully. Consider maintaining a stable default policy while testing changes on a non-production policy.
 </Callout>
+

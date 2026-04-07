@@ -22,9 +22,7 @@ Fetches the current status of an async job and returns the original input payloa
   The tracking ID returned by the async submit endpoint.
 </ParamField>
 
-## Example
-
-<Request show-lines="true" tabs="JSON,cURL,Python">
+<Request show-lines="true" tabs={[]}>
   ```json
   {
     "status": [
@@ -187,3 +185,4 @@ Fetches the current status of an async job and returns the original input payloa
 <ResponseField name="completed_time" field-type="string" required="false" deprecated="false">
   Timestamp when the job finished. `"None"` if still in progress.
 </ResponseField>
+

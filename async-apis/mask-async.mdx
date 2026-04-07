@@ -1,6 +1,8 @@
 ---
 title: Mask Async
-description: Submit a masking job for background processing and receive a tracking ID to poll for results.
+description: >-
+  Submit a masking job for background processing and receive a tracking ID to
+  poll for results.
 ---
 Submits a masking request for background processing. The request accepts the same payload structure as the synchronous Mask API but returns a `tracking_id` instead of results.
 
@@ -16,11 +18,11 @@ The request body uses the same structure as the synchronous [Mask API](/masking-
 
 <ParamField body="mask" param-type="array" required="true" deprecated="false">
   List of values to mask. Same structure as the synchronous mask endpoint.
+
+  ##
 </ParamField>
 
-## Example
-
-<Request show-lines="true" tabs="JSON,cURL,Python">
+<Request show-lines="true" tabs={[]}>
   ```json
   {
     "mask": [
@@ -104,3 +106,4 @@ Use the `tracking_id` to poll the [Async Status](/async-apis/async-status) endpo
 <Callout kind="alert" collapsed="false">
   Payload validation errors may only surface as a `FAILED` status in the status response — not at submission time.
 </Callout>
+

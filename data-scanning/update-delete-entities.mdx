@@ -15,7 +15,16 @@ Manually overrides detected PII for a specific column.
 |--------|----------|
 | `PUT` | `https://<domain>/api/vault/data-scan/pi-elements/update` |
 
-<Request tabs="cURL">
+<Request tabs="JSON,cURL">
+```json
+{
+  "data_source_name": "salesforce",
+  "object_name": ["CustomerData", "PublicSchema", "CustomerInfoTable"],
+  "column_name": "Address",
+  "pi_details": ["PHONE_NUMBER", "EMAIL_ADDRESS"]
+}
+```
+
 ```bash
 curl -X PUT https://<domain>/api/vault/data-scan/pi-elements/update \
   -H "Authorization: Bearer <AUTH_TOKEN>" \
@@ -39,7 +48,15 @@ Removes previously defined manual overrides for a column, reverting it to ML-onl
 |--------|----------|
 | `PUT` | `https://<domain>/api/vault/data-scan/pi-elements/delete` |
 
-<Request tabs="cURL">
+<Request tabs="JSON,cURL">
+```json
+{
+  "data_source_name": "salesforce",
+  "object_name": ["CustomerDB", "MarketingSchema", "CustomersTable"],
+  "column_name": "CustomerID"
+}
+```
+
 ```bash
 curl -X PUT https://<domain>/api/vault/data-scan/pi-elements/delete \
   -H "Authorization: Bearer <AUTH_TOKEN>" \

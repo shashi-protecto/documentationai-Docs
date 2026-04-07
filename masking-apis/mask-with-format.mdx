@@ -1,41 +1,40 @@
 ---
-title: "Mask with Format"
-description: "Mask sensitive values while preserving the structure of the original — such as phone number punctuation or email domain format."
+title: Mask with Format
+description: >-
+  Mask sensitive values while preserving the structure of the original — such as
+  phone number punctuation or email domain format.
 ---
-
 Use this when the **structure of the value must be preserved**, such as punctuation in phone numbers or domains in email addresses. The masked output will look like a valid value of the same type.
 
 ## Endpoint
 
-| Method | Route | Headers |
-|--------|-------|---------|
-| PUT | `/api/vault/mask` | `{"Authorization": "Bearer <AUTH_TOKEN>"}` |
+| Method | Route             | Headers                                    |
+| ------ | ----------------- | ------------------------------------------ |
+| PUT    | `/api/vault/mask` | `{"Authorization": "Bearer <AUTH_TOKEN>"}` |
 
-<Callout kind="info">
-  To get the Authkey please contact help@protecto.ai
+<Callout kind="info" collapsed="false">
+  To get the Authkey please contact [help@protecto.ai](mailto:help@protecto.ai)
 </Callout>
 
 ## Request body
 
-<ParamField body="mask" param-type="array" required="true">
+<ParamField body="mask" param-type="array" required="true" deprecated="false">
   List of values to mask with format preservation.
 </ParamField>
 
-<ParamField body="mask[].value" param-type="string" required="true">
+<ParamField body="mask[].value" param-type="string" required="true" deprecated="false">
   The raw sensitive value to mask.
 </ParamField>
 
-<ParamField body="mask[].format" param-type="string" required="true">
+<ParamField body="mask[].format" param-type="string" required="true" deprecated="false">
   The format to apply. Must be a supported format name (e.g., `Phone Number`, `Email Address`, `URL`). See [Supported Formats](/supported-data-types/formats) for the full list.
 </ParamField>
 
-<ParamField body="mask[].token_name" param-type="string" required="true">
+<ParamField body="mask[].token_name" param-type="string" required="true" deprecated="false">
   The token type to use alongside the format.
 </ParamField>
 
-## Example
-
-<Request show-lines="true" default-tab="0" tabs={["JSON", "cURL", "Python"]}>
+<Request show-lines="true" tabs={[]}>
   ```json
   {
     "mask": [
@@ -92,7 +91,7 @@ Use this when the **structure of the value must be preserved**, such as punctuat
   ```
 </Request>
 
-<Response tabs="200">
+<Response show-lines="true" tabs={[]}>
   ```json
   {
     "data": [
@@ -118,6 +117,10 @@ Use this when the **structure of the value must be preserved**, such as punctuat
 ## Notes
 
 - Format names are **case- and spelling-sensitive**. An invalid name returns a `format name not defined` error.
+
 - Format-masked output preserves the structure (length, character pattern, separators) but not the content.
+
 - See [Supported Formats](/supported-data-types/formats) for all valid format names.
+
 - See [Errors & Limits](/masking-apis/errors-limits) for the full list of error responses.
+

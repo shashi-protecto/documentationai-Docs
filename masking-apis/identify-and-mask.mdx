@@ -28,9 +28,7 @@ Use this for **free-form text** where entity types are unknown in advance. Prote
 
 </ParamField>
 
-**Example**
-
-<Request show-lines="true" default-tab="0" tabs={["JSON", "cURL", "Python"]}>
+<Request show-lines="true" tabs={[]}>
   ```json
   {
   "mask": [
@@ -72,9 +70,9 @@ Use this for **free-form text** where entity types are unknown in advance. Prote
   ```
 </Request>
 
-<Response show-lines="true" tabs="200">
+<Response show-lines="true" tabs={[]}>
   ```json
-{
+  {
     "data": [
         {
             "value": "John Doe, residing at 123 Maple Street, Apt 456, Springfield, owns a device with MAC address 00:1A:2B:3C:4D:5E, works at Acme Corp, and frequently visits https://www.example.com.",
@@ -157,7 +155,7 @@ Use this for **free-form text** where entity types are unknown in advance. Prote
     "error": {
         "message": ""
     }
-}
+  }
   ```
 </Response>
 
@@ -213,3 +211,4 @@ Use this for **free-form text** where entity types are unknown in advance. Prote
 - The exact tokenized output depends on the active policy.
 
 - This mode is available on the **trial** environment.
+

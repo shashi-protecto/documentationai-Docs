@@ -10,11 +10,11 @@ Use this to unmask **tokenized free-form text** typically produced by auto-detec
 
 METHOD: PUT
 
-| Method | Route               | Headers                              |
-|--------|---------------------|--------------------------------------|
+| Method | Route               | Headers                                 |
+| ------ | ------------------- | --------------------------------------- |
 | PUT    | `/api/vault/unmask` | `Authorization: Bearer YOUR_AUTH_TOKEN` |
 
-To get the Authkey please contact help@protecto.ai
+To get the Authkey please contact [help@protecto.ai](mailto:help@protecto.ai)
 
 ## Request body
 
@@ -24,9 +24,9 @@ To get the Authkey please contact help@protecto.ai
 
 <ParamField body="unmask[].token_value" param-type="string" required="true" deprecated="false">
   Tokenized text containing one or more embedded entity tokens (e.g., `<PERSON>VJYe 03W</PERSON>`). The API resolves all tokens automatically — `token_name` is not required.
-</ParamField>
 
-## Example
+  ##
+</ParamField>
 
 <Request show-lines="true" tabs={[]}>
   ```bash
@@ -132,3 +132,4 @@ To get the Authkey please contact help@protecto.ai
 - Use unmasking only when strictly required by the workflow
 
 - Ensure compliance with applicable data protection regulations before unmasking
+

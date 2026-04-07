@@ -1,45 +1,44 @@
 ---
-title: "Mask with Attributes"
-description: "Attach custom metadata key-value pairs to masked values for downstream tracking, auditing, or contextual reference."
+title: Mask with Attributes
+description: >-
+  Attach custom metadata key-value pairs to masked values for downstream
+  tracking, auditing, or contextual reference.
 ---
-
 Attributes allow you to attach custom metadata to masked values. This is useful for associating contextual information — such as a page number, record ID, or source system — with each masked value.
 
 ## Endpoint
 
-| Method | Route | Headers |
-|--------|-------|---------|
-| PUT | `/api/vault/mask` | `{"Authorization": "Bearer <AUTH_TOKEN>"}` |
+| Method | Route             | Headers                                    |
+| ------ | ----------------- | ------------------------------------------ |
+| PUT    | `/api/vault/mask` | `{"Authorization": "Bearer <AUTH_TOKEN>"}` |
 
-<Callout kind="info">
-  To get the Authkey please contact help@protecto.ai
+<Callout kind="info" collapsed="false">
+  To get the Authkey please contact [help@protecto.ai](mailto:help@protecto.ai)
 </Callout>
 
 ## Request body
 
-<ParamField body="mask" param-type="array" required="true">
+<ParamField body="mask" param-type="array" required="true" deprecated="false">
   List of values to mask.
 </ParamField>
 
-<ParamField body="mask[].value" param-type="string" required="true">
+<ParamField body="mask[].value" param-type="string" required="true" deprecated="false">
   The raw sensitive value to mask.
 </ParamField>
 
-<ParamField body="mask[].format" param-type="string" required="false">
+<ParamField body="mask[].format" param-type="string" required="false" deprecated="false">
   The format to apply for structure-preserving masking.
 </ParamField>
 
-<ParamField body="mask[].token_name" param-type="string" required="false">
+<ParamField body="mask[].token_name" param-type="string" required="false" deprecated="false">
   The token type to use.
 </ParamField>
 
-<ParamField body="mask[].attributes" param-type="object" required="false">
+<ParamField body="mask[].attributes" param-type="object" required="false" deprecated="false">
   Arbitrary key-value metadata to attach to the masked value.
 </ParamField>
 
-## Example
-
-<Request show-lines="true" default-tab="0" tabs={["JSON", "cURL", "Python"]}>
+<Request show-lines="true" tabs={[]}>
   ```json
   {
     "mask": [
@@ -96,8 +95,7 @@ Attributes allow you to attach custom metadata to masked values. This is useful 
   ```
 </Request>
 
-<Response show-lines="true" tabs="200">
-
+<Response show-lines="true" tabs={[]}>
   ```json
   {
     "data": [
@@ -117,11 +115,13 @@ Attributes allow you to attach custom metadata to masked values. This is useful 
     }
   }
   ```
-
 </Response>
 
 ## Notes
 
 - `attributes` is an **object** with string keys and string values.
+
 - Attributes are stored alongside the token and can be used for downstream reference or auditing.
+
 - Attributes do not affect the masking output — they are metadata only.
+
