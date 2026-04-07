@@ -1,41 +1,50 @@
 ---
-title: "Fetch Token Details"
-description: "Retrieve metadata for a specific namespace user token — permissions, validity dates, and namespace."
+title: Fetch Token Details
+description: >-
+  Retrieve metadata for a specific namespace user token — permissions, validity
+  dates, and namespace.
 ---
-
 Retrieves metadata for a specific user token within a namespace.
 
 ## Endpoint
 
-| Method | Endpoint |
-|--------|----------|
-| `PUT` | `https://<domain>/api/vault/super-admin/namespace/auth-token/fetch` |
+| Method | Endpoint                                                            |
+| ------ | ------------------------------------------------------------------- |
+| `PUT`  | `https://<domain>/api/vault/super-admin/namespace/auth-token/fetch` |
 
-<Request tabs="cURL">
-```bash
-curl -X PUT https://<domain>/api/vault/super-admin/namespace/auth-token/fetch \
-  -H "Authorization: Bearer <MASTER_API_KEY>" \
-  -H "Content-Type: application/json; charset=utf-8" \
-  -d '{
+<Request show-lines="true" tabs={[]}>
+  ```json
+  {
     "namespace_name": "customer_ns_1",
     "_id": "alice@company.com"
-  }'
-```
+  }
+  ```
+
+  ```bash
+  curl -X PUT https://<domain>/api/vault/super-admin/namespace/auth-token/fetch \
+    -H "Authorization: Bearer <MASTER_API_KEY>" \
+    -H "Content-Type: application/json; charset=utf-8" \
+    -d '{
+      "namespace_name": "customer_ns_1",
+      "_id": "alice@company.com"
+    }'
+  ```
 </Request>
 
-<Response tabs="200">
-```json
-{
-  "data": {
-    "auth_token": "<TOKEN>",
-    "namespace": "customer_ns_1",
-    "_id": "alice@company.com",
-    "permissions": ["mask", "unmask"],
-    "start_date": "2024-07-11",
-    "end_date": "2025-07-10"
-  },
-  "success": true,
-  "error": { "message": "" }
-}
-```
+<Response show-lines="true" tabs={[]}>
+  ```json
+  {
+    "data": {
+      "auth_token": "<TOKEN>",
+      "namespace": "customer_ns_1",
+      "_id": "alice@company.com",
+      "permissions": ["mask", "unmask"],
+      "start_date": "2024-07-11",
+      "end_date": "2029-07-10"
+    },
+    "success": true,
+    "error": { "message": "" }
+  }
+  ```
 </Response>
+

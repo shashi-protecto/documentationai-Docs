@@ -1,84 +1,100 @@
 ---
-title: "Create Namespace User Token"
-description: "Create an authentication token for a user within a namespace. If the namespace does not exist, it is created asynchronously."
+title: Create Namespace User Token
+description: >-
+  Create an authentication token for a user within a namespace. If the namespace
+  does not exist, it is created asynchronously.
 ---
-
 Creates an authentication token for a user within a specific namespace. If the namespace does not already exist, it is created asynchronously.
 
 ## Endpoint
 
-| Method | Endpoint |
-|--------|----------|
-| `PUT` | `https://<domain>/api/vault/super-admin/namespace/auth-token/generate` |
+| Method | Endpoint                                                               |
+| ------ | ---------------------------------------------------------------------- |
+| `PUT`  | `https://<domain>/api/vault/super-admin/namespace/auth-token/generate` |
 
 ## Request body
 
-<ParamField body="namespace_name" param-type="string" required="true">
+<ParamField body="namespace_name" param-type="string" required="true" deprecated="false">
   Target namespace. Created automatically if it does not exist.
 </ParamField>
 
-<ParamField body="_id" param-type="string" required="true">
+<ParamField body="_id" param-type="string" required="true" deprecated="false">
   User ID or email to associate with the token.
 </ParamField>
 
-<ParamField body="permissions" param-type="array[string]" required="true">
+<ParamField body="permissions" param-type="array[string]" required="true" deprecated="false">
   Allowed actions. Values: `mask`, `unmask`, `metadata_change`.
 </ParamField>
 
-<ParamField body="start_date" param-type="string" required="false">
+<ParamField body="start_date" param-type="string" required="false" deprecated="false">
   Token validity start date. Format: `YYYY-MM-DD`.
 </ParamField>
 
-<ParamField body="end_date" param-type="string" required="false">
+<ParamField body="end_date" param-type="string" required="false" deprecated="false">
   Token validity end date. Format: `YYYY-MM-DD`.
 </ParamField>
 
-<Request tabs="cURL">
-```bash
-curl -X PUT https://<domain>/api/vault/super-admin/namespace/auth-token/generate \
-  -H "Authorization: Bearer <MASTER_API_KEY>" \
-  -H "Content-Type: application/json; charset=utf-8" \
-  -d '{
+<Request show-lines="true" tabs={[]}>
+  ```json
+  {
     "data": {
       "namespace_name": "customer_ns_1",
       "_id": "alice@company.com",
       "permissions": ["mask", "unmask"],
       "start_date": "2024-07-11",
-      "end_date": "2025-07-10"
+      "end_date": "2029-07-10"
     }
-  }'
-```
+  }
+  ```
+
+  ```bash
+  curl -X PUT https://<domain>/api/vault/super-admin/namespace/auth-token/generate \
+    -H "Authorization: Bearer <MASTER_API_KEY>" \
+    -H "Content-Type: application/json; charset=utf-8" \
+    -d '{
+      "data": {
+        "namespace_name": "customer_ns_1",
+        "_id": "alice@company.com",
+        "permissions": ["mask", "unmask"],
+        "start_date": "2024-07-11",
+        "end_date": "2025-07-10"
+      }
+    }'
+  ```
 </Request>
 
-<Response tabs="200 (existing namespace),200 (new namespace)">
-```json
-{
-  "data": {
-    "auth_key": "<NAMESPACE_USER_AUTH_TOKEN>"
-  },
-  "success": true,
-  "error": { "message": "" }
-}
-```
+<Response show-lines="true" tabs={[]}>
+  ```json
+  {
+    "data": {
+      "auth_key": "<NAMESPACE_USER_AUTH_TOKEN>"
+    },
+    "success": true,
+    "error": { "message": "" }
+  }
+  ```
 
-```json
-{
-  "data": {
-    "auth_key": "<NAMESPACE_USER_AUTH_TOKEN>",
-    "namespace_creation": {
-      "tracking_id": "9f799cb6-5315-4199-8d47-3a7ced21dd1d",
-      "status": "PENDING",
-      "job_type": "namespace-creation"
-    }
-  },
-  "success": true,
-  "error": { "message": "" }
-}
-```
+  ```json
+  {
+    "data": {
+      "auth_key": "<NAMESPACE_USER_AUTH_TOKEN>",
+      "namespace_creation": {
+        "tracking_id": "9f799cb6-5315-4199-8d47-3a7ced21dd1d",
+        "status": "PENDING",
+        "job_type": "namespace-creation"
+      }
+    },
+    "success": true,
+    "error": { "message": "" }
+  }
+  ```
 </Response>
 
 ## Notes
 
 - `namespace_creation` is returned only when the namespace is newly created
+
 - Use the `tracking_id` with the [Track Namespace Jobs](/super-admin/track-namespace-jobs) API to confirm namespace creation completes
+
 - The auth token is valid between `start_date` and `end_date` if provided
+
