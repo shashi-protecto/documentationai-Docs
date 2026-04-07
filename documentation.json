@@ -227,6 +227,11 @@
                 "icon": "type"
               },
               {
+                "title": "Scan for Personal Data Entities",
+                "path": "masking-apis/pii-identification",
+                "icon": "search"
+              },
+              {
                 "title": "Identify and Mask (Auto-Detect)",
                 "path": "masking-apis/identify-and-mask",
                 "icon": "scan"
