@@ -705,7 +705,7 @@
                 "icon": "vault"
               },
               {
-                "title": "GPTGuard",
+                "title": "GPT Guard",
                 "path": "release-notes/gpt-guard",
                 "icon": "bot"
               },
