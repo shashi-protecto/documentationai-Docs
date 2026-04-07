@@ -1,0 +1,194 @@
+---
+title: Scan for Personal Data Entities
+description: >-
+  Identify personal data elements — names, email addresses, phone numbers, and
+  more — within free-form text without masking the original values.
+---
+Use this endpoint when you need to **locate and classify** PII in text without replacing or tokenizing it. The API returns each detected entity with its type and exact character positions in the original string.
+
+## Endpoint
+
+| Method | URL                                     |
+| ------ | --------------------------------------- |
+| PUT    | `https://<BASE_URL>/pii-identification` |
+
+## Authentication
+
+Include your auth token in the request header:
+
+```
+Authorization: Bearer <AUTH_TOKEN>
+```
+
+## Request body
+
+<ParamField body="data" param-type="array" required="true" deprecated="false">
+  List of text inputs to scan for personal data entities.
+</ParamField>
+
+<ParamField body="data[].value" param-type="string" required="true" deprecated="false">
+  Free-form text to analyze. Each entry is scanned independently.
+</ParamField>
+
+## Example
+
+<Request show-lines="true" tabs={[]}>
+  ```bash
+  curl -X PUT https://<BASE_URL>/pii-identification \
+    -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "data": [
+        {
+          "value": "John Doe, an American, can be reached via email at johndoe@example.com or phone at +1-123-456-7890; his portfolio is available at www.johndoeportfolio.com, and he resides at 123 Elm Street, Springfield, IL, USA."
+        },
+        {
+          "value": "Jane Smith, a British citizen, lives at 45 Baker Street, London, UK; she can be contacted at jane.smith@domain.com or on +44-20-7946-0958, with more details on her website www.janesmith.me."
+        },
+        {
+          "value": "An individual of international background maintains a professional presence online and can be reached through standard communication channels."
+        }
+      ]
+    }'
+  ```
+
+  ```python
+  import requests
+
+  response = requests.put(
+      "https://<BASE_URL>/pii-identification",
+      headers={
+          "Authorization": "Bearer YOUR_AUTH_TOKEN",
+          "Content-Type": "application/json"
+      },
+      json={
+          "data": [
+              {"value": "John Doe, an American, can be reached via email at johndoe@example.com or phone at +1-123-456-7890; his portfolio is available at www.johndoeportfolio.com, and he resides at 123 Elm Street, Springfield, IL, USA."},
+              {"value": "Jane Smith, a British citizen, lives at 45 Baker Street, London, UK; she can be contacted at jane.smith@domain.com or on +44-20-7946-0958, with more details on her website www.janesmith.me."},
+              {"value": "An individual of international background maintains a professional presence online and can be reached through standard communication channels."}
+          ]
+      }
+  )
+  ```
+
+  ```javascript
+  const response = await fetch("https://<BASE_URL>/pii-identification", {
+    method: "PUT",
+    headers: {
+      Authorization: "Bearer YOUR_AUTH_TOKEN",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      data: [
+        { value: "John Doe, an American, can be reached via email at johndoe@example.com or phone at +1-123-456-7890; his portfolio is available at www.johndoeportfolio.com, and he resides at 123 Elm Street, Springfield, IL, USA." },
+        { value: "Jane Smith, a British citizen, lives at 45 Baker Street, London, UK; she can be contacted at jane.smith@domain.com or on +44-20-7946-0958, with more details on her website www.janesmith.me." },
+        { value: "An individual of international background maintains a professional presence online and can be reached through standard communication channels." }
+      ],
+    }),
+  });
+  ```
+</Request>
+
+<Response show-lines="true" tabs={[]}>
+  ```json
+  {
+    "data": [
+      {
+        "value": "John Doe, an American, can be reached via email at johndoe@example.com or phone at +1-123-456-7890; his portfolio is available at www.johndoeportfolio.com, and he resides at 123 Elm Street, Springfield, IL, USA.",
+        "identified_entities": [
+          { "value": "John Doe", "pii_type": "PERSON", "start_pos": 0, "end_pos": 8 },
+          { "value": "American", "pii_type": "NATIONALITY", "start_pos": 13, "end_pos": 21 },
+          { "value": "johndoe@example.com", "pii_type": "EMAIL_ADDRESS", "start_pos": 51, "end_pos": 70 },
+          { "value": "+1-123-456-7890", "pii_type": "PHONE_NUMBER", "start_pos": 83, "end_pos": 98 },
+          { "value": "www.johndoeportfolio.com", "pii_type": "URL", "start_pos": 130, "end_pos": 154 },
+          { "value": "123 Elm Street", "pii_type": "ADDRESS", "start_pos": 174, "end_pos": 188 },
+          { "value": "Springfield", "pii_type": "ADDRESS", "start_pos": 190, "end_pos": 201 },
+          { "value": "IL", "pii_type": "ADDRESS", "start_pos": 203, "end_pos": 205 },
+          { "value": "USA.", "pii_type": "ADDRESS", "start_pos": 207, "end_pos": 211 }
+        ]
+      },
+      {
+        "value": "Jane Smith, a British citizen, lives at 45 Baker Street, London, UK; she can be contacted at jane.smith@domain.com or on +44-20-7946-0958, with more details on her website www.janesmith.me.",
+        "identified_entities": [
+          { "value": "Jane Smith", "pii_type": "PERSON", "start_pos": 0, "end_pos": 10 },
+          { "value": "British", "pii_type": "NATIONALITY", "start_pos": 14, "end_pos": 21 },
+          { "value": "45 Baker Street", "pii_type": "ADDRESS", "start_pos": 40, "end_pos": 55 },
+          { "value": "London", "pii_type": "ADDRESS", "start_pos": 57, "end_pos": 63 },
+          { "value": "UK", "pii_type": "ADDRESS", "start_pos": 65, "end_pos": 67 },
+          { "value": "jane.smith@domain.com", "pii_type": "EMAIL_ADDRESS", "start_pos": 93, "end_pos": 114 },
+          { "value": "+44-20-7946-0958", "pii_type": "PHONE_NUMBER", "start_pos": 121, "end_pos": 137 },
+          { "value": "www.janesmith.me", "pii_type": "URL", "start_pos": 172, "end_pos": 188 }
+        ]
+      },
+      {
+        "value": "An individual of international background maintains a professional presence online and can be reached through standard communication channels.",
+        "identified_entities": []
+      }
+    ],
+    "success": true,
+    "error": { "message": "" }
+  }
+  ```
+</Response>
+
+## Response fields
+
+<ResponseField name="data" field-type="array" required="true" deprecated="false">
+  One entry per input value, in the same order as the request.
+
+  <Expandable title="data[] fields" default-open="false">
+    <ResponseField name="value" field-type="string" required="true" deprecated="false">
+      The original input text, returned unchanged.
+    </ResponseField>
+
+    <ResponseField name="identified_entities" field-type="array" required="true" deprecated="false">
+      List of PII entities detected in this input. Empty array if no entities were found.
+
+      <Expandable title="identified_entities[] fields" default-open="false">
+        <ResponseField name="value" field-type="string" required="true" deprecated="false">
+          The exact substring identified as PII.
+        </ResponseField>
+
+        <ResponseField name="pii_type" field-type="string" required="true" deprecated="false">
+          The entity type. See the table below for supported types.
+        </ResponseField>
+
+        <ResponseField name="start_pos" field-type="integer" required="true" deprecated="false">
+          Zero-based character offset where the entity begins in the input string.
+        </ResponseField>
+
+        <ResponseField name="end_pos" field-type="integer" required="true" deprecated="false">
+          Zero-based character offset where the entity ends (exclusive) in the input string.
+        </ResponseField>
+      </Expandable>
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="success" field-type="boolean" required="true" deprecated="false">
+  `true` if the request was processed successfully.
+</ResponseField>
+
+<ResponseField name="error.message" field-type="string" required="false" deprecated="false">
+  Error description. Empty string on success.
+</ResponseField>
+
+## Supported PII types
+
+| `pii_type`      | Description                                               |
+| --------------- | --------------------------------------------------------- |
+| `PERSON`        | Full or partial personal names                            |
+| `EMAIL_ADDRESS` | Email addresses                                           |
+| `PHONE_NUMBER`  | Phone numbers in any international format                 |
+| `ADDRESS`       | Street addresses, cities, states, and country identifiers |
+| `NATIONALITY`   | Nationalities and demonyms                                |
+| `URL`           | Website URLs and domain names                             |
+
+## Notes
+
+- Input entries with no detectable PII return an empty `identified_entities` array — they are not omitted from the response.
+
+- `start_pos` and `end_pos` are zero-based character offsets into the original `value` string.
+
+- This endpoint identifies PII only — it does not mask or tokenize values. To mask identified entities, use the [Identify and Mask](./identify-and-mask) endpoint instead.
+
