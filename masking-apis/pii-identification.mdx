@@ -173,22 +173,11 @@ Authorization: Bearer <AUTH_TOKEN>
   Error description. Empty string on success.
 </ResponseField>
 
-## Supported PII types
-
-| `pii_type`      | Description                                               |
-| --------------- | --------------------------------------------------------- |
-| `PERSON`        | Full or partial personal names                            |
-| `EMAIL_ADDRESS` | Email addresses                                           |
-| `PHONE_NUMBER`  | Phone numbers in any international format                 |
-| `ADDRESS`       | Street addresses, cities, states, and country identifiers |
-| `NATIONALITY`   | Nationalities and demonyms                                |
-| `URL`           | Website URLs and domain names                             |
-
 ## Notes
 
 - Input entries with no detectable PII return an empty `identified_entities` array — they are not omitted from the response.
 
 - `start_pos` and `end_pos` are zero-based character offsets into the original `value` string.
 
-- This endpoint identifies PII only — it does not mask or tokenize values. To mask identified entities, use the [Identify and Mask](./identify-and-mask) endpoint instead.
+- This endpoint identifies only — it does not mask or tokenize values. To mask identified entities, use the [Identify and Mask](./identify-and-mask) endpoint instead.
 
