@@ -1,0 +1,188 @@
+---
+title: GPT Guard
+description: Release notes and version history for GPT Guard.
+---
+
+## GPT Guard release notes
+
+Review the latest GPT Guard Phase 3 changes so you can plan upgrades, validate new capabilities, and understand impact on your deployment.
+
+<Update label="April 2026 — GPT Guard" description="v8.0.4-prod" tags={["Major Release"]}>
+  ### GPT Guard Phase 3 Release Notes
+
+  #### Overview
+
+  GPT Guard Phase 3 expands enterprise readiness of  SharePoint-based context ingestion, enhanced observability for chat latency, new Gemini 3 and Nano Banana model options, and higher configurability in the chatbot UI.
+
+  ---
+
+  ### 1. SharePoint integration for contextual grounding
+
+  Connect SharePoint Online as a source so the chatbot can ground answers on bank-approved content.
+
+  **Key capabilities**
+
+  - **SharePoint Online only** for this release
+
+  - **Supported file types**: PDF, DOC, DOCX, JPG, PNG
+
+  - **Maximum file size**: 10 MB per file
+
+  - **Change handling**: ignores deletions and metadata-only changes; processes content updates only
+
+  - **Admin UI integration** with three new screens: Source Connectors, Source Folder Discovery, and Source Sync Monitoring
+
+  **Admin UI screens**
+
+  - **Source Connectors**
+
+    - Configure SharePoint Online connections
+
+    - Store and manage connector credentials
+
+    - Enable or disable specific connectors
+
+  - **Source Folder Discovery**
+
+    - Browse and select SharePoint sites, document libraries, and folders
+
+    - View folder-level metadata and item counts
+
+    - Control which folders participate in sync
+
+  - **Source Sync Monitoring**
+
+    - Track sync job status and history
+
+    - Review item-level ingest statistics and errors
+
+    - Trigger manual re-syncs when needed
+
+  **Key benefits**
+
+  - Keeps chatbot responses aligned with the latest internal SharePoint content
+
+  - Reduces manual upload effort by automatically ingesting approved documents
+
+  - Improves governance by separating connector setup, folder selection, and sync monitoring
+
+  **Notes**
+
+  - Support is limited to SharePoint Online; on-premises SharePoint is out of scope for this release.
+
+  - Deleting a file in SharePoint does not immediately remove it from the chatbot context; plan retention policies accordingly.
+
+  ---
+
+  ### 2. Health monitoring and observability for GPT Guard
+
+  Gain better visibility into GPT Guard performance, with a focus on chat latency.
+
+  **Key capabilities**
+
+  - **New Latency Statistics dashboard tab** in the GPT Guard monitoring view
+
+  - Displays the **current week’s average latency** for chat interactions
+
+  - Breaks out latency by key dimensions (for example, endpoint or use case) where available
+
+  - Supports time window switching and basic filtering for focused analysis
+
+  **Key benefits**
+
+  - Helps SRE and platform teams detect emerging performance issues early
+
+  - Supports SLA reporting for internal stakeholders
+
+  - Simplifies troubleshooting by separating latency from other health metrics
+
+  **Notes**
+
+  - Historical latency beyond the current week remains available via existing logs or reports where configured.
+
+  ---
+
+  ### 3. Gemini 3 model support (Flash and Pro)
+
+  Add the latest Gemini 3 models for text chat while reusing your existing configuration patterns.
+
+  **Key capabilities**
+
+  - **Gemini 3 Flash** support for low-latency, high-throughput text chat
+
+  - **Gemini 3 Pro (Preview)** support for richer reasoning in text chat flows
+
+  - **Model selection via existing configuration mechanisms**; no new config surface required
+
+  - Backwards-compatible defaults that preserve current model behavior unless changed
+
+  **Key benefits**
+
+  - Improves response quality and speed by adopting the newest Gemini 3 families
+
+  - Lets you experiment with Gemini 3 Pro in preview while keeping Gemini 3 Flash for production flows
+
+  - Reduces operational overhead by reusing existing model configuration and routing logic
+
+  **Notes**
+
+  - Gemini 3 Pro is available in preview only and should not be treated as a long-term production default yet.
+
+  ---
+
+  ### 4. Nano Banana image generation
+
+  Enable prompt-based image generation for chatbot experiences using the Nano Banana flow.
+
+  **Key capabilities**
+
+  - Integrates an **image generation model based on Gemini-2.5-flash**
+
+  - Supports **prompt-based image creation** directly from chatbot conversations
+
+  - Returns generated images as part of the chatbot response payload
+
+  - Respects existing guardrails and content policies where applicable
+
+  **Key benefits**
+
+  - Allows richer, visual responses for customer support and internal knowledge flows
+
+  - Keeps image generation within the same governance boundaries as text-based GPT Guard flows
+
+  - Reduces the need for separate image-generation tooling for common scenarios
+
+  **Notes**
+
+  - Image-generation usage may have separate cost and quota implications; coordinate with your platform team.
+
+  ---
+
+  ### 5. Customizable chatbot tab name
+
+  Rename the chatbot browser tab without code changes to align with internal branding.
+
+  **Key capabilities**
+
+  - **Configurable chatbot tab name** from administrative configuration
+
+  - Applies to the browser tab title shown to end users
+
+  - Takes effect on the next page reload after configuration change
+
+  **Key benefits**
+
+  - Aligns the chatbot experience with Bank Muscat naming conventions
+
+  - Reduces dependency on engineering changes for minor branding updates
+
+  **Notes**
+
+  - This is a **no-code-change** capability; admins can update the name directly in configuration.
+
+  ---
+
+  ### Bug fixes
+
+  - This release contains **no bug fixes**. All changes are additive feature enhancements and observability improvements.
+</Update>
