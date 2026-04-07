@@ -17,7 +17,13 @@ Tracks background jobs for **namespace creation** and **namespace deletion**.
   Tracking ID returned by namespace creation or deletion APIs.
 </ParamField>
 
-<Request tabs="cURL">
+<Request tabs="JSON,cURL">
+```json
+{
+  "tracking_id": "c37c070e-ff34-4738-8c32-de54d4ae26d3"
+}
+```
+
 ```bash
 curl -X GET "https://<domain>/api/vault/super-admin/namespace/job-status?tracking_id=c37c070e-ff34-4738-8c32-de54d4ae26d3" \
   -H "Authorization: Bearer <MASTER_API_KEY>"

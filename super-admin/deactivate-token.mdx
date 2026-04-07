@@ -11,7 +11,13 @@ Immediately revokes a namespace user token. Use this when credentials are compro
 |--------|----------|
 | `PUT` | `https://<domain>/api/vault/super-admin/namespace/auth-token/deactivate` |
 
-<Request tabs="cURL">
+<Request tabs="JSON,cURL">
+```json
+{
+  "auth_token": "<TOKEN_TO_DEACTIVATE>"
+}
+```
+
 ```bash
 curl -X PUT https://<domain>/api/vault/super-admin/namespace/auth-token/deactivate \
   -H "Authorization: Bearer <MASTER_API_KEY>" \

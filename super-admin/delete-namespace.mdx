@@ -11,7 +11,13 @@ Deletes an entire namespace including **all data and metadata**. This operation 
 |--------|----------|
 | `PUT` | `https://<domain>/api/vault/super-admin/namespace/delete` |
 
-<Request tabs="cURL">
+<Request tabs="JSON,cURL">
+```json
+{
+  "namespace_to_be_deleted": "customer_ns_1"
+}
+```
+
 ```bash
 curl -X PUT https://<domain>/api/vault/super-admin/namespace/delete \
   -H "Authorization: Bearer <MASTER_API_KEY>" \
