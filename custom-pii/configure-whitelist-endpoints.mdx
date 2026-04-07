@@ -37,7 +37,22 @@ A whitelist endpoint is useful when:
   Authentication headers for your whitelist endpoint.
 </ParamField>
 
-<Request tabs="cURL">
+<Request tabs="JSON,cURL">
+```json
+{
+  "data": {
+    "tag_type": "CUSTOMER_ID",
+    "pi_elements_list_endpoint_details": {
+      "url": "https://example.com/custom-pii/list",
+      "method": "GET",
+      "headers": {
+        "Authorization": "Bearer <access_token>"
+      }
+    }
+  }
+}
+```
+
 ```bash
 curl -X PUT https://<domain>/api/vault/metadata/add-or-update/custom-tag/pi-list-endpoint \
   -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>" \

@@ -11,7 +11,15 @@ Fetches the full configuration of a custom PII tag.
 |--------|----------|
 | `PUT` | `https://<domain>/api/vault/metadata/custom-tag/details` |
 
-<Request tabs="cURL">
+<Request tabs="JSON,cURL">
+```json
+{
+  "data": {
+    "tag_type": "CUSTOMER_ID"
+  }
+}
+```
+
 ```bash
 curl -X PUT https://<domain>/api/vault/metadata/custom-tag/details \
   -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>" \

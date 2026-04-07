@@ -11,7 +11,15 @@ Deletes a user-defined custom PII tag and all associated configuration.
 |--------|----------|
 | `PUT` | `https://<domain>/api/vault/metadata/delete/custom-tag` |
 
-<Request tabs="cURL">
+<Request tabs="JSON,cURL">
+```json
+{
+  "data": {
+    "tag_type": "CUSTOMER_ID"
+  }
+}
+```
+
 ```bash
 curl -X PUT https://<domain>/api/vault/metadata/delete/custom-tag \
   -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>" \
