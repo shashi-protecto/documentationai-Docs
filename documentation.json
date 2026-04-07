@@ -701,12 +701,12 @@
             "pages": [
               {
                 "title": "Vault",
-                "path": "vault",
+                "path": "release-notes/vault",
                 "icon": "vault"
               },
               {
-                "title": "GPT Guard",
-                "path": "gpt-guard",
+                "title": "GPTGuard",
+                "path": "release-notes/gpt-guard",
                 "icon": "bot"
               },
               {
