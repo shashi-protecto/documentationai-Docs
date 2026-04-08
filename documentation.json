@@ -755,5 +755,6 @@
       "projectId": "w8cd286gff"
     }
   },
-  "description": "Protecto is an API-first data protection platform that helps engineering teams identify, tokenize, mask, and safely handle sensitive data across applications, data pipelines, and GenAI workflows."
+  "description": "Protecto is an API-first data protection platform that helps engineering teams identify, tokenize, mask, and safely handle sensitive data across applications, data pipelines, and GenAI workflows.",
+  "template": "atlas"
 }
