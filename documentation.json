@@ -631,6 +631,50 @@
         "icon": "more-horizontal",
         "groups": [
           {
+            "group": "Release Notes",
+            "icon": "git-commit",
+            "expandable": false,
+            "pages": [
+              {
+                "title": "Vault",
+                "path": "release-notes/vault",
+                "icon": "vault"
+              },
+              {
+                "title": "GPT Guard",
+                "path": "release-notes/gpt-guard",
+                "icon": "bot"
+              },
+              {
+                "title": "Version History",
+                "path": "release-notes/version-history",
+                "icon": "clock"
+              }
+            ]
+          },
+          {
+            "group": "Deployment Options",
+            "icon": "server",
+            "expandable": false,
+            "pages": [
+              {
+                "title": "Overview",
+                "path": "deployment/overview",
+                "icon": "info"
+              },
+              {
+                "title": "SaaS Deployment",
+                "path": "deployment/saas",
+                "icon": "cloud"
+              },
+              {
+                "title": "On-Premises / Private Cloud",
+                "path": "deployment/on-premises",
+                "icon": "server"
+              }
+            ]
+          },
+          {
             "group": "Errors, Limits & Reliability",
             "icon": "alert-circle",
             "expandable": false,
@@ -669,50 +713,6 @@
                 "title": "Retry Behavior",
                 "path": "errors-limits/retry-behavior",
                 "icon": "refresh-cw"
-              }
-            ]
-          },
-          {
-            "group": "Deployment Options",
-            "icon": "server",
-            "expandable": false,
-            "pages": [
-              {
-                "title": "Overview",
-                "path": "deployment/overview",
-                "icon": "info"
-              },
-              {
-                "title": "SaaS Deployment",
-                "path": "deployment/saas",
-                "icon": "cloud"
-              },
-              {
-                "title": "On-Premises / Private Cloud",
-                "path": "deployment/on-premises",
-                "icon": "server"
-              }
-            ]
-          },
-          {
-            "group": "Release Notes",
-            "icon": "git-commit",
-            "expandable": false,
-            "pages": [
-              {
-                "title": "Vault",
-                "path": "release-notes/vault",
-                "icon": "vault"
-              },
-              {
-                "title": "GPT Guard",
-                "path": "release-notes/gpt-guard",
-                "icon": "bot"
-              },
-              {
-                "title": "Version History",
-                "path": "release-notes/version-history",
-                "icon": "clock"
               }
             ]
           }
