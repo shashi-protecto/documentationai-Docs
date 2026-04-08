@@ -746,5 +746,10 @@
   },
   "ai": {
     "ai-assistant:enabled": false
+  },
+  "integrations": {
+    "ga4": {
+      "measurementId": "G-W06E4YN85S"
+    }
   }
 }
