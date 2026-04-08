@@ -739,10 +739,10 @@
     }
   },
   "seo": {
-    "robots:index": false,
-    "robots:follow": false,
-    "sitemap:enabled": false,
-    "llms-txt:enabled": false
+    "robots:index": true,
+    "robots:follow": true,
+    "sitemap:enabled": true,
+    "llms-txt:enabled": true
   },
   "ai": {
     "ai-assistant:enabled": false
@@ -751,6 +751,8 @@
     "ga4": {
       "measurementId": "G-W06E4YN85S"
     },
-    "clarity": {}
+    "clarity": {
+      "projectId": "w8cd286gff"
+    }
   }
 }
