@@ -474,6 +474,48 @@
                 "icon": "trash-2"
               }
             ]
+          },
+          {
+            "group": "Errors, Limits & Reliability",
+            "icon": "alert-circle",
+            "expandable": false,
+            "pages": [
+              {
+                "title": "Error Response Format",
+                "path": "errors-limits/error-format",
+                "icon": "file-text"
+              },
+              {
+                "title": "HTTP Status Codes",
+                "path": "errors-limits/http-status-codes",
+                "icon": "hash"
+              },
+              {
+                "title": "Masking Errors",
+                "path": "errors-limits/masking-errors",
+                "icon": "eye-off"
+              },
+              {
+                "title": "Unmasking Errors",
+                "path": "errors-limits/unmasking-errors",
+                "icon": "eye"
+              },
+              {
+                "title": "Rate Limits",
+                "path": "errors-limits/rate-limits",
+                "icon": "gauge"
+              },
+              {
+                "title": "Payload Limits",
+                "path": "errors-limits/payload-limits",
+                "icon": "package"
+              },
+              {
+                "title": "Retry Behavior",
+                "path": "errors-limits/retry-behavior",
+                "icon": "refresh-cw"
+              }
+            ]
           }
         ]
       },
@@ -671,48 +713,6 @@
                 "title": "On-Premises / Private Cloud",
                 "path": "deployment/on-premises",
                 "icon": "server"
-              }
-            ]
-          },
-          {
-            "group": "Errors, Limits & Reliability",
-            "icon": "alert-circle",
-            "expandable": false,
-            "pages": [
-              {
-                "title": "Error Response Format",
-                "path": "errors-limits/error-format",
-                "icon": "file-text"
-              },
-              {
-                "title": "HTTP Status Codes",
-                "path": "errors-limits/http-status-codes",
-                "icon": "hash"
-              },
-              {
-                "title": "Masking Errors",
-                "path": "errors-limits/masking-errors",
-                "icon": "eye-off"
-              },
-              {
-                "title": "Unmasking Errors",
-                "path": "errors-limits/unmasking-errors",
-                "icon": "eye"
-              },
-              {
-                "title": "Rate Limits",
-                "path": "errors-limits/rate-limits",
-                "icon": "gauge"
-              },
-              {
-                "title": "Payload Limits",
-                "path": "errors-limits/payload-limits",
-                "icon": "package"
-              },
-              {
-                "title": "Retry Behavior",
-                "path": "errors-limits/retry-behavior",
-                "icon": "refresh-cw"
               }
             ]
           }
