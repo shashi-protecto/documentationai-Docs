@@ -636,7 +636,7 @@
             "expandable": false,
             "pages": [
               {
-                "title": "Vault",
+                "title": "Privacy Vault",
                 "path": "release-notes/vault",
                 "icon": "vault"
               },
