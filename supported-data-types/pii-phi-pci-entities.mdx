@@ -8,27 +8,27 @@ Protecto detects sensitive data across two built-in categories. All entities bel
 
 ## PII entities
 
-| S.No | Entity Name                   | Description                                                             | Example                                             | Masked                                                  |
-| ---- | ----------------------------- | ----------------------------------------------------------------------- | --------------------------------------------------- | ------------------------------------------------------- |
-| 1    | `PERSON`                      | Name of a person                                                        | George Williams                                     | `<PER>yefNTf jm3Jf</PER>`                               |
-| 2    | `EMAIL_ADDRESS`               | Email address                                                           | [George@example.com](mailto:George@example.com)     | `<EMAIL>yefNTf@VxLPAG1Dvm</EMAIL>`                      |
-| 3    | `PHONE_NUMBER`                | All country phone, mobile, and landline numbers                         | +44 7943 582088, (555) 123-4567                     | `<PHN>+736785 58609 305</PHN>`                          |
-| 4    | `ADDRESS`                     | Geographical entities including cities, famous locations, and buildings | Paris, Eiffel Tower, Amazon Rainforest              | `<ADDRESS>g5Ua2Fm843</ADDRESS>`                         |
-| 5    | `ORG`                         | Names of organizations                                                  | Lakeview Hospital                                   | `<ORG>fL89cEDrh6 uii8cQSrwT</ORG>`                      |
-| 6    | `DATE_OF_BIRTH`               | Birthdate of a person                                                   | March 10, 2023                                      | `<DOB>sz7jDZyonfgY3y</DOB>`                             |
-| 7    | `SSN`                         | Social Security Number (USA)                                            | 756-45-6689                                         | `<SSN>0402795019673173694705</SSN>`                     |
-| 8    | `IP_ADDRESS`                  | Unique label for devices in a network                                   | 192.168.0.1                                         | `<IPA>368.531.3681.004</IPA>`                           |
-| 9    | `MAC_NUMBER`                  | Unique identifier for network interfaces                                | 00:1A:2B:3C:4D:5E                                   | `<DEVICE_ID>o5gCeI67k6xDC4ST3</DEVICE_ID>`              |
-| 10   | `URL`                         | Web address                                                             | [www.cityhospital.net](http://www.cityhospital.net) | `<URL>02FZUWHoADyGJE08SCqPfxb</URL>`                    |
-| 11   | `FAX_NUMBER`                  | Fax number                                                              | 4256324532                                          | `<FAX_NO>511694045434</FAX_NO>`                         |
-| 12   | `DRIVING_LICENSE_NUMBER`      | Driver's license identifier                                             | DL35235                                             | `<DL_NO>3hm6dQehstF8cSjDTpDDUbJiCm6zkk</DL_NO>`         |
-| 13   | `VEHICLE_REGISTRATION_NUMBER` | Vehicle registration and vehicle numbers                                | MA2334                                              | `<VEHICLE_REG_NO>FIwaeRko6x7GaegIyZXL</VEHICLE_REG_NO>` |
-| 14   | `VIN`                         | Vehicle Identification NumberUnique code for motor vehicles             | 232679GE24                                          | `<VIN>5t7uzVOu5ZZS06j</VIN>`                            |
-| 15   | `LICENCE_NUMBER`              | Healthcare provider, pharmaceutical, and doctor licence numbers         | HP839232                                            | `<LICENCE_NO>Y37kcPZWFX6TBb13UQ</LICENCE_NO>`           |
-| 16   | `CREDIT_CARD`                 | Numeric code for financial transactions                                 | 5000236879543210                                    | `<CRD>4D67AFZLFh3OBk03cNo0</CRD>`                       |
-| 17   | `CITY`                        | Name of a city                                                          | Seattle                                             | `<CITY>k7wD29pL</CITY>`                                 |
-| 18   | `STATE`                       | Name or code of a state, province, or region                            | California, TX                                      | `<STATE>h3Ls98Qy</STATE>`                               |
-| 19   | `PINCODE`                     | Postal or ZIP code used for mail delivery                               | 94107                                               | `<PINCODE>p4Z71nM</PINCODE>`                            |
+| S.No | Entity Name                   | Description                                                             | Example                                         | Masked                                                  |
+| ---- | ----------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------- | ------------------------------------------------------- |
+| 1    | `PERSON`                      | Name of a person                                                        | George Williams                                 | `<PER>yefNTf jm3Jf</PER>`                               |
+| 2    | `EMAIL_ADDRESS`               | Email address                                                           | [George@example.com](mailto:George@example.com) | `<EMAIL>yefNTf@VxLPAG1Dvm</EMAIL>`                      |
+| 3    | `PHONE_NUMBER`                | All country phone, mobile, and landline numbers                         | +44 7943 582088, (555) 123-4567                 | `<PHN>+736785 58609 305</PHN>`                          |
+| 4    | `ADDRESS`                     | Geographical entities including cities, famous locations, and buildings | Paris, Eiffel Tower, Amazon Rainforest          | `<ADDRESS>g5Ua2Fm843</ADDRESS>`                         |
+| 5    | `ORG`                         | Names of organizations                                                  | Lakeview Hospital                               | `<ORG>fL89cEDrh6 uii8cQSrwT</ORG>`                      |
+| 6    | `DATE_OF_BIRTH`               | Birthdate of a person                                                   | March 10, 2023                                  | `<DOB>sz7jDZyonfgY3y</DOB>`                             |
+| 7    | `SSN`                         | Social Security Number (USA)                                            | 756-45-6689                                     | `<SSN>0402795019673173694705</SSN>`                     |
+| 8    | `IP_ADDRESS`                  | Unique label for devices in a network                                   | 192.168.0.1                                     | `<IPA>368.531.3681.004</IPA>`                           |
+| 9    | `MAC_NUMBER`                  | Unique identifier for network interfaces                                | 00:1A:2B:3C:4D:5E                               | `<DEVICE_ID>o5gCeI67k6xDC4ST3</DEVICE_ID>`              |
+| 10   | `URL`                         | Web address                                                             | www\.cityhospital.net                           | `<URL>02FZUWHoADyGJE08SCqPfxb</URL>`                    |
+| 11   | `FAX_NUMBER`                  | Fax number                                                              | 4256324532                                      | `<FAX_NO>511694045434</FAX_NO>`                         |
+| 12   | `DRIVING_LICENSE_NUMBER`      | Driver's license identifier                                             | DL35235                                         | `<DL_NO>3hm6dQehstF8cSjDTpDDUbJiCm6zkk</DL_NO>`         |
+| 13   | `VEHICLE_REGISTRATION_NUMBER` | Vehicle registration and vehicle numbers                                | MA2334                                          | `<VEHICLE_REG_NO>FIwaeRko6x7GaegIyZXL</VEHICLE_REG_NO>` |
+| 14   | `VIN`                         | Vehicle Identification NumberUnique code for motor vehicles             | 232679GE24                                      | `<VIN>5t7uzVOu5ZZS06j</VIN>`                            |
+| 15   | `LICENCE_NUMBER`              | Healthcare provider, pharmaceutical, and doctor licence numbers         | HP839232                                        | `<LICENCE_NO>Y37kcPZWFX6TBb13UQ</LICENCE_NO>`           |
+| 16   | `CREDIT_CARD`                 | Numeric code for financial transactions                                 | 5000236879543210                                | `<CRD>4D67AFZLFh3OBk03cNo0</CRD>`                       |
+| 17   | `CITY`                        | Name of a city                                                          | Seattle                                         | `<CITY>k7wD29pL</CITY>`                                 |
+| 18   | `STATE`                       | Name or code of a state, province, or region                            | California, TX                                  | `<STATE>h3Ls98Qy</STATE>`                               |
+| 19   | `PINCODE`                     | Postal or ZIP code used for mail delivery                               | 94107                                           | `<PINCODE>p4Z71nM</PINCODE>`                            |
 
 ## PHI entities
 
@@ -46,7 +46,7 @@ Protecto detects sensitive data across two built-in categories. All entities bel
 | ---- | ------------------ | --------------------------------------------------------------------------------------------------------- | ---------------- | --------------------------------------------- |
 | 1    | `BANK_ACC_NO`      | A unique number assigned to a bank account                                                                | 123456789012     | `<ACC_NO>3984572426</ACC_NO>`                 |
 | 2    | `NATIONALITY`      | The country of a person's citizenship                                                                     | Indian, American | `<NATIONALITY>kB3Qc2Jp</NATIONALITY>`         |
-| 3    | `PASSPORT_NUMBER`  | A unique identifier for a passport                                                                        | A1234567         | `<PASSPORT_NO>0mq9wQ7G</PASPORT_NO>`         |
+| 3    | `PASSPORT_NUMBER`  | A unique identifier for a passport                                                                        | A1234567         | `<PASSPORT_NO>0mq9wQ7G</PASPORT_NO>`          |
 | 4    | `ROUTING_NUMBER`   | A bank code used to identify a financial institution                                                      | 21000021         | `<ROUTING_NO>0ngE2YBX</ROUTING_NO>`           |
 | 5    | `PAN`              | Permanent Account Number — a 10-character alphanumeric identifier issued by India's Income Tax Department | CDLKQ1447Z       | `<PAN>xJio2</PAN>`                            |
 | 6    | `CVV`              | A three- or four-digit security code on payment cards                                                     | 123, 4567        | `<CVV>19819</CVV>`                            |
@@ -131,3 +131,4 @@ Protecto detects sensitive data across two built-in categories. All entities bel
   ]
 }
 ```
+
