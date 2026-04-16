@@ -48,7 +48,7 @@ Protecto detects sensitive data across two built-in categories. All entities bel
 | ---- | ------------------ | --------------------------------------------------------------------------------------------------------- | ---------------- | --------------------------------------------- |
 | 1    | `BANK_ACC_NO`      | A unique number assigned to a bank account                                                                | 123456789012     | `<ACC_NO>3984572426</ACC_NO>`                 |
 | 2    | `NATIONALITY`      | The country of a person's citizenship                                                                     | Indian, American | `<NATIONALITY>kB3Qc2Jp</NATIONALITY>`         |
-| 3    | `PASSPORT_NUMBER`  | A unique identifier for a passport                                                                        | A1234567         | `<PASSPORT_NO>0mq9wQ7G</PASPORT_NO>`         |
+| 3    | `PASSPORT_NUMBER`  | A unique identifier for a passport                                                                        | A1234567         | `<PASSPORT_NO>0mq9wQ7G</PASPORT_NO>`          |
 | 4    | `ROUTING_NUMBER`   | A bank code used to identify a financial institution                                                      | 21000021         | `<ROUTING_NO>0ngE2YBX</ROUTING_NO>`           |
 | 5    | `PAN`              | Permanent Account Number — a 10-character alphanumeric identifier issued by India's Income Tax Department | CDLKQ1447Z       | `<PAN>xJio2</PAN>`                            |
 | 6    | `CVV`              | A three- or four-digit security code on payment cards                                                     | 123, 4567        | `<CVV>19819</CVV>`                            |
@@ -59,9 +59,7 @@ Protecto detects sensitive data across two built-in categories. All entities bel
 | 11   | `INSURANCE_NUMBER` | A unique number for an insurance policy                                                                   | INS-12324        | `<INSURANCE_NO>50voyk9u7b</INSURANCE_NO>`     |
 | 12   | `CARD_EXPIRY_DATE` | The expiration date of a payment card                                                                     | 26-Dec           | `<CRD_EXP_DATE>06014573 83596</CRD_EXP_DATE>` |
 
-<Callout kind="tip" collapsed="false">
-  Entity names are used by the detection engine and in `individual_tokens` responses. Use them in policy configurations, custom PII rules, and the [Update Entity Category](/custom-pii/update-entity-category) API to control how each entity is handled.
-</Callout>
+
 
 ## Usage examples
 
@@ -133,3 +131,4 @@ Protecto detects sensitive data across two built-in categories. All entities bel
   ]
 
 ```
+
