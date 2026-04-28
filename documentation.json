@@ -770,6 +770,9 @@
   "scripts": [
     {
       "src": "scripts/hubspot.js"
+    },
+    {
+      "src": "scripts/factors.js"
     }
   ]
 }
