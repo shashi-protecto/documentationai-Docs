@@ -766,5 +766,10 @@
       "source": "/docs/welcome-to-protecto",
       "destination": "/introduction/overview"
     }
+  ],
+  "scripts": [
+    {
+      "src": "scripts/hubspot.js"
+    }
   ]
 }
