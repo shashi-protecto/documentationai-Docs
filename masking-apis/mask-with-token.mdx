@@ -1,8 +1,9 @@
 ---
 title: Mask with Token
-description: Mask known sensitive values by explicitly specifying the token type. Use when you already know the data type and don't need structure preservation.
+description: >-
+  Mask known sensitive values by explicitly specifying the token type. Use when
+  you already know the data type and don't need structure preservation.
 ---
-
 Use this endpoint when the data type is already known and you want to explicitly choose the token type.
 
 ## Endpoint
@@ -11,12 +12,12 @@ Endpoint and Authentication:
 
 To use this API, you need to send a PUT request to the following endpoint:
 
-| Method | Route             | Headers                                             |
-| ------ | ----------------- | --------------------------------------------------- |
-| PUT    | `/api/vault/mask` | `Authorization: Bearer YOUR_AUTH_TOKEN`            |
+| Method | Route   | Headers                                 |
+| ------ | ------- | --------------------------------------- |
+| PUT    | `/mask` | `Authorization: Bearer YOUR_AUTH_TOKEN` |
 
-<Callout kind="info">
-To get the Authkey please contact help@protecto.ai
+<Callout kind="info" collapsed="false">
+  To get the Authkey please contact [help@protecto.ai](mailto:help@protecto.ai)
 </Callout>
 
 ## Request body
@@ -35,7 +36,7 @@ To get the Authkey please contact help@protecto.ai
 
 ## Example
 
-<Request default-tab="0" show-lines="true" tabs={["JSON", "cURL", "Python"]}>
+<Request show-lines="true" tabs={[]}>
   ```json
   {
     "mask": [
@@ -80,7 +81,7 @@ To get the Authkey please contact help@protecto.ai
   ```
 </Request>
 
-<Response show-lines="true" tabs="200">
+<Response show-lines="true" tabs={[]}>
   ```json
   {
     "data": [
@@ -101,3 +102,4 @@ To get the Authkey please contact help@protecto.ai
 - Token names are **case- and spelling-sensitive**. An invalid name returns a `token_name not defined` error.
 
 - See [Errors & Limits](/masking-apis/errors-limits) for the full list of error responses.
+
