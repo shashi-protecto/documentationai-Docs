@@ -7,7 +7,7 @@ The Unmask API also returns toxicity analysis for the **unmasked text**. This al
 
 ## How it appears in the response
 
-<Request tabs="JSON,cURL">
+<Request tabs="JSON,cURL,Python">
 ```json
 {
   "unmask": [
@@ -29,6 +29,24 @@ curl -X PUT https://protecto-trial.protecto.ai/api/vault/unmask \
       }
     ]
   }'
+```
+
+```python
+import requests
+
+response = requests.put(
+    "https://protecto-trial.protecto.ai/api/vault/unmask",
+    headers={
+        "Authorization": "Bearer <AUTH_TOKEN>",
+        "Content-Type": "application/json"
+    },
+    json={
+        "unmask": [
+            {"value": "<PER>hSw8kAEB10</PER> lives in <ADDRESS>748785848000</ADDRESS>"}
+        ]
+    }
+)
+print(response.json())
 ```
 </Request>
 

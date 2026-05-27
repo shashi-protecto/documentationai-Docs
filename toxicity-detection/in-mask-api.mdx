@@ -7,7 +7,7 @@ Toxicity analysis is returned when using **Identify and Mask (Auto-detect)**. In
 
 ## How it appears in the response
 
-<Request tabs="JSON,cURL">
+<Request tabs="JSON,cURL,Python">
 ```json
 {
   "mask": [
@@ -29,6 +29,24 @@ curl -X PUT https://protecto-trial.protecto.ai/api/vault/mask \
       }
     ]
   }'
+```
+
+```python
+import requests
+
+response = requests.put(
+    "https://protecto-trial.protecto.ai/api/vault/mask",
+    headers={
+        "Authorization": "Bearer <AUTH_TOKEN>",
+        "Content-Type": "application/json"
+    },
+    json={
+        "mask": [
+            {"value": "Sarah Connors can be reached at 217-555-2020 or sarah.connors88@example.com"}
+        ]
+    }
+)
+print(response.json())
 ```
 </Request>
 
