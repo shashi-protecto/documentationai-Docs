@@ -11,7 +11,15 @@ Deletes a policy and all associated metadata.
 |--------|----------|
 | `PUT` | `https://<domain>/api/vault/metadata/policy/delete` |
 
-<Request tabs="cURL">
+<Request tabs="JSON,cURL,Python">
+```json
+{
+  "data": {
+    "policy_name": "old-test-policy"
+  }
+}
+```
+
 ```bash
 curl -X PUT https://<domain>/api/vault/metadata/policy/delete \
   -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>" \
@@ -21,6 +29,24 @@ curl -X PUT https://<domain>/api/vault/metadata/policy/delete \
       "policy_name": "old-test-policy"
     }
   }'
+```
+
+```python
+import requests
+
+response = requests.put(
+    "https://<domain>/api/vault/metadata/policy/delete",
+    headers={
+        "Authorization": "Bearer <NAMESPACE_ADMIN_API_KEY>",
+        "Content-Type": "application/json"
+    },
+    json={
+        "data": {
+            "policy_name": "old-test-policy"
+        }
+    }
+)
+print(response.json())
 ```
 </Request>
 

@@ -29,10 +29,35 @@ Returns **aggregated API usage counts** for a namespace, grouped by API type and
   Pagination token for large result sets.
 </ParamField>
 
-<Request tabs="cURL">
+<Request tabs="JSON,cURL,Python">
+```json
+{
+  "namespace": "production",
+  "start_date": "2024-05-01 00:00:00",
+  "end_date": "2024-05-31 23:59:59"
+}
+```
+
 ```bash
 curl -X GET "https://<domain>/api/vault/reports/namespace-summary?namespace=production&start_date=2024-05-01+00:00:00&end_date=2024-05-31+23:59:59" \
   -H "Authorization: Bearer <ADMIN_USER_AUTH_KEY>"
+```
+
+```python
+import requests
+
+response = requests.get(
+    "https://<domain>/api/vault/reports/namespace-summary",
+    headers={
+        "Authorization": "Bearer <ADMIN_USER_AUTH_KEY>"
+    },
+    params={
+        "namespace": "production",
+        "start_date": "2024-05-01 00:00:00",
+        "end_date": "2024-05-31 23:59:59"
+    }
+)
+print(response.json())
 ```
 </Request>
 

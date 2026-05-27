@@ -25,10 +25,33 @@ Returns usage counts **across all namespaces** visible to the admin. Commonly us
   Pagination token for large result sets.
 </ParamField>
 
-<Request tabs="cURL">
+<Request tabs="JSON,cURL,Python">
+```json
+{
+  "start_date": "2024-05-01 00:00:00",
+  "end_date": "2024-05-31 23:59:59"
+}
+```
+
 ```bash
 curl -X GET "https://<domain>/api/vault/reports/all-namespace-summary?start_date=2024-05-01+00:00:00&end_date=2024-05-31+23:59:59" \
   -H "Authorization: Bearer <ADMIN_USER_AUTH_KEY>"
+```
+
+```python
+import requests
+
+response = requests.get(
+    "https://<domain>/api/vault/reports/all-namespace-summary",
+    headers={
+        "Authorization": "Bearer <ADMIN_USER_AUTH_KEY>"
+    },
+    params={
+        "start_date": "2024-05-01 00:00:00",
+        "end_date": "2024-05-31 23:59:59"
+    }
+)
+print(response.json())
 ```
 </Request>
 
