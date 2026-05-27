@@ -33,6 +33,22 @@ Authorization: Bearer <AUTH_TOKEN>
 ## Example
 
 <Request show-lines="true" tabs="JSON,cURL,Python">
+  ```json
+  {
+    "data": [
+      {
+        "value": "John Doe, an American, can be reached via email at johndoe@example.com or phone at +1-123-456-7890; his portfolio is available at www.johndoeportfolio.com, and he resides at 123 Elm Street, Springfield, IL, USA."
+      },
+      {
+        "value": "Jane Smith, a British citizen, lives at 45 Baker Street, London, UK; she can be contacted at jane.smith@domain.com or on +44-20-7946-0958, with more details on her website www.janesmith.me."
+      },
+      {
+        "value": "An individual of international background maintains a professional presence online and can be reached through standard communication channels."
+      }
+    ]
+  }
+  ```
+
   ```bash
   curl -X PUT https://<BASE_URL>/pii-identification \
     -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
@@ -69,23 +85,6 @@ Authorization: Bearer <AUTH_TOKEN>
           ]
       }
   )
-  ```
-
-  ```javascript
-  const response = await fetch("https://<BASE_URL>/pii-identification", {
-    method: "PUT",
-    headers: {
-      Authorization: "Bearer YOUR_AUTH_TOKEN",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      data: [
-        { value: "John Doe, an American, can be reached via email at johndoe@example.com or phone at +1-123-456-7890; his portfolio is available at www.johndoeportfolio.com, and he resides at 123 Elm Street, Springfield, IL, USA." },
-        { value: "Jane Smith, a British citizen, lives at 45 Baker Street, London, UK; she can be contacted at jane.smith@domain.com or on +44-20-7946-0958, with more details on her website www.janesmith.me." },
-        { value: "An individual of international background maintains a professional presence online and can be reached through standard communication channels." }
-      ],
-    }),
-  });
   ```
 </Request>
 
@@ -180,4 +179,3 @@ Authorization: Bearer <AUTH_TOKEN>
 - `start_pos` and `end_pos` are zero-based character offsets into the original `value` string.
 
 - This endpoint identifies only — it does not mask or tokenize values. To mask identified entities, use the [Identify and Mask](./identify-and-mask) endpoint instead.
-
