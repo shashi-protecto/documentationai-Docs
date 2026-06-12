@@ -5,6 +5,43 @@ description: >-
   policies, async workflows, and admin improvements. Use these notes to
   understand behavior changes before upgrading or adopting new features.
 ---
+<Update label="June 2026" description="v8.0.6" tags={["Enhancement"]}>
+  ### Expanded PII / PHI / PCI Entity Support
+
+  Added support for new sensitive data entities across healthcare and regional compliance use cases.
+
+  #### Newly Added Entities
+
+  - BIOMETRIC\_DATA
+  - BLOOD\_TYPE
+  - MEDICAL\_CODE
+  - MEDICAL\_CONDITION
+  - MEDICATION
+  - MEDICAL\_PROCEDURE
+  - PH\_TIN
+  - GSTIN
+  - AADHAAR
+  - UK\_UTR
+  - UK\_NIN
+  - US\_ITIN
+  - CANADIAN\_SIN
+
+  ### Platform Optimization
+
+  #### Vault Table Index Optimization
+
+  Implemented vault table index optimization to improve:
+
+  - Storage efficiency
+  - Infrastructure cost optimization
+  - Database performance and scalability
+
+  ### Compatibility
+
+  - No breaking changes
+  - Existing APIs and workflows remain fully compatible
+</Update>
+
 <Update label="April 2026" description="v8.0.4" tags={["Enhancement"]}>
   ### Multilingual API Support
 
