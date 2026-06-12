@@ -31,6 +31,13 @@ Protecto detects sensitive data across two built-in categories. All entities bel
 | 19   | `PINCODE`                     | Postal or ZIP code used for mail delivery                               | 94107                                               | `<PINCODE>p4Z71nM</PINCODE>`                            |
 | 20   | `NATIONAL_ID`                 | National identification number                                          | A1234567890                                         | `<NATIONAL_ID>k2P8mQ1x0Z</NATIONAL_ID>`                 |
 | 21   | `PASSWORD`                    | Password                                                                | P\@ssw0rd123!                                       | `<PASSWORD>n7Qp1Zs</PASSWORD>`                          |
+| 22   | `PH_TIN`                      | Philippine Tax Identification Number used for taxpayer identification   | 123-456-789-000                                     | `<PH_TIN>123-456-789-000</PH_TIN>`                     |
+| 23   | `GSTIN`                       | Goods and Services Tax Identification Number used for business tax registration in India | 29ABCDE1234F1Z5                    | `<GSTIN>29ABCDE1234F1Z5</GSTIN>`                       |
+| 24   | `AADHAAR`                     | Unique 12-digit identification number issued by UIDAI in India          | 4827 1934 6671                                      | `<AADHAAR>4827 1934 6671</AADHAAR>`                    |
+| 25   | `UK_UTR`                      | United Kingdom Unique Taxpayer Reference number                         | 1234567890                                          | `<UK_UTR>1234567890</UK_UTR>`                          |
+| 26   | `UK_NIN`                      | United Kingdom National Insurance Number                                | QQ123456C                                           | `<UK_NIN>QQ123456C</UK_NIN>`                           |
+| 27   | `US_ITIN`                     | United States Individual Taxpayer Identification Number                  | 912-45-6789                                         | `<US_ITIN>912-45-6789</US_ITIN>`                       |
+| 28   | `CANADIAN_SIN`                | Canadian Social Insurance Number used for employment and tax purposes   | 123-456-789                                         | `<CANADIAN_SIN>123-456-789</CANADIAN_SIN>`             |
 
 ## PHI entities
 
@@ -41,6 +48,12 @@ Protecto detects sensitive data across two built-in categories. All entities bel
 | 3    | `START_DATE_OF_HOSPITALIZATION` | Admission date to a hospital                                               | April 10, 2023   | `<ADMIT_DATE>yupFq6xVI9Xkx3I6Odzqo6PO1hFK58</ADMIT_DATE>`      |
 | 4    | `DISCHARGE_DATE`                | Release date from a hospital                                               | Sep 5, 2023      | `<DISCHARGE_DATE>08l7xKbswvTev05RD3w7kEwS17Z</DISCHARGE_DATE>` |
 | 5    | `DEATH_DATE`                    | Date of death                                                              | February 5, 2024 | `<DEATH_DATE>JOIm57O7rG4co9UuC2d</DEATH_DATE>`                 |
+| 6    | `BIOMETRIC_DATA`                | Physical or biological health-related measurements used in patient records | BMI: 27.4, Height: 172 cm, Weight: 78 kg | `<BIOMETRIC_DATA>BMI: 27.4, Height: 172 cm, Weight: 78 kg</BIOMETRIC_DATA>` |
+| 7    | `BLOOD_TYPE`                    | Patient blood group and Rh factor information                              | O+               | `<BLOOD_TYPE>O+</BLOOD_TYPE>`                                   |
+| 8    | `MEDICAL_CODE`                  | Standardized medical classification or billing codes                       | ICD-10: E11.9    | `<MEDICAL_CODE>ICD-10: E11.9</MEDICAL_CODE>`                    |
+| 9    | `MEDICAL_CONDITION`             | Diagnosed diseases, disorders, or health conditions                        | Type 2 Diabetes  | `<MEDICAL_CONDITION>Type 2 Diabetes</MEDICAL_CONDITION>`        |
+| 10   | `MEDICATION`                    | Prescribed drugs, medicines, or pharmaceutical products                    | Metformin 500mg  | `<MEDICATION>Metformin 500mg</MEDICATION>`                      |
+| 11   | `MEDICAL_PROCEDURE`             | Clinical procedures, surgeries, or medical treatments performed            | Coronary Angioplasty | `<MEDICAL_PROCEDURE>Coronary Angioplasty</MEDICAL_PROCEDURE>` |
 
 ## Financial entities
 
@@ -61,74 +74,5 @@ Protecto detects sensitive data across two built-in categories. All entities bel
 
 
 
-## Usage examples
 
-**Mask a person's name and email:**
-
-```json
-{
-  "mask": [
-    {
-      "value": "George Williams sent a note to George@example.com",
-      "token_name": "Text Token"
-    }
-  ]
-}
-```
-
-**Mask a credit card with explicit format:**
-
-```json
-{
-  "mask": [
-    {
-      "value": "5000236879543210",
-      "format": "Credit Card",
-      "token_name": "Numeric Token"
-    }
-  ]
-}
-```
-
-**Mask a phone number:**
-
-```json
-{
-  "mask": [
-    {
-      "value": "+44 7943 582088",
-      "format": "Phone Number",
-      "token_name": "Numeric Token"
-    }
-  ]
-}
-```
-
-**Mask a medical record number:**
-
-```json
-{
-  "mask": [
-    {
-      "value": "P4353",
-      "format": "Medical Record Number",
-      "token_name": "Text Token"
-    }
-  ]
-}
-```
-
-**Forcing format when detection is ambiguous:**
-
-```json
-{
-  "mask": [
-    {
-      "value": "A1234567",
-      "format": "Passport Number",
-      "token_name": "Special Token"
-    }
-  ]
-
-```
 
