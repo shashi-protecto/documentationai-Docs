@@ -56,29 +56,23 @@ description: >-
   ### What’s new:
 
   - API requests and responses will support multiple languages
-
   - Improved handling of non-English inputs for masking, unmasking, and processing workflows
-
   - Consistent performance across supported languages
 
   ### Supported Languages:
 
   - English
-
   - German
-
   - French
-
   - Spanish
-
   - Dutch
+  - Arabic
+  - Japanese
 
   ### Impact:
 
   - Enables seamless adoption in multi-region deployments
-
   - Improves accuracy for PII detection and processing in native languages
-
   - Reduces dependency on pre-translation before API calls
 
   ### Supported entities
@@ -88,7 +82,6 @@ description: >-
   2 more entities have been added:
 
   - NATIONAL\_ID
-
   - PASSWORD
 
   **Note**:**&#x20;CITY, COUNTRY**, and **PINCODE&#x20;**&#x61;re derived sub-entities extracted from the existing ADDRESS entity. They provide more granular location data without requiring separate detection logic.&#x20;
@@ -98,21 +91,17 @@ description: >-
   ### Vault & Tokenization
 
   - Prefix and suffix support fully generalized across **all entities**, including custom and auto-detected PII
-
   - Policy-driven masking behavior made consistent across sync mask, async mask, and unmask
-
   - Improved token consistency guarantees across retries and async jobs
 
   ### Policies & Metadata
 
   - Metadata updates now propagate immediately to all new masking operations
-
   - Clear separation between anonymizable entities, pseudonymizable entities, and excluded entities
 
   ### Security & Admin
 
   - Stronger validation on namespace deletion and background job tracking
-
   - Improved error messages for expired or invalid admin tokens
 </Update>
 
@@ -120,13 +109,11 @@ description: >-
   ### Vault & Tokenization
 
   - `attributes` object added to Mask and Unmask APIs — enables tracking of page number, source ID, or custom metadata
-
   - Attribute values preserved through async workflows
 
   ### Reporting & Compliance
 
   - Audit logs enhanced to include attributes when present
-
   - Better pagination stability for large audit datasets
 </Update>
 
@@ -134,7 +121,6 @@ description: >-
   ### Data Scan & Discovery
 
   - Scan Details API now returns identified percentage per entity and ML-identified vs user-defined PII separation
-
   - Pagination support added for large schema scans
 
   ### Policies & Metadata
@@ -146,7 +132,6 @@ description: >-
   ### Vault & Tokenization
 
   - Identify-and-mask enhanced with individual token position tracking and expanded toxicity analysis
-
   - Unmask API now consistently returns toxicity scores
 
   ### Data Scan
@@ -158,7 +143,6 @@ description: >-
   ### Security & Admin
 
   - Super Admin APIs hardened with auth token lifecycle enforcement and explicit permission checks (`mask`, `unmask`, `metadata_change`)
-
   - Namespace creation and deletion moved fully to background jobs
 </Update>
 
@@ -166,7 +150,6 @@ description: >-
   ### Policies & Metadata
 
   - Policy name support added to Mask and Unmask APIs
-
   - Default policy behavior clarified when `policy_name` is omitted
 
   ### Vault
@@ -178,7 +161,6 @@ description: >-
   ### Vault & Tokenization
 
   - Async Mask and Async Unmask introduced
-
   - Async Status API added with detailed job lifecycle and timestamps
 </Update>
 
@@ -186,13 +168,11 @@ description: >-
   ### Vault
 
   - Unified Mask API for mask with token, mask with format, and identify-and-mask (auto-detect)
-
   - UTF-8 support across all APIs
 
   ### Policies & Metadata
 
   - Namespace-level policies introduced
-
   - Support for anonymization vs pseudonymization
 
   ### Data Scan
@@ -204,7 +184,6 @@ description: >-
   ### Reporting & Compliance
 
   - Namespace-level audit summaries introduced
-
   - Usage summary APIs added for billing visibility
 </Update>
 
@@ -212,7 +191,6 @@ description: >-
   ### Security
 
   - Improved authentication error handling
-
   - Clear differentiation between expired token, invalid token, and missing authorization header
 </Update>
 
@@ -220,7 +198,6 @@ description: >-
   ### Data Scan
 
   - Object-level scan support (database, schema, table)
-
   - Scan object listing APIs introduced
 </Update>
 
@@ -228,7 +205,6 @@ description: >-
   ### Vault
 
   - Format-preserving masking expanded
-
   - Additional financial and healthcare entities supported
 </Update>
 
@@ -236,7 +212,6 @@ description: >-
   ### Vault
 
   - Toxicity detection introduced
-
   - Toxicity scoring added to masking responses
 </Update>
 
