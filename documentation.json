@@ -348,6 +348,11 @@
                 "icon": "type"
               },
               {
+                "title": "Supported Languages",
+                "path": "supported-data-types/supported-languages",
+                "icon": "align-center-icon"
+              },
+              {
                 "title": "Character Encoding",
                 "path": "supported-data-types/character-encoding",
                 "icon": "terminal"
