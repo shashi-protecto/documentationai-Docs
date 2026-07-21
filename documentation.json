@@ -343,14 +343,14 @@
                 "icon": "hash"
               },
               {
+                "title": "Supported Languages",
+                "path": "supported-languages",
+                "icon": "airplay"
+              },
+              {
                 "title": "Supported Formats",
                 "path": "supported-data-types/formats",
                 "icon": "type"
-              },
-              {
-                "title": "Supported Languages",
-                "path": "supported-data-types/supported-languages",
-                "icon": "align-center-icon"
               },
               {
                 "title": "Character Encoding",
