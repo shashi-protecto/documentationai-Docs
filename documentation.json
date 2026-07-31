@@ -734,13 +734,7 @@
       "primary": {
         "title": "Book a Demo",
         "link": "https://www.protecto.ai/schedule-a-demo?utm_source=docs&utm_medium=button&utm_campaign=hero_nav"
-      },
-      "links": [
-        {
-          "title": "Request a trial",
-          "link": "https://www.protecto.ai/trial?utm_source=docs&utm_medium=button&utm_campaign=hero_nav"
-        }
-      ]
+      }
     }
   },
   "seo": {
