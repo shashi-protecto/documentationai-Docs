@@ -1,11 +1,14 @@
 ---
-title: "CBAC (Context-Based Access Control)"
-description: "Turn a plain-English sensitivity policy into an enforceable control that reads context, not just pattern-matches text."
+title: CBAC (Context-Based Access Control)
+description: >-
+  Turn a plain-English sensitivity policy into an enforceable control that reads
+  context, not just pattern-matches text.
 ---
+<Callout kind="info" collapsed="false" color="#f59e0b">
+  **Coming soon**
 
-<Note>
-  Coming soon · Preview. Functionality and interfaces are subject to change before general availability.
-</Note>
+  Functionality and interfaces are subject to change before general availability.
+</Callout>
 
 ## Overview
 
@@ -51,7 +54,7 @@ Deletes a policy and detaches it from any user or workflow it was assigned to, s
 
 ## Runtime and auditing
 
-### Identify & Split *(runtime)*
+### Identify & Split _(runtime)_
 
 Takes document text and the set of policies to apply, and returns the clean copy plus per-policy extracts with span attribution. The clean copy is the input minus the union of all matched spans. A span matched by multiple policies is removed once but appears in each matching policy's extract. Identify & Split fails closed on any error and never returns unprocessed text as clean.
 

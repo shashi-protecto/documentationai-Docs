@@ -1,26 +1,28 @@
 ---
-title: "Roadmap"
-description: "Preview capabilities Protecto is building next: context-based access control, governed RAG over MCP, and dynamic runtime authorization."
+title: Roadmap
+description: >-
+  Preview capabilities Protecto is building next: context-based access control,
+  governed RAG over MCP, and dynamic runtime authorization.
 ---
-
 ## What's coming
 
 The capabilities below are in active development. They are not yet generally available, and their interfaces may change before release. Use this page to understand what's coming and how it fits into the rest of the Protecto platform.
 
 <Columns cols="2">
-  <Card title="CBAC (Context-Based Access Control)" href="/roadmap/cbac" icon="scroll" horizontal={false}>
+  <Card title="CBAC (Context-Based Access Control)" href="/roadmap/cbac" icon="scroll" horizontal="false">
     Turn a plain-English sensitivity policy into an enforceable control that reads any document and splits it into a clean copy and a sensitive extract, based on context rather than regex.
   </Card>
 
-  <Card title="GPTGuard MCP" href="/roadmap/gptguard-mcp" icon="bot" horizontal={false}>
+  <Card title="GPTGuard MCP" href="/roadmap/gptguard-mcp" icon="bot" horizontal="false">
     Secure RAG server exposed over the standard MCP surface. Ingests and protects a document repository, then serves governed, policy-filtered retrieval to any MCP-compatible agent.
   </Card>
 
-  <Card title="Dynamic Auth" href="/roadmap/dynamic-auth" icon="unlock" horizontal={false}>
+  <Card title="Dynamic Auth" href="/roadmap/dynamic-auth" icon="unlock" horizontal="false">
     Runtime, context-aware authorization in place of static permissions. Scoped, time-bound auths replace standing credentials for agentic workflows.
   </Card>
 </Columns>
 
-<Note>
+<Callout kind="info" collapsed="false" color="#f59e0b">
   These features are in preview. Functionality, endpoints, and interfaces described here are subject to change before general availability.
-</Note>
+</Callout>
+
