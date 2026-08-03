@@ -1,0 +1,60 @@
+---
+title: "CBAC (Context-Based Access Control)"
+description: "Turn a plain-English sensitivity policy into an enforceable control that reads context, not just pattern-matches text."
+---
+
+<Note>
+  Coming soon · Preview. Functionality and interfaces are subject to change before general availability.
+</Note>
+
+## Overview
+
+CBAC turns a plain-English sensitivity policy into an enforceable control. Give it a policy and it reads any document, splits it into a clean copy with sensitive parts removed, and produces a per-policy extract of what was taken out.
+
+CBAC is built for context-dependent sensitivity. $120,000 is only a salary in context, and 15% is only a raise in context. A reasoning model makes that call, not a regex.
+
+## Policy lifecycle
+
+### Define Policy
+
+Accepts a sensitivity statement in plain English (for example, "HR salary and compensation details are sensitive") along with sample documents, and registers it as a draft policy for compilation.
+
+### Compile Policy
+
+Decomposes the statement into distinct categories, such as base salary, raise percentage, and bonus. For each category, it generates:
+
+- The forms the sensitive value takes (**includes**)
+- The safe look-alikes to leave alone (**excludes**)
+- The context conditions that decide when an ambiguous value counts
+
+This is where a dollar figure next to "pay" becomes sensitive, while the same figure next to "Q3 revenue" does not.
+
+### Preview Split
+
+Runs the compiled policy on the author's sample text and returns the clean copy and the extract side by side, so over-removal and under-removal are visible before deploy.
+
+### Score Enforceability
+
+Combines validity, accuracy, consistency, and coverage into a Weak / Moderate / Strong rating per category. A weak score blocks deployment.
+
+### Refine Policy
+
+For each miss or false positive, points at the responsible field and suggests a targeted edit, for example "revenue figures got removed, add to excludes" or "add the verbal form 'bumped up to'." Refinement re-scores the policy and repeats until it reaches Strong.
+
+### Finalize & Assign
+
+Saves the policy and makes it available for admins to assign to users and workflows.
+
+### Remove Policy
+
+Deletes a policy and detaches it from any user or workflow it was assigned to, so it no longer applies at runtime.
+
+## Runtime and auditing
+
+### Identify & Split *(runtime)*
+
+Takes document text and the set of policies to apply, and returns the clean copy plus per-policy extracts with span attribution. The clean copy is the input minus the union of all matched spans. A span matched by multiple policies is removed once but appears in each matching policy's extract. Identify & Split fails closed on any error and never returns unprocessed text as clean.
+
+### Audit Policy Effectiveness
+
+Tracks how well a policy performs over the history of input text it has processed. An LLM acts as judge, scoring per run whether sensitive spans were correctly caught and safe look-alikes were left alone, then rolls those judgments up into precision, recall, and residual-leak trends per category. Audit Policy Effectiveness surfaces which inputs and phrasings the policy missed, so authors can feed them back into includes and excludes and watch effectiveness improve over time.
