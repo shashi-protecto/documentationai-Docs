@@ -1,0 +1,35 @@
+---
+title: Dynamic Auth
+description: >-
+  Runtime, context-aware authorization for agentic workflows: scoped, time-bound
+  auths in place of static permissions.
+---
+<Note><p>Coming soon · Preview. Functionality and interfaces are subject to change before general availability.</p></Note>
+
+## Overview
+
+Dynamic Auth issues runtime, context-aware authorization instead of static permissions. An auth defines which policies it enforces and carries its own expiry, so access is scoped and time-bound rather than standing.
+
+Auths are deliberately short-lived and task-based: an agent gets exactly the access a given task needs, for only as long as it needs it. This is what agentic AI requires and what static, long-lived credentials cannot safely provide.
+
+## Capabilities
+
+### Issue Auth
+
+Grants an authorization for an agent and assigns the set of policies to be enforced under it, along with the scope it permits. The auth is stamped with an expiry so it lapses automatically once the task is done.
+
+### Request Step-Up
+
+Grants elevated access for a specific action, such as unmasking, only when the requester is explicitly authorized. The elevation carries its own justification and a shorter expiry.
+
+### Revoke Auth
+
+Immediately invalidates an auth before its expiry when context or risk changes.
+
+### Introspect Auth
+
+Returns an auth's current state: the policies it enforces, the scope it permits, and its remaining time before expiry, so a system can verify what an agent is allowed to do.
+
+### Audit Auths
+
+Retrieves the record of every auth issued, stepped up, revoked, and expired, with the context behind each decision.

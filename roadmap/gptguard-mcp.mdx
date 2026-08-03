@@ -1,0 +1,66 @@
+---
+title: "GPTGuard MCP"
+description: "Secure RAG over the standard MCP surface: governed, policy-filtered retrieval for any MCP-compatible agent."
+---
+
+<Note>
+  Coming soon · Preview. Functionality and interfaces are subject to change before general availability.
+</Note>
+
+## Overview
+
+GPTGuard MCP is secure RAG first. It ingests a document repository, protects the contents at ingestion, and serves them back as governed, policy-filtered retrieval, so an agent can ground its answers on enterprise documents without ever touching raw sensitive data. It then exposes this through the standard MCP surface, so any MCP-compatible agent can use it with no custom integration.
+
+## Document repository (secure RAG)
+
+### Set Repository ID
+
+Creates or assigns a repository identifier, so documents are grouped into an addressable, policy-bound collection an agent can target.
+
+### Ingest Documents
+
+Adds documents to a repository with a set of policies that are applied at ingestion, so what gets indexed and stored is already protected. Because ingestion (parsing, protection, embedding) is long-running, this runs asynchronously: the call returns a job reference immediately, and job status can be polled until ingestion completes.
+
+### Retrieve Documents
+
+Takes a retrieval prompt and returns the most relevant documents and passages for RAG, applying a set of policies to the results so the returned context is filtered and masked for the requester before it reaches the model.
+
+### List Files
+
+Returns the files held in a repository, with their ingestion status.
+
+### Delete Files
+
+Removes specific files from a repository and clears them from the index.
+
+### Delete Repository
+
+Removes an entire repository and its contents, clearing the associated index and stored artifacts.
+
+## Policy management
+
+### Add Policy
+
+Registers a policy with GPTGuard so it can be applied at ingestion, at retrieval, or both.
+
+### Modify Policy
+
+Updates an existing policy's definition and versions the change, so repositories referencing it pick up the new behavior.
+
+### Remove Policy
+
+Deletes a policy, detaching it from any ingestion or retrieval flow that referenced it.
+
+## Standard MCP surface
+
+### List Tools
+
+Exposes GPTGuard's protected capabilities to any MCP client through the standard protocol, so agents discover governed data sources without custom integration.
+
+### Call Tool
+
+Executes a tool call through GPTGuard, detecting and masking sensitive data in both the arguments and the returned result before the agent sees raw values.
+
+### Serve Resources
+
+Presents protected data and documents as MCP resources, with policy applied on every read.
