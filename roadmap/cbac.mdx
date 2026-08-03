@@ -13,42 +13,6 @@ CBAC turns a plain-English sensitivity policy into an enforceable control. Give 
 
 CBAC is built for context-dependent sensitivity. $120,000 is only a salary in context, and 15% is only a raise in context. A reasoning model makes that call, not a regex.
 
-<svg width="100%" viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg" role="img">
-  <title>CBAC runtime flow</title>
-  <defs>
-    <marker id="cbac-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M2 1L8 5L2 9" fill="none" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-    </marker>
-  </defs>
-  <text x="40" y="18" font-family="system-ui, sans-serif" font-size="12" fill="#4B5563">Runtime flow</text>
-  <g>
-    <rect x="270" y="26" width="140" height="44" rx="22" fill="#FBB90F" fill-opacity="0.12" stroke="#FBB90F" stroke-width="1"/>
-    <text x="340" y="48" text-anchor="middle" dominant-baseline="central" font-family="system-ui, sans-serif" font-size="14" font-weight="500" fill="#111827">Policy (Strong)</text>
-  </g>
-  <g>
-    <rect x="40" y="150" width="120" height="48" rx="24" fill="#6B7280" fill-opacity="0.08" stroke="#6B7280" stroke-width="1"/>
-    <text x="100" y="174" text-anchor="middle" dominant-baseline="central" font-family="system-ui, sans-serif" font-size="14" font-weight="500" fill="#111827">Document</text>
-  </g>
-  <g>
-    <rect x="230" y="140" width="220" height="64" rx="32" fill="#4E5BDC" fill-opacity="0.08" stroke="#4E5BDC" stroke-width="1"/>
-    <text x="340" y="163" text-anchor="middle" dominant-baseline="central" font-family="system-ui, sans-serif" font-size="14" font-weight="500" fill="#111827">Identify &amp; Split</text>
-    <text x="340" y="182" text-anchor="middle" dominant-baseline="central" font-family="system-ui, sans-serif" font-size="12" fill="#4B5563">runtime, fails closed</text>
-  </g>
-  <g>
-    <rect x="520" y="118" width="130" height="40" rx="20" fill="#16A34A" fill-opacity="0.08" stroke="#16A34A" stroke-width="1"/>
-    <text x="585" y="138" text-anchor="middle" dominant-baseline="central" font-family="system-ui, sans-serif" font-size="14" font-weight="500" fill="#111827">Clean copy</text>
-  </g>
-  <g>
-    <rect x="520" y="176" width="130" height="40" rx="20" fill="#1FB1B3" fill-opacity="0.08" stroke="#1FB1B3" stroke-width="1"/>
-    <text x="585" y="196" text-anchor="middle" dominant-baseline="central" font-family="system-ui, sans-serif" font-size="14" font-weight="500" fill="#111827">Policy extract</text>
-  </g>
-  <line x1="340" y1="70" x2="340" y2="138" stroke="#FBB90F" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#cbac-arrow)" fill="none"/>
-  <text x="340" y="107" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#4B5563">applies to</text>
-  <line x1="160" y1="174" x2="228" y2="174" stroke="#9CA3AF" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#cbac-arrow)" fill="none"/>
-  <line x1="450" y1="158" x2="518" y2="140" stroke="#16A34A" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#cbac-arrow)" fill="none"/>
-  <line x1="450" y1="186" x2="518" y2="196" stroke="#1FB1B3" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#cbac-arrow)" fill="none"/>
-</svg>
-
 ## Policy lifecycle
 
 ### Define Policy
