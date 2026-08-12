@@ -76,7 +76,7 @@ All masking errors return a consistent structure:
 | Constraint | Value |
 |-----------|-------|
 | Maximum masked output length | 600 characters |
-| Trial token creation limit | 1,000 masked values |
+| POC/Trial access | Contact us at sales@protecto.ai |
 | Rate limits | Plan-based (enforced on all tiers) |
 
 <Callout kind="info">
@@ -88,7 +88,7 @@ All masking errors return a consistent structure:
 | HTTP status | Scenario | Recommended action |
 |-------------|----------|-------------------|
 | 400 | Validation or input error | Do not retry — fix the request |
-| 403 | Trial subscription exhausted | Upgrade subscription |
+| 403 | Trial subscription exhausted | For POC/Trial access, contact us at sales@protecto.ai |
 | 500 | Internal failure after retries | Retry with exponential backoff or contact support |
 
 <Callout kind="tip">
@@ -99,5 +99,5 @@ All masking errors return a consistent structure:
 
 - Validate request payloads before sending — check that `mask`, `value`, `token_name`, and `format` fields are populated
 - Keep masked outputs under 600 characters by splitting long inputs
-- Handle trial subscription exhaustion gracefully with clear user-facing messaging
+- For POC/Trial access, contact us at sales@protecto.ai
 - Log error messages exactly as returned for support and debugging

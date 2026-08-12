@@ -12,7 +12,7 @@ METHOD: PUT
 
 | Method | Route      | Headers                                 |
 | ------ | ---------- | --------------------------------------- |
-| PUT    | ` /unmask` | `Authorization: Bearer YOUR_AUTH_TOKEN` |
+| PUT    | ` /unmask` | `Authorization: Bearer YOUR_AUTH_TOKEN` |
 
 To get the Authkey please contact [help@protecto.ai](mailto:help@protecto.ai)
 
@@ -30,7 +30,7 @@ To get the Authkey please contact [help@protecto.ai](mailto:help@protecto.ai)
 
 <Request show-lines="true" tabs="JSON,cURL,Python">
   ```bash
-  curl -X PUT https://protecto-trial.protecto.ai/api/vault/unmask \
+  curl -X PUT {baseurl}/api/vault/unmask \
     -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
     -H "Content-Type: application/json" \
     -d '{
@@ -46,7 +46,7 @@ To get the Authkey please contact [help@protecto.ai](mailto:help@protecto.ai)
   import requests
 
   response = requests.put(
-      "https://protecto-trial.protecto.ai/api/vault/unmask",
+      "{baseurl}/api/vault/unmask",
       headers={
           "Authorization": "Bearer YOUR_AUTH_TOKEN",
           "Content-Type": "application/json"
@@ -64,7 +64,7 @@ To get the Authkey please contact [help@protecto.ai](mailto:help@protecto.ai)
 
   ```javascript
   const response = await fetch(
-    "https://protecto-trial.protecto.ai/api/vault/unmask",
+    "{baseurl}/api/vault/unmask",
     {
       method: "PUT",
       headers: {
@@ -132,4 +132,3 @@ To get the Authkey please contact [help@protecto.ai](mailto:help@protecto.ai)
 - Use unmasking only when strictly required by the workflow
 
 - Ensure compliance with applicable data protection regulations before unmasking
-
