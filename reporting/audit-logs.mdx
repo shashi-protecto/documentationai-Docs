@@ -9,7 +9,7 @@ Provides **full audit-level detail** for every API request made in a namespace. 
 
 | Method | Endpoint |
 |--------|----------|
-| `GET` | `https://<domain>/api/vault/namespace/reports/audit-details` |
+| `GET` | `{baseurl}/api/vault/namespace/reports/audit-details` |
 
 ## Query parameters
 
@@ -34,7 +34,7 @@ Provides **full audit-level detail** for every API request made in a namespace. 
 ```
 
 ```bash
-curl -X GET "https://<domain>/api/vault/namespace/reports/audit-details?start_date=2024-06-01+00:00:00&end_date=2024-06-01+23:59:59" \
+curl -X GET "{baseurl}/api/vault/namespace/reports/audit-details?start_date=2024-06-01+00:00:00&end_date=2024-06-01+23:59:59" \
   -H "Authorization: Bearer <ADMIN_USER_AUTH_KEY>"
 ```
 
@@ -42,7 +42,7 @@ curl -X GET "https://<domain>/api/vault/namespace/reports/audit-details?start_da
 import requests
 
 response = requests.get(
-    "https://<domain>/api/vault/namespace/reports/audit-details",
+    "{baseurl}/api/vault/namespace/reports/audit-details",
     headers={
         "Authorization": "Bearer <ADMIN_USER_AUTH_KEY>"
     },

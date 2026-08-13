@@ -9,7 +9,7 @@ Returns **API usage per user** within a namespace over a given time range. Use t
 
 | Method | Endpoint |
 |--------|----------|
-| `GET` | `https://<domain>/api/vault/reports/namespace-users-summary` |
+| `GET` | `{baseurl}/api/vault/reports/namespace-users-summary` |
 
 ## Query parameters
 
@@ -39,7 +39,7 @@ Returns **API usage per user** within a namespace over a given time range. Use t
 ```
 
 ```bash
-curl -X GET "https://<domain>/api/vault/reports/namespace-users-summary?namespace=production&start_date=2024-05-21+00:00:00&end_date=2024-05-22+23:59:59" \
+curl -X GET "{baseurl}/api/vault/reports/namespace-users-summary?namespace=production&start_date=2024-05-21+00:00:00&end_date=2024-05-22+23:59:59" \
   -H "Authorization: Bearer <ADMIN_USER_AUTH_KEY>"
 ```
 
@@ -47,7 +47,7 @@ curl -X GET "https://<domain>/api/vault/reports/namespace-users-summary?namespac
 import requests
 
 response = requests.get(
-    "https://<domain>/api/vault/reports/namespace-users-summary",
+    "{baseurl}/api/vault/reports/namespace-users-summary",
     headers={
         "Authorization": "Bearer <ADMIN_USER_AUTH_KEY>"
     },

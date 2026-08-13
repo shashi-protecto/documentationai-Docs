@@ -9,7 +9,7 @@ Returns usage counts **across all namespaces** visible to the admin. Commonly us
 
 | Method | Endpoint |
 |--------|----------|
-| `GET` | `https://<domain>/api/vault/reports/all-namespace-summary` |
+| `GET` | `{baseurl}/api/vault/reports/all-namespace-summary` |
 
 ## Query parameters
 
@@ -34,7 +34,7 @@ Returns usage counts **across all namespaces** visible to the admin. Commonly us
 ```
 
 ```bash
-curl -X GET "https://<domain>/api/vault/reports/all-namespace-summary?start_date=2024-05-01+00:00:00&end_date=2024-05-31+23:59:59" \
+curl -X GET "{baseurl}/api/vault/reports/all-namespace-summary?start_date=2024-05-01+00:00:00&end_date=2024-05-31+23:59:59" \
   -H "Authorization: Bearer <ADMIN_USER_AUTH_KEY>"
 ```
 
@@ -42,7 +42,7 @@ curl -X GET "https://<domain>/api/vault/reports/all-namespace-summary?start_date
 import requests
 
 response = requests.get(
-    "https://<domain>/api/vault/reports/all-namespace-summary",
+    "{baseurl}/api/vault/reports/all-namespace-summary",
     headers={
         "Authorization": "Bearer <ADMIN_USER_AUTH_KEY>"
     },
