@@ -10,7 +10,7 @@ Use this endpoint when you need to **locate and classify** PII in text without r
 
 | Method | URL                                     |
 | ------ | --------------------------------------- |
-| PUT    | `https://<BASE_URL>/pii-identification` |
+| PUT    | `{baseurl}/pii-identification` |
 
 ## Authentication
 
@@ -50,7 +50,7 @@ Authorization: Bearer <AUTH_TOKEN>
   ```
 
   ```bash
-  curl -X PUT https://<BASE_URL>/pii-identification \
+  curl -X PUT {baseurl}/pii-identification \
     -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
     -H "Content-Type: application/json" \
     -d '{
@@ -72,7 +72,7 @@ Authorization: Bearer <AUTH_TOKEN>
   import requests
 
   response = requests.put(
-      "https://<BASE_URL>/pii-identification",
+      "{baseurl}/pii-identification",
       headers={
           "Authorization": "Bearer YOUR_AUTH_TOKEN",
           "Content-Type": "application/json"

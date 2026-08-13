@@ -17,7 +17,7 @@ A whitelist endpoint is useful when:
 
 | Method | Endpoint |
 |--------|----------|
-| `PUT` | `https://<domain>/api/vault/metadata/add-or-update/custom-tag/pi-list-endpoint` |
+| `PUT` | `{baseurl}/api/vault/metadata/add-or-update/custom-tag/pi-list-endpoint` |
 
 ## Request body
 
@@ -54,7 +54,7 @@ A whitelist endpoint is useful when:
 ```
 
 ```bash
-curl -X PUT https://<domain>/api/vault/metadata/add-or-update/custom-tag/pi-list-endpoint \
+curl -X PUT {baseurl}/api/vault/metadata/add-or-update/custom-tag/pi-list-endpoint \
   -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>" \
   -H "Content-Type: application/json; charset=utf-8" \
   -d '{
