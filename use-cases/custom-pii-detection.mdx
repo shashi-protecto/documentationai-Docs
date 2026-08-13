@@ -27,11 +27,11 @@ Protecto stores the tag's **prefix/suffix** (e.g., `<CUSTOMER_ID>…</CUSTOMER_I
     Call the Protecto Metadata API to tell Protecto where to find your custom ID detection logic.
 
     **Method:** `PUT`
-    **Endpoint:** `https://<BASE_URL>/api/vault/metadata/add-or-update/custom-tag/identification-endpoint`
+    **Endpoint:** `{baseurl}/api/vault/metadata/add-or-update/custom-tag/identification-endpoint`
 
     <Request tabs="cURL">
       ```bash
-      curl -X PUT https://<BASE_URL>/api/vault/metadata/add-or-update/custom-tag/identification-endpoint \
+      curl -X PUT {baseurl}/api/vault/metadata/add-or-update/custom-tag/identification-endpoint \
         -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
         -H "Content-Type: application/json" \
         -d '{
@@ -68,11 +68,11 @@ Protecto stores the tag's **prefix/suffix** (e.g., `<CUSTOMER_ID>…</CUSTOMER_I
     If you want Protecto to also fetch a known list of valid values for this tag type, register a whitelist endpoint.
 
     **Method:** `PUT`
-    **Endpoint:** `https://<BASE_URL>/api/vault/metadata/add-or-update/custom-tag/pi-list-endpoint`
+    **Endpoint:** `{baseurl}/api/vault/metadata/add-or-update/custom-tag/pi-list-endpoint`
 
     <Request tabs="cURL">
       ```bash
-      curl -X PUT https://<BASE_URL>/api/vault/metadata/add-or-update/custom-tag/pi-list-endpoint \
+      curl -X PUT {baseurl}/api/vault/metadata/add-or-update/custom-tag/pi-list-endpoint \
         -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
         -H "Content-Type: application/json" \
         -d '{
@@ -180,11 +180,11 @@ Protecto stores the tag's **prefix/suffix** (e.g., `<CUSTOMER_ID>…</CUSTOMER_I
     Confirm that Protecto has stored your configuration correctly.
 
     **Method:** `PUT`
-    **Endpoint:** `https://<BASE_URL>/api/vault/metadata/custom-tag/details`
+    **Endpoint:** `{baseurl}/api/vault/metadata/custom-tag/details`
 
     <Request tabs="cURL">
       ```bash
-      curl -X PUT https://<BASE_URL>/api/vault/metadata/custom-tag/details \
+      curl -X PUT {baseurl}/api/vault/metadata/custom-tag/details \
         -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
         -H "Content-Type: application/json" \
         -d '{ "data": { "tag_type": "CUSTOMER_ID" } }'
@@ -238,7 +238,7 @@ Protecto stores the tag's **prefix/suffix** (e.g., `<CUSTOMER_ID>…</CUSTOMER_I
 If you need to remove the tag configuration:
 
 ```bash
-curl -X PUT https://<BASE_URL>/api/vault/metadata/delete/custom-tag \
+curl -X PUT {baseurl}/api/vault/metadata/delete/custom-tag \
   -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{ "data": { "tag_type": "CUSTOMER_ID" } }'
