@@ -7,26 +7,23 @@ description: >-
 By the end of this guide, you will:
 
 - Get access to a Protecto account
-
 - Obtain an authentication token
-
 - Mask sensitive data using auto-detection
-
 - Unmask tokenized data
 
 ## Prerequisites
 
-| Requirement      | Notes                              |
-| ---------------- | ----------------------------------- |
-| Protecto account | For POC/Trial access, contact us at sales@protecto.ai |
-| Internet access  | HTTPS outbound required            |
-| HTTP client      | cURL, Postman, or any language SDK |
+| Requirement      | Notes                                                                             |
+| ---------------- | --------------------------------------------------------------------------------- |
+| Protecto account | For POC/Trial access, contact us at [sales@protecto.ai](mailto:sales@protecto.ai) |
+| Internet access  | HTTPS outbound required                                                           |
+| HTTP client      | cURL, Postman, or any language SDK                                                |
 
 ## Step 1: Get access and retrieve your token
 
 <Steps>
   <Step title="Request access" icon="user-plus" title-type="p">
-    For POC/Trial access, please contact us at sales@protecto.ai. Our team will help you get set up with an account.
+    For POC/Trial access, please contact us at [sales@protecto.ai](mailto:sales@protecto.ai). Our team will help you get set up with an account.
   </Step>
 
   <Step title="Log in to the dashboard" icon="layout-dashboard" title-type="p">
@@ -55,7 +52,7 @@ Every request requires this header:
 
 The **Identify and Mask (Auto-Detect)** mode is the recommended starting point. You send free-form text, and Protecto automatically detects and masks sensitive entities based on the active policy. No entity types or token names are required.
 
-<Request show-lines="true" tabs="JSON,cURL,Python">
+<Request show-lines="true">
   ```json
   {
     "mask": [
@@ -98,7 +95,7 @@ The **Identify and Mask (Auto-Detect)** mode is the recommended starting point. 
   ```
 </Request>
 
-<Response show-lines="true" tabs={[]}>
+<Response show-lines="true">
   ```json
   {
     "data": [
@@ -125,7 +122,7 @@ The exact tokenized output depends on your active policy. The response structure
 
 To retrieve the original value from a token, send the `token_value` to the Unmask API.
 
-<Request show-lines="true" tabs={[]}>
+<Request show-lines="true">
   ```json
   {
     "unmask": [
@@ -137,7 +134,7 @@ To retrieve the original value from a token, send the `token_value` to the Unmas
   ```
 </Request>
 
-<Response show-lines="true" tabs={[]}>
+<Response show-lines="true">
   ```json
   {
     "data": [
@@ -173,3 +170,4 @@ To retrieve the original value from a token, send the `token_value` to the Unmas
     Understand tokenization, policies, and entity tags in depth.
   </Card>
 </Columns>
+
