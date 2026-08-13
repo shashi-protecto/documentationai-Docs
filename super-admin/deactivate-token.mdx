@@ -9,7 +9,7 @@ Immediately revokes a namespace user token. Use this when credentials are compro
 
 | Method | Endpoint |
 |--------|----------|
-| `PUT` | `https://<domain>/api/vault/super-admin/namespace/auth-token/deactivate` |
+| `PUT` | `{baseurl}/api/vault/super-admin/namespace/auth-token/deactivate` |
 
 <Request tabs="JSON,cURL">
 ```json
@@ -19,7 +19,7 @@ Immediately revokes a namespace user token. Use this when credentials are compro
 ```
 
 ```bash
-curl -X PUT https://<domain>/api/vault/super-admin/namespace/auth-token/deactivate \
+curl -X PUT {baseurl}/api/vault/super-admin/namespace/auth-token/deactivate \
   -H "Authorization: Bearer <MASTER_API_KEY>" \
   -H "Content-Type: application/json; charset=utf-8" \
   -d '{

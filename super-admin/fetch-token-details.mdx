@@ -9,8 +9,8 @@ Retrieves metadata for a specific user token within a namespace.
 ## Endpoint
 
 | Method | Endpoint                                                            |
-| ------ | ------------------------------------------------------------------- |
-| `PUT`  | `https://<domain>/api/vault/super-admin/namespace/auth-token/fetch` |
+| ------ | --------------------------------------------------------------------|
+| `PUT`  | `{baseurl}/api/vault/super-admin/namespace/auth-token/fetch` |
 
 <Request show-lines="true" tabs={[]}>
   ```json
@@ -21,7 +21,7 @@ Retrieves metadata for a specific user token within a namespace.
   ```
 
   ```bash
-  curl -X PUT https://<domain>/api/vault/super-admin/namespace/auth-token/fetch \
+  curl -X PUT {baseurl}/api/vault/super-admin/namespace/auth-token/fetch \
     -H "Authorization: Bearer <MASTER_API_KEY>" \
     -H "Content-Type: application/json; charset=utf-8" \
     -d '{
@@ -47,4 +47,3 @@ Retrieves metadata for a specific user token within a namespace.
   }
   ```
 </Response>
-
