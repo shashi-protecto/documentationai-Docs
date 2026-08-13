@@ -9,7 +9,7 @@ Deletes stored **text-to-token mappings** from a namespace that are older than a
 
 | Method | Endpoint |
 |--------|----------|
-| `PUT` | `https://<domain>/api/vault/namespace/delete/personal-data-mapping` |
+| `PUT` | `{baseurl}/api/vault/namespace/delete/personal-data-mapping` |
 
 ## Request body
 
@@ -25,7 +25,7 @@ You must provide **either** `date` **or** `duration` — not both.
 
 <Request tabs="Delete by Date,Delete by Duration">
 ```bash
-curl -X PUT https://<domain>/api/vault/namespace/delete/personal-data-mapping \
+curl -X PUT {baseurl}/api/vault/namespace/delete/personal-data-mapping \
   -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>" \
   -H "Content-Type: application/json; charset=utf-8" \
   -d '{
@@ -36,7 +36,7 @@ curl -X PUT https://<domain>/api/vault/namespace/delete/personal-data-mapping \
 ```
 
 ```bash
-curl -X PUT https://<domain>/api/vault/namespace/delete/personal-data-mapping \
+curl -X PUT {baseurl}/api/vault/namespace/delete/personal-data-mapping \
   -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>" \
   -H "Content-Type: application/json; charset=utf-8" \
   -d '{
