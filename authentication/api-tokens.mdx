@@ -24,7 +24,7 @@ Include the token in the `Authorization` header of every request.
 
 <CodeGroup tabs="cURL,Python,JavaScript">
   ```bash
-  curl -X PUT https://protecto-trial.protecto.ai/api/vault/mask \
+  curl -X PUT {baseurl}/api/vault/mask \
     -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
     -H "Content-Type: application/json" \
     -d '{ "mask": [{ "value": "John Doe" }] }'
@@ -38,7 +38,7 @@ Include the token in the `Authorization` header of every request.
       "Content-Type": "application/json"
   }
   response = requests.put(
-      "https://protecto-trial.protecto.ai/api/vault/mask",
+      "{baseurl}/api/vault/mask",
       headers=headers,
       json={"mask": [{"value": "John Doe"}]}
   )
@@ -46,7 +46,7 @@ Include the token in the `Authorization` header of every request.
 
   ```javascript
   const response = await fetch(
-    "https://protecto-trial.protecto.ai/api/vault/mask",
+    "{baseurl}/api/vault/mask",
     {
       method: "PUT",
       headers: {
