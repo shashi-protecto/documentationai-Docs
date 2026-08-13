@@ -10,7 +10,7 @@ Retrieves entity-level metadata for a specific policy, showing which entities ar
 
 | Method | Endpoint                                                          |
 | ------ | ----------------------------------------------------------------- |
-| `GET`  | `https://<domain>/api/vault/metadata/personal-data-entities/list` |
+| `GET`  | `{baseurl}/api/vault/metadata/personal-data-entities/list` |
 
 ## Query parameters
 
@@ -24,7 +24,7 @@ Retrieves entity-level metadata for a specific policy, showing which entities ar
 
 <Request show-lines="true" tabs={[]}>
   ```bash
-  curl -X GET "https://<domain>/api/vault/metadata/personal-data-entities/list?policy_name=customer-support-policy" \
+  curl -X GET "{baseurl}/api/vault/metadata/personal-data-entities/list?policy_name=customer-support-policy" \
     -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>"
   ```
 </Request>
@@ -83,8 +83,7 @@ Retrieves entity-level metadata for a specific policy, showing which entities ar
 ## Entity categories
 
 | Category                   | Behavior                                                     |
-| -------------------------- | ------------------------------------------------------------ |
+| --------------------------- | ------------------------------------------------------------ |
 | `anonymizable_entities`    | Masked and **cannot be unmasked** — irreversible             |
 | `pseudonymizable_entities` | Masked and **can be unmasked** — reversible with permissions |
 | `excluded_entities`        | Not detected or masked — appear as plain text                |
-

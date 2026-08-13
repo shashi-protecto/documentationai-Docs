@@ -9,7 +9,7 @@ Deletes a policy and all associated metadata.
 
 | Method | Endpoint |
 |--------|----------|
-| `PUT` | `https://<domain>/api/vault/metadata/policy/delete` |
+| `PUT` | `{baseurl}/api/vault/metadata/policy/delete` |
 
 <Request tabs="JSON,cURL,Python">
 ```json
@@ -21,7 +21,7 @@ Deletes a policy and all associated metadata.
 ```
 
 ```bash
-curl -X PUT https://<domain>/api/vault/metadata/policy/delete \
+curl -X PUT {baseurl}/api/vault/metadata/policy/delete \
   -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>" \
   -H "Content-Type: application/json; charset=utf-8" \
   -d '{
@@ -35,7 +35,7 @@ curl -X PUT https://<domain>/api/vault/metadata/policy/delete \
 import requests
 
 response = requests.put(
-    "https://<domain>/api/vault/metadata/policy/delete",
+    "{baseurl}/api/vault/metadata/policy/delete",
     headers={
         "Authorization": "Bearer <NAMESPACE_ADMIN_API_KEY>",
         "Content-Type": "application/json"
