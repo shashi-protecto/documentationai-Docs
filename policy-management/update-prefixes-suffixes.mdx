@@ -9,7 +9,7 @@ Updates the prefix and suffix used when auto-detect masking finds an entity. Thi
 
 | Method | Endpoint |
 |--------|----------|
-| `PUT` | `https://<domain>/api/vault/metadata/update-auto-detect` |
+| `PUT` | `{baseurl}/api/vault/metadata/update-auto-detect` |
 
 ## Request body
 
@@ -43,7 +43,7 @@ Updates the prefix and suffix used when auto-detect masking finds an entity. Thi
 ```
 
 ```bash
-curl -X PUT https://<domain>/api/vault/metadata/update-auto-detect \
+curl -X PUT {baseurl}/api/vault/metadata/update-auto-detect \
   -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>" \
   -H "Content-Type: application/json; charset=utf-8" \
   -d '{

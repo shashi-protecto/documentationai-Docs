@@ -24,7 +24,7 @@ Include the token in the `Authorization` header of every request.
 
 <CodeGroup tabs="cURL,Python,JavaScript">
   ```bash
-  curl -X PUT https://protecto-trial.protecto.ai/api/vault/mask \
+  curl -X PUT {baseurl}/api/vault/mask \
     -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
     -H "Content-Type: application/json" \
     -d '{ "mask": [{ "value": "John Doe" }] }'
@@ -38,7 +38,7 @@ Include the token in the `Authorization` header of every request.
       "Content-Type": "application/json"
   }
   response = requests.put(
-      "https://protecto-trial.protecto.ai/api/vault/mask",
+      "{baseurl}/api/vault/mask",
       headers=headers,
       json={"mask": [{"value": "John Doe"}]}
   )
@@ -46,7 +46,7 @@ Include the token in the `Authorization` header of every request.
 
   ```javascript
   const response = await fetch(
-    "https://protecto-trial.protecto.ai/api/vault/mask",
+    "{baseurl}/api/vault/mask",
     {
       method: "PUT",
       headers: {
@@ -77,8 +77,8 @@ There are no anonymous or unauthenticated endpoints.
 
 ## How to get your token
 
-1. Visit [https://portal.protecto.ai/](https://portal.protecto.ai/) and sign in
-2. Navigate to the **Dashboard**
-3. Locate and copy the **Auth Token**
+For POC/Trial access, contact us at sales@protecto.ai. Our team will provide you with an auth token and your base URL so you can start making requests directly — no separate sign-up or dashboard step required.
 
-Store the token securely before closing the portal.
+<Callout kind="alert">
+  Store the token securely as soon as you receive it. Treat it like any other credential.
+</Callout>

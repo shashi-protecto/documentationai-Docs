@@ -10,7 +10,7 @@ Creates an authentication token for a user within a specific namespace. If the n
 
 | Method | Endpoint                                                               |
 | ------ | ---------------------------------------------------------------------- |
-| `PUT`  | `https://<domain>/api/vault/super-admin/namespace/auth-token/generate` |
+| `PUT`  | `{baseurl}/api/vault/super-admin/namespace/auth-token/generate` |
 
 ## Request body
 
@@ -48,7 +48,7 @@ Creates an authentication token for a user within a specific namespace. If the n
   ```
 
   ```bash
-  curl -X PUT https://<domain>/api/vault/super-admin/namespace/auth-token/generate \
+  curl -X PUT {baseurl}/api/vault/super-admin/namespace/auth-token/generate \
     -H "Authorization: Bearer <MASTER_API_KEY>" \
     -H "Content-Type: application/json; charset=utf-8" \
     -d '{
@@ -97,4 +97,3 @@ Creates an authentication token for a user within a specific namespace. If the n
 - Use the `tracking_id` with the [Track Namespace Jobs](/super-admin/track-namespace-jobs) API to confirm namespace creation completes
 
 - The auth token is valid between `start_date` and `end_date` if provided
-

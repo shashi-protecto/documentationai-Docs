@@ -8,7 +8,7 @@ Creates a new policy in the namespace with default metadata. After creation, upd
 
 | Method | Endpoint                                            |
 | ------ | --------------------------------------------------- |
-| `PUT`  | `https://<domain>/api/vault/metadata/policy/create` |
+| `PUT`  | `{baseurl}/api/vault/metadata/policy/create` |
 
 ## Authentication
 
@@ -32,7 +32,7 @@ Creates a new policy in the namespace with default metadata. After creation, upd
   ```
 
   ```bash
-  curl -X PUT https://<domain>/api/vault/metadata/policy/create \
+  curl -X PUT {baseurl}/api/vault/metadata/policy/create \
     -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>" \
     -H "Content-Type: application/json; charset=utf-8" \
     -d '{

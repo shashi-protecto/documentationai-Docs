@@ -9,7 +9,7 @@ Deletes a user-defined custom PII tag and all associated configuration.
 
 | Method | Endpoint |
 |--------|----------|
-| `PUT` | `https://<domain>/api/vault/metadata/delete/custom-tag` |
+| `PUT` | `{baseurl}/api/vault/metadata/delete/custom-tag` |
 
 <Request tabs="JSON,cURL">
 ```json
@@ -21,7 +21,7 @@ Deletes a user-defined custom PII tag and all associated configuration.
 ```
 
 ```bash
-curl -X PUT https://<domain>/api/vault/metadata/delete/custom-tag \
+curl -X PUT {baseurl}/api/vault/metadata/delete/custom-tag \
   -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>" \
   -H "Content-Type: application/json; charset=utf-8" \
   -d '{

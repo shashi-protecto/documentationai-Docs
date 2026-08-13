@@ -11,7 +11,7 @@ Only the **admin who initiated the deletion** can query the job status.
 
 | Method | Endpoint |
 |--------|----------|
-| `GET` | `https://<domain>/api/vault/namespace/job-status` |
+| `GET` | `{baseurl}/api/vault/namespace/job-status` |
 
 ## Query parameters
 
@@ -21,7 +21,7 @@ Only the **admin who initiated the deletion** can query the job status.
 
 <Request tabs="cURL">
 ```bash
-curl -X GET "https://<domain>/api/vault/namespace/job-status?tracking_id=9f799cb6-5315-4199-8d47-3a7ced21dd1d" \
+curl -X GET "{baseurl}/api/vault/namespace/job-status?tracking_id=9f799cb6-5315-4199-8d47-3a7ced21dd1d" \
   -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>"
 ```
 </Request>

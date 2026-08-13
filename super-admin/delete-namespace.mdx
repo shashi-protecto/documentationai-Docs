@@ -9,7 +9,7 @@ Deletes an entire namespace including **all data and metadata**. This operation 
 
 | Method | Endpoint |
 |--------|----------|
-| `PUT` | `https://<domain>/api/vault/super-admin/namespace/delete` |
+| `PUT` | `{baseurl}/api/vault/super-admin/namespace/delete` |
 
 <Request tabs="JSON,cURL">
 ```json
@@ -19,7 +19,7 @@ Deletes an entire namespace including **all data and metadata**. This operation 
 ```
 
 ```bash
-curl -X PUT https://<domain>/api/vault/super-admin/namespace/delete \
+curl -X PUT {baseurl}/api/vault/super-admin/namespace/delete \
   -H "Authorization: Bearer <MASTER_API_KEY>" \
   -H "Content-Type: application/json; charset=utf-8" \
   -d '{

@@ -9,7 +9,7 @@ Submits a data scan request for one or more objects. The scan runs asynchronousl
 
 | Method | Endpoint |
 |--------|----------|
-| `PUT` | `https://<domain>/api/vault/data-scan/data-scan-async` |
+| `PUT` | `{baseurl}/api/vault/data-scan/data-scan-async` |
 
 ## Authentication
 
@@ -52,7 +52,7 @@ Submits a data scan request for one or more objects. The scan runs asynchronousl
 ```
 
 ```bash
-curl -X PUT https://<domain>/api/vault/data-scan/data-scan-async \
+curl -X PUT {baseurl}/api/vault/data-scan/data-scan-async \
   -H "Authorization: Bearer <AUTH_TOKEN>" \
   -H "Content-Type: application/json; charset=utf-8" \
   -d '[

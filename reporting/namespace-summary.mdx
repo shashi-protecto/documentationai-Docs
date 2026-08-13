@@ -9,7 +9,7 @@ Returns **aggregated API usage counts** for a namespace, grouped by API type and
 
 | Method | Endpoint |
 |--------|----------|
-| `GET` | `https://<domain>/api/vault/reports/namespace-summary` |
+| `GET` | `{baseurl}/api/vault/reports/namespace-summary` |
 
 ## Query parameters
 
@@ -39,7 +39,7 @@ Returns **aggregated API usage counts** for a namespace, grouped by API type and
 ```
 
 ```bash
-curl -X GET "https://<domain>/api/vault/reports/namespace-summary?namespace=production&start_date=2024-05-01+00:00:00&end_date=2024-05-31+23:59:59" \
+curl -X GET "{baseurl}/api/vault/reports/namespace-summary?namespace=production&start_date=2024-05-01+00:00:00&end_date=2024-05-31+23:59:59" \
   -H "Authorization: Bearer <ADMIN_USER_AUTH_KEY>"
 ```
 
@@ -47,7 +47,7 @@ curl -X GET "https://<domain>/api/vault/reports/namespace-summary?namespace=prod
 import requests
 
 response = requests.get(
-    "https://<domain>/api/vault/reports/namespace-summary",
+    "{baseurl}/api/vault/reports/namespace-summary",
     headers={
         "Authorization": "Bearer <ADMIN_USER_AUTH_KEY>"
     },

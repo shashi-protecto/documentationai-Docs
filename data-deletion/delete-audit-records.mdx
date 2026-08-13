@@ -11,7 +11,7 @@ Audit records include requested API, user identity, input payload, response payl
 
 | Method | Endpoint |
 |--------|----------|
-| `PUT` | `https://<domain>/api/vault/namespace/delete/audit-records` |
+| `PUT` | `{baseurl}/api/vault/namespace/delete/audit-records` |
 
 ## Request body
 
@@ -25,7 +25,7 @@ Audit records include requested API, user identity, input payload, response payl
 
 <Request tabs="Delete Older than 180 Days">
 ```bash
-curl -X PUT https://<domain>/api/vault/namespace/delete/audit-records \
+curl -X PUT {baseurl}/api/vault/namespace/delete/audit-records \
   -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>" \
   -H "Content-Type: application/json; charset=utf-8" \
   -d '{

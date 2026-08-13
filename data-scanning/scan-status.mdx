@@ -9,7 +9,7 @@ Checks the execution status of one or more submitted scans.
 
 | Method | Endpoint |
 |--------|----------|
-| `PUT` | `https://<domain>/api/vault/data-scan/status` |
+| `PUT` | `{baseurl}/api/vault/data-scan/status` |
 
 ## Request body
 
@@ -23,7 +23,7 @@ An array of tracking IDs returned from the [Submit Data Scan](/data-scanning/sub
 ```
 
 ```bash
-curl -X PUT https://<domain>/api/vault/data-scan/status \
+curl -X PUT {baseurl}/api/vault/data-scan/status \
   -H "Authorization: Bearer <AUTH_TOKEN>" \
   -H "Content-Type: application/json; charset=utf-8" \
   -d '["354d2d30-178a-4220-9ce5-97908aa5713015052025072328"]'
