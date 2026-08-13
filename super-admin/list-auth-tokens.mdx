@@ -9,7 +9,7 @@ Lists all namespace user tokens. You can optionally filter by namespace.
 
 | Method | Endpoint |
 |--------|----------|
-| `GET` | `https://<domain>/api/vault/super-admin/namespace/auth-token/list` |
+| `GET` | `{baseurl}/api/vault/super-admin/namespace/auth-token/list` |
 
 ## Query parameters
 
@@ -25,7 +25,7 @@ Lists all namespace user tokens. You can optionally filter by namespace.
 ```
 
 ```bash
-curl -X GET "https://<domain>/api/vault/super-admin/namespace/auth-token/list?namespace=customer_ns_1" \
+curl -X GET "{baseurl}/api/vault/super-admin/namespace/auth-token/list?namespace=customer_ns_1" \
   -H "Authorization: Bearer <MASTER_API_KEY>"
 ```
 </Request>

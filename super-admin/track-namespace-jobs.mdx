@@ -9,7 +9,7 @@ Tracks background jobs for **namespace creation** and **namespace deletion**.
 
 | Method | Endpoint |
 |--------|----------|
-| `GET` | `https://<domain>/api/vault/super-admin/namespace/job-status` |
+| `GET` | `{baseurl}/api/vault/super-admin/namespace/job-status` |
 
 ## Query parameters
 
@@ -25,7 +25,7 @@ Tracks background jobs for **namespace creation** and **namespace deletion**.
 ```
 
 ```bash
-curl -X GET "https://<domain>/api/vault/super-admin/namespace/job-status?tracking_id=c37c070e-ff34-4738-8c32-de54d4ae26d3" \
+curl -X GET "{baseurl}/api/vault/super-admin/namespace/job-status?tracking_id=c37c070e-ff34-4738-8c32-de54d4ae26d3" \
   -H "Authorization: Bearer <MASTER_API_KEY>"
 ```
 </Request>
