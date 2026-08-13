@@ -19,7 +19,7 @@ The Unmask API also returns toxicity analysis for the **unmasked text**. This al
 ```
 
 ```bash
-curl -X PUT https://protecto-trial.protecto.ai/api/vault/unmask \
+curl -X PUT {baseurl}/api/vault/unmask \
   -H "Authorization: Bearer <AUTH_TOKEN>" \
   -H "Content-Type: application/json; charset=utf-8" \
   -d '{
@@ -35,7 +35,7 @@ curl -X PUT https://protecto-trial.protecto.ai/api/vault/unmask \
 import requests
 
 response = requests.put(
-    "https://protecto-trial.protecto.ai/api/vault/unmask",
+    "{baseurl}/api/vault/unmask",
     headers={
         "Authorization": "Bearer <AUTH_TOKEN>",
         "Content-Type": "application/json"

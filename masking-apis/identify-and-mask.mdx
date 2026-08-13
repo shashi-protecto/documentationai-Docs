@@ -4,7 +4,7 @@ description: >-
   Automatically detect and mask all PII in free-form text. Entity types, tokens,
   and detection rules are all driven by your active policy.
 ---
-Use this for **free-form text** where entity types are unknown in advance. Protecto scans the text, detects sensitive entities based on the active policy, and returns a masked version with entity tags.d
+Use this for **free-form text** where entity types are unknown in advance. Protecto scans the text, detects sensitive entities based on the active policy, and returns a masked version with entity tags.
 
 ## Endpoint
 
@@ -38,7 +38,7 @@ Use this for **free-form text** where entity types are unknown in advance. Prote
   ```
 
   ```bash
-  curl -X PUT https://protecto-trial.protecto.ai/api/vault/mask \
+  curl -X PUT {baseurl}/api/vault/mask \
     -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
     -H "Content-Type: application/json" \
     -d '{
@@ -54,7 +54,7 @@ Use this for **free-form text** where entity types are unknown in advance. Prote
   import requests
 
   response = requests.put(
-      "https://protecto-trial.protecto.ai/api/vault/mask",
+      "{baseurl}/api/vault/mask",
       headers={
           "Authorization": "Bearer YOUR_AUTH_TOKEN",
           "Content-Type": "application/json"
@@ -208,5 +208,4 @@ Use this for **free-form text** where entity types are unknown in advance. Prote
 
 - The exact tokenized output depends on the active policy.
 
-- This mode is available on the **trial** environment.
-
+- For POC/Trial access, please contact us at sales@protecto.ai.

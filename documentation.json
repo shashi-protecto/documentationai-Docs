@@ -27,8 +27,7 @@
             "pages": [
               { "title": "Overview", "path": "introduction/overview", "icon": "home" },
               { "title": "Why Protecto", "path": "introduction/why-protecto", "icon": "shield" },
-              { "title": "Key Capabilities", "path": "introduction/key-capabilities", "icon": "zap" },
-              { "title": "Trial vs Paid Features", "path": "introduction/trial-vs-paid", "icon": "badge-check" }
+              { "title": "Key Capabilities", "path": "introduction/key-capabilities", "icon": "zap" }
             ]
           },
           {
