@@ -27,8 +27,7 @@
             "pages": [
               { "title": "Overview", "path": "introduction/overview", "icon": "home" },
               { "title": "Why Protecto", "path": "introduction/why-protecto", "icon": "shield" },
-              { "title": "Key Capabilities", "path": "introduction/key-capabilities", "icon": "zap" },
-              { "title": "Trial vs Paid Features", "path": "introduction/trial-vs-paid", "icon": "badge-check" }
+              { "title": "Key Capabilities", "path": "introduction/key-capabilities", "icon": "zap" }
             ]
           },
           {
@@ -331,8 +330,7 @@
       "projectId": "w8cd286gff"
     },
     "posthog": {
-      "apiKey": "phc_11ZctymOtA1Y8SpO6jNAPDsQlI6JHuZSA5qcJJO9vxP",
-      "apiHost": "https://us.posthog.com/"
+      "apiKey": "phc_11ZctymOtA1Y8SpO6jNAPDsQlI6JHuZSA5qcJJO9vxP"
     }
   },
   "description": "Protecto is an API-first data protection platform that helps engineering teams identify, tokenize, mask, and safely handle sensitive data across applications, data pipelines, and GenAI workflows.",
