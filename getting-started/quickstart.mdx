@@ -55,27 +55,7 @@ Every request requires this header:
 
 The **Identify and Mask (Auto-Detect)** mode is the recommended starting point. You send free-form text, and Protecto automatically detects and masks sensitive entities based on the active policy. No entity types or token names are required.
 
-<Request show-lines="true" tabs={[]}>
-  ```javascript
-  const response = await fetch(
-    "{baseurl}/api/vault/mask",
-    {
-      method: "PUT",
-      headers: {
-        Authorization: "Bearer YOUR_AUTH_TOKEN",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        mask: [
-          { value: "John Doe lives at 123 Main Street. His email is john.doe@example.com" },
-        ],
-      }),
-    }
-  );
-  const data = await response.json();
-  console.log(data);
-  ```
-
+<Request show-lines="true" tabs="JSON,cURL,Python">
   ```json
   {
     "mask": [
@@ -84,6 +64,37 @@ The **Identify and Mask (Auto-Detect)** mode is the recommended starting point. 
       }
     ]
   }
+  ```
+
+  ```bash
+  curl -X PUT {baseurl}/api/vault/mask \
+    -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "mask": [
+        {
+          "value": "John Doe lives at 123 Main Street. His email is john.doe@example.com"
+        }
+      ]
+    }'
+  ```
+
+  ```python
+  import requests
+
+  response = requests.put(
+      "{baseurl}/api/vault/mask",
+      headers={
+          "Authorization": "Bearer YOUR_AUTH_TOKEN",
+          "Content-Type": "application/json"
+      },
+      json={
+          "mask": [
+              {"value": "John Doe lives at 123 Main Street. His email is john.doe@example.com"}
+          ]
+      }
+  )
+  print(response.json())
   ```
 </Request>
 
