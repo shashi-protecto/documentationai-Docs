@@ -9,7 +9,7 @@ Creates or updates a custom PII tag and configures how Protecto should identify 
 
 | Method | Endpoint                                                                               |
 | ------ | -------------------------------------------------------------------------------------- |
-| `PUT`  | `https://<domain>/api/vault/metadata/add-or-update/custom-tag/identification-endpoint` |
+| `PUT`  | `{baseurl}/api/vault/metadata/add-or-update/custom-tag/identification-endpoint` |
 
 ## Request body
 
@@ -46,7 +46,7 @@ Creates or updates a custom PII tag and configures how Protecto should identify 
   ```
 
   ```bash
-  curl -X PUT https://<domain>/api/vault/metadata/add-or-update/custom-tag/identification-endpoint \
+  curl -X PUT {baseurl}/api/vault/metadata/add-or-update/custom-tag/identification-endpoint \
     -H "Authorization: Bearer <NAMESPACE_ADMIN_API_KEY>" \
     -H "Content-Type: application/json; charset=utf-8" \
     -d '{

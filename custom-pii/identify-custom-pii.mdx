@@ -9,7 +9,7 @@ This endpoint identifies occurrences of a **custom PII tag** inside one or more 
 
 | Method | Endpoint |
 |--------|----------|
-| `PUT` | `https://<domain>/api/vault/pii-identification/custom` |
+| `PUT` | `{baseurl}/api/vault/pii-identification/custom` |
 
 ## Request body
 
@@ -33,7 +33,7 @@ This endpoint identifies occurrences of a **custom PII tag** inside one or more 
 ```
 
 ```bash
-curl -X PUT https://<domain>/api/vault/pii-identification/custom \
+curl -X PUT {baseurl}/api/vault/pii-identification/custom \
   -H "Authorization: Bearer <AUTH_TOKEN>" \
   -H "Content-Type: application/json; charset=utf-8" \
   -d '{
