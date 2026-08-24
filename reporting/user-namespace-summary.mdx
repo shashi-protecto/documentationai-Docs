@@ -1,110 +1,112 @@
 ---
-title: "User Namespace Summary"
-description: "API usage per user within a namespace — call counts, success rates, and login times over a date range."
+title: User Namespace Summary
+description: >-
+  API usage per user within a namespace — call counts, success rates, and login
+  times over a date range.
 ---
-
 Returns **API usage per user** within a namespace over a given time range. Use this to understand which users are actively calling APIs, how long they were active, and whether their calls succeeded.
 
 ## Endpoint
 
-| Method | Endpoint |
-|--------|----------|
-| `GET` | `{baseurl}/api/vault/reports/namespace-users-summary` |
+| Method | Endpoint                                              |
+| ------ | ----------------------------------------------------- |
+| `GET`  | `{baseurl}/api/vault/reports/namespace-users-summary` |
 
 ## Query parameters
 
-<ParamField query="namespace" param-type="string" required="true">
+<ParamField query="namespace" param-type="string" required="true" deprecated="false" show-location="true">
   Namespace name to report on.
 </ParamField>
 
-<ParamField query="start_date" param-type="string" required="true">
+<ParamField query="start_date" param-type="string" required="true" deprecated="false" show-location="true">
   Start of the reporting window. Format: `YYYY-MM-DD HH:MM:SS`.
 </ParamField>
 
-<ParamField query="end_date" param-type="string" required="true">
+<ParamField query="end_date" param-type="string" required="true" deprecated="false" show-location="true">
   End of the reporting window. Format: `YYYY-MM-DD HH:MM:SS`.
 </ParamField>
 
-<ParamField query="next_page_token" param-type="string" required="false">
+<ParamField query="next_page_token" param-type="string" required="false" deprecated="false" show-location="true">
   Pagination token for large result sets.
 </ParamField>
 
-<Request tabs="JSON,cURL,Python">
-```json
-{
-  "namespace": "production",
-  "start_date": "2024-05-21 00:00:00",
-  "end_date": "2024-05-22 23:59:59"
-}
-```
+<Request show-lines="true">
+  ```json
+  {
+    "namespace": "production",
+    "start_date": "2024-05-21 00:00:00",
+    "end_date": "2024-05-22 23:59:59"
+  }
+  ```
 
-```bash
-curl -X GET "{baseurl}/api/vault/reports/namespace-users-summary?namespace=production&start_date=2024-05-21+00:00:00&end_date=2024-05-22+23:59:59" \
-  -H "Authorization: Bearer <ADMIN_USER_AUTH_KEY>"
-```
+  ```bash
+  curl -X GET "{baseurl}/api/vault/reports/namespace-users-summary?namespace=production&start_date=2024-05-21+00:00:00&end_date=2024-05-22+23:59:59" \
+    -H "Authorization: Bearer <ADMIN_USER_AUTH_KEY>"
+  ```
 
-```python
-import requests
+  ```python
+  import requests
 
-response = requests.get(
-    "{baseurl}/api/vault/reports/namespace-users-summary",
-    headers={
-        "Authorization": "Bearer <ADMIN_USER_AUTH_KEY>"
-    },
-    params={
-        "namespace": "production",
-        "start_date": "2024-05-21 00:00:00",
-        "end_date": "2024-05-22 23:59:59"
-    }
-)
-print(response.json())
-```
+  response = requests.get(
+      "{baseurl}/api/vault/reports/namespace-users-summary",
+      headers={
+          "Authorization": "Bearer <ADMIN_USER_AUTH_KEY>"
+      },
+      params={
+          "namespace": "production",
+          "start_date": "2024-05-21 00:00:00",
+          "end_date": "2024-05-22 23:59:59"
+      }
+  )
+  print(response.json())
+  ```
 </Request>
 
-<Response tabs="200">
-```json
-{
-  "data": [
-    {
-      "date": "2024-05-21",
-      "api_type": "/mask",
-      "status": "success",
-      "user": "alice@company.com",
-      "logged_in_time": 3600
-    },
-    {
-      "date": "2024-05-21",
-      "api_type": "/unmask",
-      "status": "success",
-      "user": "bob@company.com",
-      "logged_in_time": 1800
-    }
-  ],
-  "next_page_token": null,
-  "success": true,
-  "error": { "message": "" }
-}
-```
+<Response show-lines="true">
+  ```json
+  {
+    "data": [
+      {
+        "date": "2024-05-21",
+        "api_type": "/mask",
+        "status": "success",
+        "user": "alice@company.com",
+        "logged_in_time": 3600
+      },
+      {
+        "date": "2024-05-21",
+        "api_type": "/unmask",
+        "status": "success",
+        "user": "bob@company.com",
+        "logged_in_time": 1800
+      }
+    ],
+    "next_page_token": null,
+    "success": true,
+    "error": { "message": "" }
+  }
+  ```
 </Response>
 
 ## Response fields
 
-<ResponseField name="date" field-type="string" required="true">
+<ResponseField name="date" field-type="string" required="true" deprecated="false">
   Date of the activity.
 </ResponseField>
 
-<ResponseField name="api_type" field-type="string" required="true">
+<ResponseField name="api_type" field-type="string" required="true" deprecated="false">
   API called — `/mask`, `/unmask`, `/async-status`, etc.
 </ResponseField>
 
-<ResponseField name="status" field-type="string" required="true">
+<ResponseField name="status" field-type="string" required="true" deprecated="false">
   `success` or `failure`.
 </ResponseField>
 
-<ResponseField name="user" field-type="string" required="true">
+<ResponseField name="user" field-type="string" required="true" deprecated="false">
   User email associated with the calls.
 </ResponseField>
 
-<ResponseField name="logged_in_time" field-type="integer" required="false">
+<ResponseField name="logged_in_time" field-type="integer" required="false" deprecated="false">
   Time active in the namespace, in seconds.
 </ResponseField>
+
