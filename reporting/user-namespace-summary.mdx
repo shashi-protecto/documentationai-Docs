@@ -19,11 +19,11 @@ Returns **API usage per user** within a namespace over a given time range. Use t
 </ParamField>
 
 <ParamField query="start_date" param-type="string" required="true" deprecated="false" show-location="true">
-  Start of the reporting window. Format: `YYYY-MM-DD HH:MM:SS`.
+  Start of the reporting window. Format: `YYYY-MM-DD`
 </ParamField>
 
 <ParamField query="end_date" param-type="string" required="true" deprecated="false" show-location="true">
-  End of the reporting window. Format: `YYYY-MM-DD HH:MM:SS`.
+  End of the reporting window. Format: `YYYY-MM-DD`
 </ParamField>
 
 <ParamField query="next_page_token" param-type="string" required="false" deprecated="false" show-location="true">
@@ -34,8 +34,8 @@ Returns **API usage per user** within a namespace over a given time range. Use t
   ```json
   {
     "namespace": "production",
-    "start_date": "2024-05-21 00:00:00",
-    "end_date": "2024-05-22 23:59:59"
+    "start_date": "2024-05-21 ",
+    "end_date": "2024-05-22"
   }
   ```
 
