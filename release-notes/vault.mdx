@@ -5,6 +5,36 @@ description: >-
   policies, async workflows, and admin improvements. Use these notes to
   understand behavior changes before upgrading or adopting new features.
 ---
+<Update label="Sep 2026" description="v9.0.0" tags={["Enhancement"]}>
+  ### PII Detection & Performance Enhancements
+
+  This release focuses on improving PII identification accuracy, Agentic workflow performance, and processing efficiency.
+
+  #### Enhanced PII Identification
+
+  Improved PII detection for JSON and tabular content provided as string payloads, particularly in Agentic workflows.
+
+  #### Improved Agentic Throughput
+
+  Optimized Agentic prediction processing for higher throughput and better performance under load.
+
+  #### Faster Processing
+
+  Reduced processing latency through performance optimizations.
+
+  #### Optimized Request Processing
+
+  Introduced asynchronous execution and dynamic batching to improve processing efficiency and GPU utilization.
+
+  #### Improved Structured Data Handling
+
+  Reduced incorrect flagging of non-sensitive fields in Flat and Nested JSON structures.
+
+  #### Improved Tabular Data Detection
+
+  Enhanced PII identification in tabular text containing row and column structures.
+</Update>
+
 <Update label="June 2026" description="v8.0.6" tags={["Enhancement"]}>
   ### Expanded PII / PHI / PCI Entity Support
 
