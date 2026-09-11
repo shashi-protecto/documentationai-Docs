@@ -8,52 +8,53 @@ Protecto detects sensitive data across two built-in categories. All entities bel
 
 ## PII entities
 
-| S.No | Entity Name                   | Description                                                             | Example                                             | Masked                                                  |
-| ---- | ----------------------------- | ----------------------------------------------------------------------- | --------------------------------------------------- | ------------------------------------------------------- |
-| 1    | `PERSON`                      | Name of a person                                                        | George Williams                                     | `<PER>yefNTf jm3Jf</PER>`                               |
-| 2    | `EMAIL_ADDRESS`               | Email address                                                           | [George@example.com](mailto:George@example.com)     | `<EMAIL>yefNTf@VxLPAG1Dvm</EMAIL>`                      |
-| 3    | `PHONE_NUMBER`                | All country phone, mobile, and landline numbers                         | +44 7943 582088, (555) 123-4567                     | `<PHN>+736785 58609 305</PHN>`                          |
-| 4    | `ADDRESS`                     | Geographical entities including cities, famous locations, and buildings | Paris, Eiffel Tower, Amazon Rainforest              | `<ADDRESS>g5Ua2Fm843</ADDRESS>`                         |
-| 5    | `ORG`                         | Names of organizations                                                  | Lakeview Hospital                                   | `<ORG>fL89cEDrh6 uii8cQSrwT</ORG>`                      |
-| 6    | `DATE_OF_BIRTH`               | Birthdate of a person                                                   | March 10, 2023                                      | `<DOB>sz7jDZyonfgY3y</DOB>`                             |
-| 7    | `SSN`                         | Social Security Number (USA)                                            | 756-45-6689                                         | `<SSN>0402795019673173694705</SSN>`                     |
-| 8    | `IP_ADDRESS`                  | Unique label for devices in a network                                   | 192.168.0.1                                         | `<IPA>368.531.3681.004</IPA>`                           |
-| 9    | `MAC_NUMBER`                  | Unique identifier for network interfaces                                | 00:1A:2B:3C:4D:5E                                   | `<DEVICE_ID>o5gCeI67k6xDC4ST3</DEVICE_ID>`              |
-| 10   | `URL`                         | Web address                                                             | [www.cityhospital.net](http://www.cityhospital.net) | `<URL>02FZUWHoADyGJE08SCqPfxb</URL>`                    |
-| 11   | `FAX_NUMBER`                  | Fax number                                                              | 4256324532                                          | `<FAX_NO>511694045434</FAX_NO>`                         |
-| 12   | `DRIVING_LICENSE_NUMBER`      | Driver's license identifier                                             | DL35235                                             | `<DL_NO>3hm6dQehstF8cSjDTpDDUbJiCm6zkk</DL_NO>`         |
-| 13   | `VEHICLE_REGISTRATION_NUMBER` | Vehicle registration and vehicle numbers                                | MA2334                                              | `<VEHICLE_REG_NO>FIwaeRko6x7GaegIyZXL</VEHICLE_REG_NO>` |
-| 14   | `VIN`                         | Vehicle Identification NumberUnique code for motor vehicles             | 232679GE24                                          | `<VIN>5t7uzVOu5ZZS06j</VIN>`                            |
-| 15   | `LICENCE_NUMBER`              | Healthcare provider, pharmaceutical, and doctor licence numbers         | HP839232                                            | `<LICENCE_NO>Y37kcPZWFX6TBb13UQ</LICENCE_NO>`           |
-| 16   | `CREDIT_CARD`                 | Numeric code for financial transactions                                 | 5000236879543210                                    | `<CRD>4D67AFZLFh3OBk03cNo0</CRD>`                       |
-| 17   | `CITY`                        | Name of a city                                                          | Seattle                                             | `<CITY>k7wD29pL</CITY>`                                 |
-| 18   | `COUNTRY`                     | Name of a country or territory                                          | United States, Germany                              | `<COUNTRY>h3Ls98Qy</COUNTRY>`                           |
-| 19   | `PINCODE`                     | Postal or ZIP code used for mail delivery                               | 94107                                               | `<PINCODE>p4Z71nM</PINCODE>`                            |
-| 20   | `NATIONAL_ID`                 | National identification number                                          | A1234567890                                         | `<NATIONAL_ID>k2P8mQ1x0Z</NATIONAL_ID>`                 |
-| 21   | `PASSWORD`                    | Password                                                                | P\@ssw0rd123!                                       | `<PASSWORD>n7Qp1Zs</PASSWORD>`                          |
-| 22   | `PH_TIN`                      | Philippine Tax Identification Number used for taxpayer identification   | 123-456-789-000                                     | `<PH_TIN>123-456-789-000</PH_TIN>`                     |
-| 23   | `GSTIN`                       | Goods and Services Tax Identification Number used for business tax registration in India | 29ABCDE1234F1Z5                    | `<GSTIN>29ABCDE1234F1Z5</GSTIN>`                       |
-| 24   | `AADHAAR`                     | Unique 12-digit identification number issued by UIDAI in India          | 4827 1934 6671                                      | `<AADHAAR>4827 1934 6671</AADHAAR>`                    |
-| 25   | `UK_UTR`                      | United Kingdom Unique Taxpayer Reference number                         | 1234567890                                          | `<UK_UTR>1234567890</UK_UTR>`                          |
-| 26   | `UK_NIN`                      | United Kingdom National Insurance Number                                | QQ123456C                                           | `<UK_NIN>QQ123456C</UK_NIN>`                           |
-| 27   | `US_ITIN`                     | United States Individual Taxpayer Identification Number                  | 912-45-6789                                         | `<US_ITIN>912-45-6789</US_ITIN>`                       |
-| 28   | `CANADIAN_SIN`                | Canadian Social Insurance Number used for employment and tax purposes   | 123-456-789                                         | `<CANADIAN_SIN>123-456-789</CANADIAN_SIN>`             |
+| S.No | Entity Name                   | Description                                                                              | Example                                             | Masked                                                  |
+| ---- | ----------------------------- | ---------------------------------------------------------------------------------------- | --------------------------------------------------- | ------------------------------------------------------- |
+| 1    | `PERSON`                      | Name of a person                                                                         | George Williams                                     | `<PER>yefNTf jm3Jf</PER>`                               |
+| 2    | `EMAIL_ADDRESS`               | Email address                                                                            | [George@example.com](mailto:George@example.com)     | `<EMAIL>yefNTf@VxLPAG1Dvm</EMAIL>`                      |
+| 3    | `PHONE_NUMBER`                | All country phone, mobile, and landline numbers                                          | +44 7943 582088, (555) 123-4567                     | `<PHN>+736785 58609 305</PHN>`                          |
+| 4    | `ADDRESS`                     | Geographical entities including cities, famous locations, and buildings                  | Paris, Eiffel Tower, Amazon Rainforest              | `<ADDRESS>g5Ua2Fm843</ADDRESS>`                         |
+| 5    | `ORG`                         | Names of organizations                                                                   | Lakeview Hospital                                   | `<ORG>fL89cEDrh6 uii8cQSrwT</ORG>`                      |
+| 6    | `DATE_OF_BIRTH`               | Birthdate of a person                                                                    | March 10, 2023                                      | `<DOB>sz7jDZyonfgY3y</DOB>`                             |
+| 7    | `SSN`                         | Social Security Number (USA)                                                             | 756-45-6689                                         | `<SSN>0402795019673173694705</SSN>`                     |
+| 8    | `IP_ADDRESS`                  | Unique label for devices in a network                                                    | 192.168.0.1                                         | `<IPA>368.531.3681.004</IPA>`                           |
+| 9    | `MAC_NUMBER`                  | Unique identifier for network interfaces                                                 | 00:1A:2B:3C:4D:5E                                   | `<DEVICE_ID>o5gCeI67k6xDC4ST3</DEVICE_ID>`              |
+| 10   | `URL`                         | Web address                                                                              | [www.cityhospital.net](http://www.cityhospital.net) | `<URL>02FZUWHoADyGJE08SCqPfxb</URL>`                    |
+| 11   | `FAX_NUMBER`                  | Fax number                                                                               | 4256324532                                          | `<FAX_NO>511694045434</FAX_NO>`                         |
+| 12   | `DRIVING_LICENSE_NUMBER`      | Driver's license identifier                                                              | DL35235                                             | `<DL_NO>3hm6dQehstF8cSjDTpDDUbJiCm6zkk</DL_NO>`         |
+| 13   | `VEHICLE_REGISTRATION_NUMBER` | Vehicle registration and vehicle numbers                                                 | MA2334                                              | `<VEHICLE_REG_NO>FIwaeRko6x7GaegIyZXL</VEHICLE_REG_NO>` |
+| 14   | `VIN`                         | Vehicle Identification NumberUnique code for motor vehicles                              | 232679GE24                                          | `<VIN>5t7uzVOu5ZZS06j</VIN>`                            |
+| 15   | `LICENCE_NUMBER`              | Healthcare provider, pharmaceutical, and doctor licence numbers                          | HP839232                                            | `<LICENCE_NO>Y37kcPZWFX6TBb13UQ</LICENCE_NO>`           |
+| 16   | `CREDIT_CARD`                 | Numeric code for financial transactions                                                  | 5000236879543210                                    | `<CRD>4D67AFZLFh3OBk03cNo0</CRD>`                       |
+| 17   | `CITY`                        | Name of a city                                                                           | Seattle                                             | `<CITY>k7wD29pL</CITY>`                                 |
+| 18   | `COUNTRY`                     | Name of a country or territory                                                           | United States, Germany                              | `<COUNTRY>h3Ls98Qy</COUNTRY>`                           |
+| 19   | `PINCODE`                     | Postal or ZIP code used for mail delivery                                                | 94107                                               | `<PINCODE>p4Z71nM</PINCODE>`                            |
+| 20   | `NATIONAL_ID`                 | National identification number                                                           | A1234567890                                         | `<NATIONAL_ID>k2P8mQ1x0Z</NATIONAL_ID>`                 |
+| 21   | `PASSWORD`                    | Password                                                                                 | P\@ssw0rd123!                                       | `<PASSWORD>n7Qp1Zs</PASSWORD>`                          |
+| 22   | `PH_TIN`                      | Philippine Tax Identification Number used for taxpayer identification                    | 123-456-789-000                                     | `<PH_TIN>123-456-789-000</PH_TIN>`                      |
+| 23   | `GSTIN`                       | Goods and Services Tax Identification Number used for business tax registration in India | 29ABCDE1234F1Z5                                     | `<GSTIN>29ABCDE1234F1Z5</GSTIN>`                        |
+| 24   | `AADHAAR`                     | Unique 12-digit identification number issued by UIDAI in India                           | 4827 1934 6671                                      | `<AADHAAR>4827 1934 6671</AADHAAR>`                     |
+| 25   | `UK_UTR`                      | United Kingdom Unique Taxpayer Reference number                                          | 1234567890                                          | `<UK_UTR>1234567890</UK_UTR>`                           |
+| 26   | `UK_NIN`                      | United Kingdom National Insurance Number                                                 | QQ123456C                                           | `<UK_NIN>QQ123456C</UK_NIN>`                            |
+| 27   | `US_ITIN`                     | United States Individual Taxpayer Identification Number                                  | 912-45-6789                                         | `<US_ITIN>912-45-6789</US_ITIN>`                        |
+| 28   | `CANADIAN_SIN`                | Canadian Social Insurance Number used for employment and tax purposes                    | 123-456-789                                         | `<CANADIAN_SIN>123-456-789</CANADIAN_SIN>`              |
+| 29   | `STATE`                       | Name of a state or province                                                              | California, Maharashtra                             | `<STATE>r5Tq2xK</STATE>`                                |
 
 ## PHI entities
 
-| S.No | Entity Name                     | Description                                                                | Example          | Masked                                                         |
-| ---- | ------------------------------- | -------------------------------------------------------------------------- | ---------------- | -------------------------------------------------------------- |
-| 1    | `MRN`                           | Patient identification and medical record identifiers                      | P4353            | `<MRN>1020663481</MRN>`                                        |
-| 2    | HEALTH\_BENEFICIARY\_NUMBER     | Health insurance, general insurance, and national health insurance numbers | HNFG4343         | `<HEALTH_BENEFICIARY_NO>12vpxhkHTq</HEALTH_BENEFICIARY_NO>`    |
-| 3    | `START_DATE_OF_HOSPITALIZATION` | Admission date to a hospital                                               | April 10, 2023   | `<ADMIT_DATE>yupFq6xVI9Xkx3I6Odzqo6PO1hFK58</ADMIT_DATE>`      |
-| 4    | `DISCHARGE_DATE`                | Release date from a hospital                                               | Sep 5, 2023      | `<DISCHARGE_DATE>08l7xKbswvTev05RD3w7kEwS17Z</DISCHARGE_DATE>` |
-| 5    | `DEATH_DATE`                    | Date of death                                                              | February 5, 2024 | `<DEATH_DATE>JOIm57O7rG4co9UuC2d</DEATH_DATE>`                 |
+| S.No | Entity Name                     | Description                                                                | Example                                  | Masked                                                                      |
+| ---- | ------------------------------- | -------------------------------------------------------------------------- | ---------------------------------------- | --------------------------------------------------------------------------- |
+| 1    | `MRN`                           | Patient identification and medical record identifiers                      | P4353                                    | `<MRN>1020663481</MRN>`                                                     |
+| 2    | HEALTH\_BENEFICIARY\_NUMBER     | Health insurance, general insurance, and national health insurance numbers | HNFG4343                                 | `<HEALTH_BENEFICIARY_NO>12vpxhkHTq</HEALTH_BENEFICIARY_NO>`                 |
+| 3    | `START_DATE_OF_HOSPITALIZATION` | Admission date to a hospital                                               | April 10, 2023                           | `<ADMIT_DATE>yupFq6xVI9Xkx3I6Odzqo6PO1hFK58</ADMIT_DATE>`                   |
+| 4    | `DISCHARGE_DATE`                | Release date from a hospital                                               | Sep 5, 2023                              | `<DISCHARGE_DATE>08l7xKbswvTev05RD3w7kEwS17Z</DISCHARGE_DATE>`              |
+| 5    | `DEATH_DATE`                    | Date of death                                                              | February 5, 2024                         | `<DEATH_DATE>JOIm57O7rG4co9UuC2d</DEATH_DATE>`                              |
 | 6    | `BIOMETRIC_DATA`                | Physical or biological health-related measurements used in patient records | BMI: 27.4, Height: 172 cm, Weight: 78 kg | `<BIOMETRIC_DATA>BMI: 27.4, Height: 172 cm, Weight: 78 kg</BIOMETRIC_DATA>` |
-| 7    | `BLOOD_TYPE`                    | Patient blood group and Rh factor information                              | O+               | `<BLOOD_TYPE>O+</BLOOD_TYPE>`                                   |
-| 8    | `MEDICAL_CODE`                  | Standardized medical classification or billing codes                       | ICD-10: E11.9    | `<MEDICAL_CODE>ICD-10: E11.9</MEDICAL_CODE>`                    |
-| 9    | `MEDICAL_CONDITION`             | Diagnosed diseases, disorders, or health conditions                        | Type 2 Diabetes  | `<MEDICAL_CONDITION>Type 2 Diabetes</MEDICAL_CONDITION>`        |
-| 10   | `MEDICATION`                    | Prescribed drugs, medicines, or pharmaceutical products                    | Metformin 500mg  | `<MEDICATION>Metformin 500mg</MEDICATION>`                      |
-| 11   | `MEDICAL_PROCEDURE`             | Clinical procedures, surgeries, or medical treatments performed            | Coronary Angioplasty | `<MEDICAL_PROCEDURE>Coronary Angioplasty</MEDICAL_PROCEDURE>` |
+| 7    | `BLOOD_TYPE`                    | Patient blood group and Rh factor information                              | O+                                       | `<BLOOD_TYPE>O+</BLOOD_TYPE>`                                               |
+| 8    | `MEDICAL_CODE`                  | Standardized medical classification or billing codes                       | ICD-10: E11.9                            | `<MEDICAL_CODE>ICD-10: E11.9</MEDICAL_CODE>`                                |
+| 9    | `MEDICAL_CONDITION`             | Diagnosed diseases, disorders, or health conditions                        | Type 2 Diabetes                          | `<MEDICAL_CONDITION>Type 2 Diabetes</MEDICAL_CONDITION>`                    |
+| 10   | `MEDICATION`                    | Prescribed drugs, medicines, or pharmaceutical products                    | Metformin 500mg                          | `<MEDICATION>Metformin 500mg</MEDICATION>`                                  |
+| 11   | `MEDICAL_PROCEDURE`             | Clinical procedures, surgeries, or medical treatments performed            | Coronary Angioplasty                     | `<MEDICAL_PROCEDURE>Coronary Angioplasty</MEDICAL_PROCEDURE>`               |
 
 ## Financial entities
 
@@ -71,8 +72,4 @@ Protecto detects sensitive data across two built-in categories. All entities bel
 | 10   | `PIN_NUMBER`       | A secret numeric code used for authentication                                                             | 1234             | `<CRD_PIN>20776</CRD_PIN>`                    |
 | 11   | `INSURANCE_NUMBER` | A unique number for an insurance policy                                                                   | INS-12324        | `<INSURANCE_NO>50voyk9u7b</INSURANCE_NO>`     |
 | 12   | `CARD_EXPIRY_DATE` | The expiration date of a payment card                                                                     | 26-Dec           | `<CRD_EXP_DATE>06014573 83596</CRD_EXP_DATE>` |
-
-
-
-
 
