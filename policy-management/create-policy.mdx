@@ -6,23 +6,23 @@ Creates a new policy in the namespace with default metadata. After creation, upd
 
 ## Endpoint
 
-| Method | Endpoint                                            |
-| ------ | --------------------------------------------------- |
+| Method | Endpoint                                     |
+| ------ | -------------------------------------------- |
 | `PUT`  | `{baseurl}/api/vault/metadata/policy/create` |
 
 ## Authentication
 
-<ParamField header="Authorization" param-type="string" required="true" deprecated="false">
-  Namespace admin bearer token. Format: `Bearer <NAMESPACE_ADMIN_API_KEY>`
+<ParamField header="Authorization" param-type="string" required="true" deprecated="false" show-location="true">
+  Namespace Auth token bearer token. Format: `Bearer <NAMESPACE_ADMIN_API_KEY>`
 </ParamField>
 
 ## Request body
 
-<ParamField body="policy_name" param-type="string" required="true" deprecated="false">
+<ParamField body="policy_name" param-type="string" required="true" deprecated="false" show-location="true">
   Unique policy name within the namespace.
 </ParamField>
 
-<Request show-lines="true" tabs="JSON,cURL">
+<Request show-lines="true">
   ```json
   {
     "data": {
@@ -43,7 +43,7 @@ Creates a new policy in the namespace with default metadata. After creation, upd
   ```
 </Request>
 
-<Response show-lines="true" tabs={[]}>
+<Response show-lines="true">
   ```json
   {
     "data": {
@@ -58,9 +58,7 @@ Creates a new policy in the namespace with default metadata. After creation, upd
 ## Notes
 
 - Policy names must be unique within the namespace
-
 - If the policy already exists, the API returns an error — use [Update Entity Categories](/policy-management/update-entity-categories) to modify existing policies
-
 - All supported entities default to **pseudonymizable** upon creation
-
 - Use `policy_name` in Mask and Unmask API calls to apply this policy
+
