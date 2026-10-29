@@ -8,15 +8,17 @@ Token types control **how masked values are generated**, independent of entity o
 
 ## Available token types
 
-| Token Type      | Intended Use         | Example Input          | Example Output         |
-| --------------- | -------------------- | ---------------------- | ---------------------- |
-| `Default Token` | General text         | `George`               | `FreTdf`               |
-| `Text Token`    | Emails, usernames    | `kumar@ss.fss.com`     | `LEFQS@cTdqGVB2Ay`     |
-| `Numeric Token` | Numeric-like values  | `(408)-426-9989`       | `(07432)-29915-56713`  |
-| `Special Token` | Random-length output | `john.doe@example.com` | `xuLDKEM4bAXh8yIEY1L9` |
-| `Person Token`  | Names                | `Williams`             | `Cynthia`              |
-| `Date Token`    | Dates                | `6/12/1967`            | `0001-06-22`           |
-| `State Token`   | US state codes       | `TN`                   | `IL`                   |
+| Token Type        | Intended Use         | Example Input          | Example Output         |
+| ----------------- | -------------------- | ---------------------- | ---------------------- |
+| `Default Token`   | General text         | `George`               | `FreTdf`               |
+| `Text Token`      | Emails, usernames    | `kumar@ss.fss.com`     | `LEFQS@cTdqGVB2Ay`     |
+| `Numeric Token`   | Numeric-like values  | `(408)-426-9989`       | `(07432)-29915-56713`  |
+| `Special Token`   | Random-length output | `john.doe@example.com` | `xuLDKEM4bAXh8yIEY1L9` |
+| `Person Token` \* | Names                | `Williams`             | `Cynthia`              |
+| `Date Token` \*   | Dates                | `6/12/1967`            | `0001-06-22`           |
+| `State Token` \*  | US state codes       | `TN`                   | `IL`                   |
+
+\* _Available upon customer request._
 
 ## Choosing a token type
 
@@ -35,8 +37,8 @@ Token types control **how masked values are generated**, independent of entity o
 Masking is **deterministic** — for pseudonymizable entities, the same input value and token type produce the same token across policies within a namespace. This means:
 
 - Pseudonymizable entity tokens remain consistent across policies in the same namespace
-- Anonymizable entity tokens may differ across policies within the same namespace
-- Tokens are namespace-scoped, so the same PII may produce different tokens in different namespaces
+- Anonymizable entity tokens will differ across policies within the same namespace
+- Tokens are namespace-scoped so that the same PII may produce different tokens in different namespaces
 
 <Callout kind="tip" collapsed="false">
   Token consistency depends on the entity category and namespace: pseudonymizable tokens remain consistent across policies within a namespace, while anonymizable tokens may change across policies. Tokens may differ across namespaces.
