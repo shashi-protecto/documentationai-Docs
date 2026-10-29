@@ -116,8 +116,8 @@ The endpoint returns a pending job and its tracking ID.
   Indicates whether the request was accepted successfully.
 </ResponseField>
 
-<ResponseField name="error" field-type="string" required="true" deprecated="false">
-  Error message. The successful response returns an empty value.
+<ResponseField name="error" field-type="object" required="true" deprecated="false">
+  Contains a `message` field that is an empty string when the request succeeds.
 </ResponseField>
 
 ## After submission
