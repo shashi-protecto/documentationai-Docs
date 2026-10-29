@@ -1,0 +1,125 @@
+---
+title: Unmask Async with Policy
+description: >-
+  Submit an asynchronous unmask job with a policy, receive a tracking ID, and
+  poll its status until the completed unmasked result is available.
+---
+## Submit an asynchronous unmask job
+
+Submit a masked token for asynchronous unmasking with the same policy used during masking. The endpoint returns a tracking ID that you use to poll for the completed result.
+
+### Prerequisite
+
+<Callout kind="info" collapsed="false">
+  The `token_value` must have been produced by a masking request. Use the same policy name for masking and unmasking. The documented masking example uses [`Mask Async with Policy`](/mask-async-with-policy) with the policy name `customer-support-policy`.
+</Callout>
+
+## Endpoint
+
+```text
+PUT {baseurl}/unmask/async
+```
+
+### Request fields
+
+<ParamField body="policy_name" param-type="string" required="true" deprecated="false" show-location="true">
+  The name of the policy used to mask the token.
+</ParamField>
+
+<ParamField body="unmask" param-type="array" required="true" deprecated="false" show-location="true">
+  An array of masked token values to unmask.
+</ParamField>
+
+<ParamField body="unmask[].token_value" param-type="string" required="true" deprecated="false" show-location="true">
+  The masked token value to unmask.
+</ParamField>
+
+## Request
+
+<Request show-lines="true">
+  ```json
+  {
+    "policy_name": "customer-support-policy",
+    "unmask": [
+      {
+        "token_value": "<MEDICAL_PROCEDURE>Gfe5GmP8 WULwDZ WC0XjO dtk3SzC</MEDICAL_PROCEDURE> was successfully performed last week"
+      }
+    ]
+  }
+  ```
+
+  ```bash
+  curl --request PUT \
+    --url "{baseurl}/unmask/async" \
+    --header "Authorization: Bearer YOUR_AUTH_TOKEN" \
+    --header "Content-Type: application/json" \
+    --data '{
+      "policy_name": "customer-support-policy",
+      "unmask": [
+        {
+          "token_value": "<MEDICAL_PROCEDURE>Gfe5GmP8 WULwDZ WC0XjO dtk3SzC</MEDICAL_PROCEDURE> was successfully performed last week"
+        }
+      ]
+    }'
+  ```
+
+  ```python
+  import requests
+
+  url = "{baseurl}/unmask/async"
+  headers = {
+      "Authorization": "Bearer YOUR_AUTH_TOKEN",
+      "Content-Type": "application/json",
+  }
+  payload = {
+      "policy_name": "customer-support-policy",
+      "unmask": [
+          {
+              "token_value": "<MEDICAL_PROCEDURE>Gfe5GmP8 WULwDZ WC0XjO dtk3SzC</MEDICAL_PROCEDURE> was successfully performed last week"
+          }
+      ],
+  }
+
+  response = requests.put(url, headers=headers, json=payload)
+  print(response.json())
+  ```
+</Request>
+
+## Response
+
+The endpoint returns a pending job and its tracking ID.
+
+<Response show-lines="true">
+  ```json
+  {
+    "data": [
+      {
+        "tracking_id": "8a7c0e74-6495-40fc-9913-d49d511d97be29102026072831",
+        "status": "PENDING"
+      }
+    ],
+    "success": true,
+    "error": { "message": "" }
+  }
+  ```
+</Response>
+
+<ResponseField name="tracking_id" field-type="string" required="true" deprecated="false">
+  Identifier for the asynchronous unmask job.
+</ResponseField>
+
+<ResponseField name="status" field-type="string" required="true" deprecated="false">
+  Current status of the unmask job. The initial response has a status of `PENDING`.
+</ResponseField>
+
+<ResponseField name="success" field-type="boolean" required="true" deprecated="false">
+  Indicates whether the request was accepted successfully.
+</ResponseField>
+
+<ResponseField name="error" field-type="string" required="true" deprecated="false">
+  Error message. The successful response returns an empty value.
+</ResponseField>
+
+## After submission
+
+Use the tracking ID to poll for the completed unmask result in [Async Status](/async-apis/async-status). The initial `PENDING` status indicates that the asynchronous job has been submitted and is not complete yet.
