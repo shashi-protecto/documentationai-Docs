@@ -301,6 +301,11 @@
                 "icon": "eye-off"
               },
               {
+                "title": "Mask Async with Policy",
+                "path": "mask-async-with-policy",
+                "icon": "tabler:alert-circle"
+              },
+              {
                 "title": "Unmask Async",
                 "path": "async-apis/unmask-async",
                 "icon": "eye"

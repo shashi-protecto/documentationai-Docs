@@ -1,0 +1,117 @@
+---
+title: Mask Async with Policy
+description: >-
+  Submit a masked data request with a named policy, receive a tracking ID and
+  status, then poll for the completed result.
+---
+## Endpoint
+
+| Method | Endpoint               |
+| ------ | ---------------------- |
+| `PUT`  | `{baseurl}/mask/async` |
+
+<Callout kind="info" collapsed="false">
+  The policy must already exist in the namespace before you make this request. [Create a policy](https://docs.protecto.ai/policy-management/create-policy) before continuing.
+
+  `policy_name` selects the policy to apply.
+</Callout>
+
+## Request body
+
+<ParamField body="policy_name" param-type="string" required="true" deprecated="false" show-location="true">
+  Name of the policy to apply.
+</ParamField>
+
+<ParamField body="mask" param-type="array" required="true" deprecated="false" show-location="true">
+  Values to mask using the selected policy.
+</ParamField>
+
+<Request show-lines="true">
+  ```json
+  {
+    "policy_name": "customer-support-policy",
+    "mask": [
+      {
+        "value": "https://platform.openai.com/playground/chat?models=gpt-4o",
+        "format": "URL",
+        "token_name": "Text Token"
+      },
+      {
+        "value": "(408)- 426 - 9989",
+        "format": "Phone Number",
+        "token_name": "Numeric Token"
+      }
+    ]
+  }
+  ```
+
+  ```bash
+  curl -X PUT "{baseurl}/mask/async" \
+    -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "policy_name": "customer-support-policy",
+      "mask": [
+        {
+          "value": "https://platform.openai.com/playground/chat?models=gpt-4o",
+          "format": "URL",
+          "token_name": "Text Token"
+        },
+        {
+          "value": "(408)- 426 - 9989",
+          "format": "Phone Number",
+          "token_name": "Numeric Token"
+        }
+      ]
+    }'
+  ```
+
+  ```python
+  import requests
+
+  response = requests.put(
+      "{baseurl}/mask/async",
+      headers={
+          "Authorization": "Bearer YOUR_AUTH_TOKEN",
+          "Content-Type": "application/json"
+      },
+      json={
+          "policy_name": "customer-support-policy",
+          "mask": [
+              {
+                  "value": "https://platform.openai.com/playground/chat?models=gpt-4o",
+                  "format": "URL",
+                  "token_name": "Text Token"
+              },
+              {
+                  "value": "(408)- 426 - 9989",
+                  "format": "Phone Number",
+                  "token_name": "Numeric Token"
+              }
+          ]
+      }
+  )
+  print(response.json())
+  ```
+</Request>
+
+<Response show-lines="true">
+  ```json
+  {
+    "data": [
+      {
+        "tracking_id": "bab9dad6-bd3b-4b73-93a0-7ba56aaa4d6229102026064556",
+        "status": "PENDING"
+      }
+    ],
+    "success": true,
+    "error": {
+      "message": ""
+    }
+  }
+  ```
+</Response>
+
+## After submission
+
+The response returns a tracking ID and status. Poll the [Async Status](/async-apis/async-status) endpoint with the returned tracking ID to retrieve the completed result.
