@@ -14,11 +14,11 @@ Returns usage counts **across all namespaces** visible to the admin. Commonly us
 ## Query parameters
 
 <ParamField query="start_date" param-type="string" required="true">
-  Start of the reporting window. Format: `YYYY-MM-DD HH:MM:SS`.
+  Start of the reporting window. Format: `YYYY-MM-DD`.
 </ParamField>
 
 <ParamField query="end_date" param-type="string" required="true">
-  End of the reporting window. Format: `YYYY-MM-DD HH:MM:SS`.
+  End of the reporting window. Format: `YYYY-MM-DD`.
 </ParamField>
 
 <ParamField query="next_page_token" param-type="string" required="false">
@@ -28,13 +28,13 @@ Returns usage counts **across all namespaces** visible to the admin. Commonly us
 <Request tabs="JSON,cURL,Python">
 ```json
 {
-  "start_date": "2024-05-01 00:00:00",
-  "end_date": "2024-05-31 23:59:59"
+  "start_date": "2024-05-01",
+  "end_date": "2024-05-31"
 }
 ```
 
 ```bash
-curl -X GET "{baseurl}/api/vault/reports/all-namespace-summary?start_date=2024-05-01+00:00:00&end_date=2024-05-31+23:59:59" \
+curl -X GET "{baseurl}/api/vault/reports/all-namespace-summary?start_date=2024-05-01&end_date=2024-05-31" \
   -H "Authorization: Bearer <ADMIN_USER_AUTH_KEY>"
 ```
 
@@ -47,8 +47,8 @@ response = requests.get(
         "Authorization": "Bearer <ADMIN_USER_AUTH_KEY>"
     },
     params={
-        "start_date": "2024-05-01 00:00:00",
-        "end_date": "2024-05-31 23:59:59"
+        "start_date": "2024-05-01",
+        "end_date": "2024-05-31"
     }
 )
 print(response.json())
@@ -58,21 +58,23 @@ print(response.json())
 <Response tabs="200">
 ```json
 {
-  "data": [
-    {
-      "namespace": "production",
-      "start_time": "2024-05-01 00:00:00",
-      "end_time": "2024-05-31 23:59:59",
-      "count": 482931
-    },
-    {
-      "namespace": "staging",
-      "start_time": "2024-05-01 00:00:00",
-      "end_time": "2024-05-31 23:59:59",
-      "count": 14820
-    }
-  ],
-  "next_page_token": null,
+  "data": {
+    "rows": [
+      {
+        "namespace": "production",
+        "start_time": "2024-05-01 00:00:00",
+        "end_time": "2024-05-31 23:59:59",
+        "count": 482931
+      },
+      {
+        "namespace": "staging",
+        "start_time": "2024-05-01 00:00:00",
+        "end_time": "2024-05-31 23:59:59",
+        "count": 14820
+      }
+    ],
+    "next_page_token": null
+  },
   "success": true,
   "error": { "message": "" }
 }
@@ -82,17 +84,21 @@ print(response.json())
 ## Response fields
 
 <ResponseField name="namespace" field-type="string" required="true">
-  Namespace name.
+  Namespace name in each `data.rows` item.
 </ResponseField>
 
 <ResponseField name="start_time" field-type="string" required="true">
-  Reporting window start timestamp.
+  Reporting window start timestamp in each `data.rows` item.
 </ResponseField>
 
 <ResponseField name="end_time" field-type="string" required="true">
-  Reporting window end timestamp.
+  Reporting window end timestamp in each `data.rows` item.
 </ResponseField>
 
 <ResponseField name="count" field-type="integer" required="true">
-  Total API calls in this namespace during the window.
+  Total API calls in this namespace during the window. This field appears in each `data.rows` item.
+</ResponseField>
+
+<ResponseField name="data.next_page_token" field-type="string" required="false">
+  Pagination token for the next page of `data.rows` items.
 </ResponseField>

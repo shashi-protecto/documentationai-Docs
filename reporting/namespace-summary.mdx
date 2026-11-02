@@ -18,11 +18,11 @@ Returns **aggregated API usage counts** for a namespace, grouped by API type and
 </ParamField>
 
 <ParamField query="start_date" param-type="string" required="true">
-  Start of the reporting window. Format: `YYYY-MM-DD HH:MM:SS`.
+  Start of the reporting window. Format: `YYYY-MM-DD`.
 </ParamField>
 
 <ParamField query="end_date" param-type="string" required="true">
-  End of the reporting window. Format: `YYYY-MM-DD HH:MM:SS`.
+  End of the reporting window. Format: `YYYY-MM-DD`.
 </ParamField>
 
 <ParamField query="next_page_token" param-type="string" required="false">
@@ -33,13 +33,13 @@ Returns **aggregated API usage counts** for a namespace, grouped by API type and
 ```json
 {
   "namespace": "production",
-  "start_date": "2024-05-01 00:00:00",
-  "end_date": "2024-05-31 23:59:59"
+  "start_date": "2024-05-01",
+  "end_date": "2024-05-31"
 }
 ```
 
 ```bash
-curl -X GET "{baseurl}/api/vault/reports/namespace-summary?namespace=production&start_date=2024-05-01+00:00:00&end_date=2024-05-31+23:59:59" \
+curl -X GET "{baseurl}/api/vault/reports/namespace-summary?namespace=production&start_date=2024-05-01&end_date=2024-05-31" \
   -H "Authorization: Bearer <ADMIN_USER_AUTH_KEY>"
 ```
 
@@ -53,8 +53,8 @@ response = requests.get(
     },
     params={
         "namespace": "production",
-        "start_date": "2024-05-01 00:00:00",
-        "end_date": "2024-05-31 23:59:59"
+        "start_date": "2024-05-01",
+        "end_date": "2024-05-31"
     }
 )
 print(response.json())
@@ -64,27 +64,29 @@ print(response.json())
 <Response tabs="200">
 ```json
 {
-  "data": [
-    {
-      "date": "2024-05-21",
-      "api_type": "/mask",
-      "status": "success",
-      "count": 14832
-    },
-    {
-      "date": "2024-05-21",
-      "api_type": "/unmask",
-      "status": "success",
-      "count": 1247
-    },
-    {
-      "date": "2024-05-21",
-      "api_type": "/unmask",
-      "status": "failure",
-      "count": 12
-    }
-  ],
-  "next_page_token": null,
+  "data": {
+    "rows": [
+      {
+        "date": "2024-05-21",
+        "api_type": "/mask",
+        "status": "success",
+        "count": 14832
+      },
+      {
+        "date": "2024-05-21",
+        "api_type": "/unmask",
+        "status": "success",
+        "count": 1247
+      },
+      {
+        "date": "2024-05-21",
+        "api_type": "/unmask",
+        "status": "failure",
+        "count": 12
+      }
+    ],
+    "next_page_token": null
+  },
   "success": true,
   "error": { "message": "" }
 }
@@ -94,17 +96,21 @@ print(response.json())
 ## Response fields
 
 <ResponseField name="date" field-type="string" required="true">
-  Date of the aggregated activity.
+  Date of the aggregated activity in each `data.rows` item.
 </ResponseField>
 
 <ResponseField name="api_type" field-type="string" required="true">
-  API name — `/mask`, `/unmask`, etc.
+  API name in each `data.rows` item: `/mask`, `/unmask`, etc.
 </ResponseField>
 
 <ResponseField name="status" field-type="string" required="true">
-  `success` or `failure`.
+  `success` or `failure` in each `data.rows` item.
 </ResponseField>
 
 <ResponseField name="count" field-type="integer" required="true">
-  Number of API calls matching this date/type/status combination.
+  Number of API calls matching this date/type/status combination in each `data.rows` item.
+</ResponseField>
+
+<ResponseField name="data.next_page_token" field-type="string" required="true">
+  Pagination token for the next page of results.
 </ResponseField>

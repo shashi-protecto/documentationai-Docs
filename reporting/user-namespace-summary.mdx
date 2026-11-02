@@ -34,13 +34,13 @@ Returns **API usage per user** within a namespace over a given time range. Use t
   ```json
   {
     "namespace": "production",
-    "start_date": "2024-05-21 ",
+    "start_date": "2024-05-21",
     "end_date": "2024-05-22"
   }
   ```
 
   ```bash
-  curl -X GET "{baseurl}/api/vault/reports/namespace-users-summary?namespace=production&start_date=2024-05-21+00:00:00&end_date=2024-05-22+23:59:59" \
+  curl -X GET "{baseurl}/api/vault/reports/namespace-users-summary?namespace=production&start_date=2024-05-21&end_date=2024-05-22" \
     -H "Authorization: Bearer <ADMIN_USER_AUTH_KEY>"
   ```
 
@@ -54,8 +54,8 @@ Returns **API usage per user** within a namespace over a given time range. Use t
       },
       params={
           "namespace": "production",
-          "start_date": "2024-05-21 00:00:00",
-          "end_date": "2024-05-22 23:59:59"
+          "start_date": "2024-05-21",
+          "end_date": "2024-05-22"
       }
   )
   print(response.json())
@@ -65,23 +65,25 @@ Returns **API usage per user** within a namespace over a given time range. Use t
 <Response show-lines="true">
   ```json
   {
-    "data": [
-      {
-        "date": "2024-05-21",
-        "api_type": "/mask",
-        "status": "success",
-        "user": "alice@company.com",
-        "logged_in_time": 3600
-      },
-      {
-        "date": "2024-05-21",
-        "api_type": "/unmask",
-        "status": "success",
-        "user": "bob@company.com",
-        "logged_in_time": 1800
-      }
-    ],
-    "next_page_token": null,
+    "data": {
+      "rows": [
+        {
+          "date": "2024-05-21",
+          "api_type": "/mask",
+          "status": "success",
+          "user": "alice@company.com",
+          "logged_in_time": 3600
+        },
+        {
+          "date": "2024-05-21",
+          "api_type": "/unmask",
+          "status": "success",
+          "user": "bob@company.com",
+          "logged_in_time": 1800
+        }
+      ],
+      "next_page_token": null
+    },
     "success": true,
     "error": { "message": "" }
   }
@@ -90,23 +92,28 @@ Returns **API usage per user** within a namespace over a given time range. Use t
 
 ## Response fields
 
-<ResponseField name="date" field-type="string" required="true" deprecated="false">
+The following fields are returned for each row in `data.rows`.
+
+<ResponseField name="data.rows.date" field-type="string" required="true" deprecated="false">
   Date of the activity.
 </ResponseField>
 
-<ResponseField name="api_type" field-type="string" required="true" deprecated="false">
-  API called — `/mask`, `/unmask`, `/async-status`, etc.
+<ResponseField name="data.rows.api_type" field-type="string" required="true" deprecated="false">
+  API called: `/mask`, `/unmask`, `/async-status`, etc.
 </ResponseField>
 
-<ResponseField name="status" field-type="string" required="true" deprecated="false">
+<ResponseField name="data.rows.status" field-type="string" required="true" deprecated="false">
   `success` or `failure`.
 </ResponseField>
 
-<ResponseField name="user" field-type="string" required="true" deprecated="false">
+<ResponseField name="data.rows.user" field-type="string" required="true" deprecated="false">
   User email associated with the calls.
 </ResponseField>
 
-<ResponseField name="logged_in_time" field-type="integer" required="false" deprecated="false">
+<ResponseField name="data.rows.logged_in_time" field-type="integer" required="false" deprecated="false">
   Time active in the namespace, in seconds.
 </ResponseField>
 
+<ResponseField name="data.next_page_token" field-type="string" required="false" deprecated="false">
+  Pagination token for the next page of rows.
+</ResponseField>
