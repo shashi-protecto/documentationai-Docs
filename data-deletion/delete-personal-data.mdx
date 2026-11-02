@@ -50,16 +50,34 @@ curl -X PUT {baseurl}/api/vault/namespace/delete/personal-data-mapping \
 <Response tabs="200">
 ```json
 {
-  "data": {
-    "tracking_id": "9f799cb6-5315-4199-8d47-3a7ced21dd1d",
-    "status": "PENDING",
-    "job_type": "data-deletion"
-  },
+  "data": [
+    {
+      "tracking_id": {
+        "tracking_id": "9f799cb6-5315-4199-8d47-3a7ced21dd1d"
+      },
+      "data_deletion": {
+        "status": "PENDING",
+        "job_type": "data-deletion"
+      }
+    }
+  ],
   "success": true,
   "error": { "message": "" }
 }
 ```
 </Response>
+
+<ResponseField name="data[0].tracking_id.tracking_id" field-type="string">
+  String tracking identifier for the deletion job.
+</ResponseField>
+
+<ResponseField name="data[0].data_deletion.status" field-type="string">
+  String status of the deletion job, initially `PENDING`.
+</ResponseField>
+
+<ResponseField name="data[0].data_deletion.job_type" field-type="string">
+  String identifying the job as a personal data deletion operation.
+</ResponseField>
 
 ## Notes
 

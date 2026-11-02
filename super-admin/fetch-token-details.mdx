@@ -15,8 +15,10 @@ Retrieves metadata for a specific user token within a namespace.
 <Request show-lines="true" tabs={[]}>
   ```json
   {
-    "namespace_name": "customer_ns_1",
-    "_id": "alice@company.com"
+    "data": {
+      "namespace_name": "customer_ns_1",
+      "_id": "alice@company.com"
+    }
   }
   ```
 
@@ -25,8 +27,10 @@ Retrieves metadata for a specific user token within a namespace.
     -H "Authorization: Bearer <MASTER_API_KEY>" \
     -H "Content-Type: application/json; charset=utf-8" \
     -d '{
-      "namespace_name": "customer_ns_1",
-      "_id": "alice@company.com"
+      "data": {
+        "namespace_name": "customer_ns_1",
+        "_id": "alice@company.com"
+      }
     }'
   ```
 </Request>
