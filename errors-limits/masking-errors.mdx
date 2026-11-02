@@ -7,13 +7,26 @@ The Mask API returns structured error messages for invalid requests.
 
 **Endpoint:** `PUT {baseurl}/api/vault/mask`
 
+## Successful empty-string passthrough
+
+An explicitly supplied empty string is passed through unchanged successfully.
+
+**Request:**
+```json
+{
+  "mask": [{"value": "", "token_name": "Text Token"}]
+}
+```
+
+The Mask API returns the empty string unchanged. This differs from a request where the `value` field is absent, which returns `Missing value`, and from an empty `mask` array, which returns `Payload is empty`.
+
 ## Common errors
 
 | Scenario | Error message |
 |----------|---------------|
 | Empty payload | `Payload is empty` |
 | Missing `mask` key | `mask data missing` |
-| Missing `value` | `Missing value` |
+| Missing `value` | `Missing value` when the `value` field is absent, not when its string is empty |
 | Missing `token_name` | `Missing token_name` |
 | Invalid `token_name` | `token_name not defined: {<INVALID_TOKEN_NAME>}` |
 | Missing `format` | `Missing format` |

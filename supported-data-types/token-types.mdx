@@ -34,14 +34,20 @@ Token types control **how masked values are generated**, independent of entity o
 
 ## Token determinism
 
-Masking is **deterministic** — for pseudonymizable entities, the same input value and token type produce the same token across policies within a namespace. This means:
+Deterministic tokenization applies within a specific execution context. The namespace is the outer boundary, so the same input can produce different tokens in different namespaces.
 
-- Pseudonymizable entity tokens remain consistent across policies in the same namespace
-- Anonymizable entity tokens will differ across policies within the same namespace
-- Tokens are namespace-scoped so that the same PII may produce different tokens in different namespaces
+Within one namespace, consistency follows the entity category and policy:
+
+| Context                                                 | Consistency guarantee                                                                                       |
+| ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| Pseudonymizable entity, same input and token type       | The token remains consistent across policies within the namespace.                                          |
+| Anonymizable entity, same input and token type          | The token may differ under different policies within the namespace. Do not assume cross-policy consistency. |
+| Same namespace, policy, category, input, and token type | The token is expected to remain consistent across sync and async execution, including retries.              |
+
+Compare results only when the namespace, entity category treatment, and token type are the same. Changing any of these inputs or context can change the result, especially changing the policy for an anonymizable entity.
 
 <Callout kind="tip" collapsed="false">
-  Token consistency depends on the entity category and namespace: pseudonymizable tokens remain consistent across policies within a namespace, while anonymizable tokens may change across policies. Tokens may differ across namespaces.
+  Sync and async processing are not separate token namespaces. For the same namespace, policy, entity category, input, and token type, improved consistency across retries and async jobs is expected. Results may change across namespaces or across policies for anonymizable entities.
 </Callout>
 
 ## Using the same input with different token types

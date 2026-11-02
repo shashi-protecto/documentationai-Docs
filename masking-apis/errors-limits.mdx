@@ -5,6 +5,18 @@ description: "All error responses, HTTP status codes, and payload limits for Pro
 
 All Masking APIs (Mask with Token, Mask with Format, Identify and Mask, Mask with Policy, Mask with Attributes) share the same error format and limits.
 
+## Distinguish empty values from missing values
+
+An explicitly supplied empty string in `mask[].value` is accepted and passed through unchanged successfully:
+
+```json
+{
+  "mask": [{"value": "", "token_name": "Text Token"}]
+}
+```
+
+This differs from a missing `mask[].value` field, which returns `Missing value`. An empty `mask` array returns `Payload is empty`.
+
 ## Error response format
 
 All masking errors return a consistent structure:
@@ -33,7 +45,7 @@ All masking errors return a consistent structure:
     |-------------|--------------|----------------|
     | 400 | `Payload is empty` | Request body is empty or `mask` array is empty |
     | 400 | `mask data missing` | The `mask` key is missing from the request body |
-    | 400 | `Missing value` | One or more `mask[].value` fields are empty |
+    | 400 | `Missing value` | One or more `mask[].value` fields are missing |
     | 400 | `Missing token_name` | The `token_name` field is empty or not provided |
   </Expandable>
 

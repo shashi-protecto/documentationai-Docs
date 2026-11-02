@@ -21,8 +21,10 @@ Protecto retries transient internal failures automatically before returning an e
 | `400 Bad Request` | Fix the request payload — do not retry as-is |
 | `401 Unauthorized` | Refresh or replace the auth token, then retry |
 | `429 Too Many Requests` | Retry with exponential backoff |
-| `500 Internal Server Error` | Safe to retry once after a short delay |
+| `500 Internal Server Error` | Inspect the error message. Do not retry `Permission Denied` or `Toxicity output is prohibited`; correct permissions or policy configuration first. Retry other transient server failures once after a short delay. |
 | Async `FAILED` | Inspect `error_message` before deciding to retry |
+
+The HTTP status alone does not determine retryability. Inspect the error message before retrying any `500 Internal Server Error`, especially for permission or policy failures.
 
 ## Exponential backoff example
 

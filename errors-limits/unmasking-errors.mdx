@@ -9,13 +9,21 @@ The Unmask API returns structured error messages for invalid or unauthorized req
 
 ## Common errors
 
-| Scenario | Error message |
-|----------|---------------|
-| Empty payload | `Payload is empty` |
-| Missing `unmask` key | `unmask data missing` |
-| Missing `token_value` field | `Missing token value field` |
-| Empty `token_value` | `Missing token value` |
-| Unmask failure | `Unmasking of given token values failed.` |
+| Scenario | HTTP status | Error message |
+|----------|-------------|---------------|
+| Empty payload | Not specified | `Payload is empty` |
+| Missing `unmask` key | Not specified | `unmask data missing` |
+| Missing `token_value` field | Not specified | `Missing token value field` |
+| Empty `token_value` | Not specified | `Missing token value` |
+| Unmask failure | Not specified | `Unmasking of given token values failed.` |
+| Permission denied | 500 | `Permission Denied` |
+| Prohibited toxicity output | 500 | `Toxicity output is prohibited` |
+
+## Permission and policy failures
+
+`Permission Denied` and `Toxicity output is prohibited` are non-retryable authorization or policy failures. Correct the caller's permission or the relevant policy configuration before sending the request again; retrying the unchanged request will return the same failure.
+
+These failures use HTTP 500 but are distinct from transient internal server errors that also use HTTP 500. Retry transient errors according to the [Retry Behavior](./retry-behavior) guidance, but do not retry these authorization or policy failures without changing the permission or policy configuration.
 
 ## Example: Missing `token_value`
 
@@ -49,7 +57,7 @@ The Unmask API returns structured error messages for invalid or unauthorized req
     - The token value was modified or truncated
   </Expandable>
   <Expandable title="Permission denied on unmask" default-open="false">
-    The auth token used does not have `unmask` permission. Check with your admin to obtain a token with the correct permissions.
+    The API returns `Permission Denied` when the auth token used does not have `unmask` permission. Check with your admin to obtain a token with the correct permissions, then send the request again.
   </Expandable>
   <Expandable title="Anonymized token cannot be unmasked" default-open="false">
     If the policy used during masking was an anonymization policy, the token is permanently irreversible. No permissions can override this.
