@@ -58,18 +58,21 @@ print(response.json())
 <Response tabs="200">
 ```json
 {
-  "data": [
-    {
-      "requested_method": "/unmask",
-      "requested_user": "bob@company.com",
-      "requested_time": "2024-06-01 02:14:09",
-      "status": "success",
-      "input_payload": { "unmask": [{ "value": "<PER>hSw8kAEB10</PER>" }] },
-      "response": { "data": [{ "value": "George Williams" }] },
-      "error_log": ""
-    }
-  ],
-  "next_page_token": null,
+  "data": {
+    "details": [
+      {
+        "date": "2024-06-01",
+        "requested_method": "/unmask",
+        "requested_user": "bob@company.com",
+        "requested_time": "2024-06-01 02:14:09",
+        "status": "success",
+        "input_payload": { "unmask": [{ "value": "<PER>hSw8kAEB10</PER>" }] },
+        "response": { "data": [{ "value": "George Williams" }] },
+        "error_log": ""
+      }
+    ],
+    "next_page_token": null
+  },
   "success": true,
   "error": { "message": "" }
 }
@@ -78,20 +81,26 @@ print(response.json())
 
 ## Response fields
 
+Each item in `data.details` contains the audit record for one API request.
+
+<ResponseField name="date" field-type="string" required="true">
+  Audit date in `YYYY-MM-DD` format. This string may be null where the date is unavailable.
+</ResponseField>
+
 <ResponseField name="requested_method" field-type="string" required="true">
-  API called — `/mask`, `/unmask`, etc.
+  API called, such as `/mask` or `/unmask`. This string may be null where the method is unavailable.
 </ResponseField>
 
 <ResponseField name="requested_user" field-type="string" required="true">
-  User ID or email of the caller.
+  User ID or email of the caller. This string may be null where the caller is unavailable.
 </ResponseField>
 
 <ResponseField name="requested_time" field-type="string" required="true">
-  Timestamp of the request.
+  Timestamp of the request. This string may be null where the timestamp is unavailable.
 </ResponseField>
 
 <ResponseField name="status" field-type="string" required="true">
-  `success` or `failure`.
+  Request status, such as `success` or `failure`. This string may be null where the status is unavailable.
 </ResponseField>
 
 <ResponseField name="input_payload" field-type="object" required="true">
@@ -103,7 +112,11 @@ print(response.json())
 </ResponseField>
 
 <ResponseField name="error_log" field-type="string" required="false">
-  Error details if the request failed.
+  Error details if the request failed. This string may be empty or null when there is no error.
+</ResponseField>
+
+<ResponseField name="data.next_page_token" field-type="string" required="false">
+  Pagination token for the next page of audit records. This string is null when no additional page is available.
 </ResponseField>
 
 ## Use cases
