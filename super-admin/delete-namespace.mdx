@@ -14,7 +14,9 @@ Deletes an entire namespace including **all data and metadata**. This operation 
 <Request tabs="JSON,cURL">
 ```json
 {
-  "namespace_to_be_deleted": "customer_ns_1"
+  "data": {
+    "namespace_to_be_deleted": "customer_ns_1"
+  }
 }
 ```
 
@@ -23,7 +25,9 @@ curl -X PUT {baseurl}/api/vault/super-admin/namespace/delete \
   -H "Authorization: Bearer <MASTER_API_KEY>" \
   -H "Content-Type: application/json; charset=utf-8" \
   -d '{
-    "namespace_to_be_deleted": "customer_ns_1"
+    "data": {
+      "namespace_to_be_deleted": "customer_ns_1"
+    }
   }'
 ```
 </Request>
