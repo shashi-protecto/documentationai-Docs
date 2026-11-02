@@ -39,15 +39,33 @@ curl -X PUT {baseurl}/api/vault/namespace/delete/audit-records \
 <Response tabs="200">
 ```json
 {
-  "data": {
-    "tracking_id": "e1a45f62-92b4-4dd8-8c12-3f98c9cbd912",
-    "status": "PENDING",
-    "job_type": "data-deletion"
-  },
+  "data": [
+    {
+      "tracking_id": {
+        "tracking_id": "e1a45f62-92b4-4dd8-8c12-3f98c9cbd912"
+      },
+      "audit_data_deletion": {
+        "status": "PENDING",
+        "job_type": "audit_data_deletion"
+      }
+    }
+  ],
   "success": true,
   "error": { "message": "" }
 }
 ```
+
+<ResponseField name="data[0].tracking_id.tracking_id" field-type="string">
+  Identifier for tracking the audit-record deletion job.
+</ResponseField>
+
+<ResponseField name="data[0].audit_data_deletion.status" field-type="string">
+  Current status of the audit-record deletion job.
+</ResponseField>
+
+<ResponseField name="data[0].audit_data_deletion.job_type" field-type="string">
+  Identifies audit-record deletion jobs. This value is distinct from personal data mapping deletion.
+</ResponseField>
 </Response>
 
 <Callout kind="tip">
