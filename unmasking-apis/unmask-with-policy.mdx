@@ -18,19 +18,19 @@ To get the Authkey please contact [help@protecto.ai](mailto:help@protecto.ai)
 
 ## Request body
 
-<ParamField body="policy_name" param-type="string" required="false" deprecated="false">
+<ParamField body="policy_name" param-type="string" required="false" deprecated="false" show-location="true">
   The name of the policy to apply during unmasking. If omitted, the default namespace policy applies.
 </ParamField>
 
-<ParamField body="unmask" param-type="array" required="true" deprecated="false">
+<ParamField body="unmask" param-type="array" required="true" deprecated="false" show-location="true">
   List of tokenized values to unmask.
 </ParamField>
 
-<ParamField body="unmask[].token_value" param-type="string" required="true" deprecated="false">
+<ParamField body="unmask[].token_value" param-type="string" required="true" deprecated="false" show-location="true">
   The tokenized text to unmask.
 </ParamField>
 
-<Request show-lines="true" tabs="JSON,cURL,Python">
+<Request show-lines="true">
   ```json
   {
     "policy_name": "Anonymization-policy-1",
@@ -75,7 +75,7 @@ To get the Authkey please contact [help@protecto.ai](mailto:help@protecto.ai)
   ```
 </Request>
 
-<Response show-lines="true" tabs={[]}>
+<Response show-lines="true">
   ```json
   {
     "data": [
@@ -100,11 +100,13 @@ To get the Authkey please contact [help@protecto.ai](mailto:help@protecto.ai)
   ```
 </Response>
 
+<Callout kind="info" collapsed="false">
+  A successful unmask request does not always restore the original PII. When the applied policy classifies an entity as anonymizable, unmasking may remove the entity tags while leaving the anonymized or tokenized value in the output. The original value cannot be recovered. Pseudonymizable entities can be restored when policy rules and permissions allow.
+</Callout>
+
 ## Notes
 
 - `policy_name` is **optional**. If provided, unmasking uses that policy's metadata and permission rules. If omitted, the default namespace policy applies.
-
 - The policy must exist in your namespace. A missing policy name results in an authorization error.
-
 - See [Policies](/core-concepts/policies) for a conceptual overview of how policies govern unmasking behavior.
 
