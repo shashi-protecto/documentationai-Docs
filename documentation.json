@@ -857,6 +857,13 @@
           }
         ]
       }
-    ]
+    ],
+    "socials": {
+      "linkedin": "https://www.linkedin.com/company/protectoai/",
+      "x": "https://x.com/ProtectoAi",
+      "youtube": "https://www.youtube.com/@protectoai",
+      "instagram": "https://www.instagram.com/protecto_ai/"
+    },
+    "copyright": "© 2026 Protecto. All rights reserved. San Jose, CA."
   }
 }
