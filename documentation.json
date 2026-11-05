@@ -838,7 +838,9 @@
     }
   ],
   "customCss": [
-    "styles/consent.css"
+    {
+      "src": "styles/consent.css"
+    }
   ],
   "footer": {
     "links": [
