@@ -82,3 +82,9 @@
 /* Opt-out view for notice countries */
 #CybotCookiebotDialog.protecto-optout #CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll{display:none !important}
 @media (max-width:700px){#CybotCookiebotDialog.protecto-optout #protecto-customize,#CybotCookiebotDialog.protecto-optout #CybotCookiebotDialogBodyLevelButtonLevelOptinAllowallSelection{grid-column:auto}}
+
+/* Footer: Legal group on one line */
+.dai-site-footer .dai-site-footer-column{display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px}
+.dai-site-footer .dai-site-footer-column-title{margin:0}
+.dai-site-footer .dai-site-footer-column ul{flex-direction:row;flex-wrap:wrap;gap:8px 20px}
+.dai-site-footer .dai-site-footer-columns{display:block;width:100%}
