@@ -136,6 +136,14 @@
     if (notice && !isImplied()) notice.remove();
   }
 
+  // Docs pages change without a full load, so trackers already running would keep sending after an opt-out.
+  function reloadIfWithdrawn() {
+    var c = window.Cookiebot && window.Cookiebot.consent;
+    if (c && !c.statistics && (window.posthog || window.clarity || document.querySelector('script[src*="gtag/js"]'))) {
+      window.location.reload();
+    }
+  }
+
   window.addEventListener("CookiebotOnDialogDisplay", function () {
     setUpBar();
     linkPrivacyPolicy();
@@ -144,6 +152,8 @@
   window.addEventListener("CookiebotOnConsentReady", showNotice);
   window.addEventListener("CookiebotOnAccept", clearNotice);
   window.addEventListener("CookiebotOnDecline", clearNotice);
+  window.addEventListener("CookiebotOnAccept", reloadIfWithdrawn);
+  window.addEventListener("CookiebotOnDecline", reloadIfWithdrawn);
 
   // Footer and notice links reopen the choices. Capture phase, so the docs router does not handle the hash.
   document.addEventListener("click", function (event) {
