@@ -779,7 +779,8 @@
     "robots:index": true,
     "robots:follow": true,
     "sitemap:enabled": true,
-    "llms-txt:enabled": true
+    "llms-txt:enabled": true,
+    "language": "en"
   },
   "ai": {
     "ai-assistant:enabled": false
