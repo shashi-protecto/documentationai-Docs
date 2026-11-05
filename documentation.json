@@ -785,15 +785,31 @@
     "ai-assistant:enabled": false
   },
   "integrations": {
+    "cookies": {
+      "analytics": {
+        "key": "CookieConsent",
+        "value": "statistics:true"
+      },
+      "marketing": {
+        "key": "CookieConsent",
+        "value": "marketing:true"
+      }
+    },
     "ga4": {
-      "measurementId": "G-W06E4YN85S"
+      "measurementId": "G-W06E4YN85S",
+      "category": "analytics"
     },
     "clarity": {
-      "projectId": "w8cd286gff"
+      "projectId": "w8cd286gff",
+      "category": "analytics"
     },
     "posthog": {
       "apiKey": "phc_11ZctymOtA1Y8SpO6jNAPDsQlI6JHuZSA5qcJJO9vxP",
-      "apiHost": "https://us.posthog.com/"
+      "apiHost": "https://us.posthog.com/",
+      "category": "analytics"
+    },
+    "telemetry": {
+      "category": "analytics"
     }
   },
   "description": "Protecto is an API-first data protection platform that helps engineering teams identify, tokenize, mask, and safely handle sensitive data across applications, data pipelines, and GenAI workflows.",
@@ -806,13 +822,41 @@
   ],
   "scripts": [
     {
-      "src": "scripts/hubspot.js"
+      "src": "scripts/consent.js"
     },
     {
-      "src": "scripts/factors.js"
+      "src": "scripts/hubspot.js",
+      "category": "marketing"
     },
     {
-      "src": "scripts/rb2b.js"
+      "src": "scripts/factors.js",
+      "category": "marketing"
+    },
+    {
+      "src": "scripts/rb2b.js",
+      "category": "marketing"
     }
-  ]
+  ],
+  "customCss": [
+    {
+      "src": "styles/consent.css"
+    }
+  ],
+  "footer": {
+    "links": [
+      {
+        "header": "Legal",
+        "items": [
+          {
+            "label": "Privacy Policy",
+            "href": "https://www.protecto.ai/privacy-policy/"
+          },
+          {
+            "label": "Cookie Settings",
+            "href": "#cookie-settings"
+          }
+        ]
+      }
+    ]
+  }
 }
